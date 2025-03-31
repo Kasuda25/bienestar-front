@@ -71,7 +71,6 @@ Autentica estudiantes con código estudiantil.
 ```json
 {
   "email": "estudiante@unicolombo.edu.co",
-  "password": "student123",
   "codigoEstudiantil": "UC202401"
 }
 ```
