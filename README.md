@@ -115,19 +115,34 @@ Creacion de actividades con rol admin
 **Respuesta:**
 ```json
 {
-  "id": 1,
-  "nombre": "Yoga al aire libre",
-  "ubicacion": "Cancha 3",
-  "fechaInicio": "2024-04-01",
-  "fechaFin": "2024-04-30",
-  "horaInicio": "08:00",
-  "horaFin": "09:00",
-  "maxEstudiantes": 30,
-  "instructor": {
-    "id": 2,
-    "nombre": "Sarah",
-    "apellido": "Marenco"
-  }
+    "id": 1,
+    "nombre": "Volleyball",
+    "ubicacion": "Cancha Unicolombo",
+    "fechaInicio": "2025-05-10",
+    "fechaFin": "2025-05-25",
+    "horaInicio": "13:00:00",
+    "horaFin": "17:00:00",
+    "maxEstudiantes": 30,
+    "instructor": {
+        "id": 2,
+        "nombre": "Sarah",
+        "apellido": "Marenco",
+        "email": "sarah@unicolombo.edu.co",
+        "password": "$2a$10$ej/RSZ/ts/BGGkMtTRL8n.PFL4VCHUaxZnlEcn7b5Ok8Ky/D2DfLq",
+        "rol": "INSTRUCTOR",
+        "activo": true,
+        "estudiante": null,
+        "enabled": true,
+        "username": "sarah@unicolombo.edu.co",
+        "authorities": [
+            {
+                "authority": "ROLE_INSTRUCTOR"
+            }
+        ],
+        "credentialsNonExpired": true,
+        "accountNonExpired": true,
+        "accountNonLocked": true
+    }
 }
 ```
 
