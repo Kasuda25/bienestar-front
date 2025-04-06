@@ -4,14 +4,23 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '../../stores/auth'
 
 import AuthService from '../../services/useAuth'
+import LocalStorage from '../../services/useLocalStorage'
 
 import Login from '../../components/auth/Login.vue'
 
 const router = useRouter()
+const authStore = useAuthStore()
+
+onBeforeMount(() => {
+    if (authStore.isAuth) {
+        router.push({ name: 'dashboard' })
+    }
+})
 
 const loginData = reactive({
     email: '',
@@ -54,7 +63,9 @@ const doLogin = async () => {
     try {
         const response = await AuthService.login(loginData)
         if (response) {
-            router.push({ name: 'home' })
+            LocalStorage.createSession()
+
+            router.push({ name: 'dashboard' })
         }
     } catch (error) {
         console.log(error);
