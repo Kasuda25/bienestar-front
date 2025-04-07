@@ -9,7 +9,7 @@
         class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
     >
         <Navbar
-            pageName="Dashboard"
+            pageName="Actividades"
             :isAsideVisible="isAsideVisible"
             :isMobile="isMobile"
             :dropdownOpen="dropdownOpen"
@@ -18,39 +18,25 @@
             @logOut="logOut"
             @setDropdownRef="(el) => (dropdownRef = el)"
         />
-        <Dashboard
-            :actividades="items"
-            :isAsideVisible="isAsideVisible"
-            :isMobile="isMobile"
-        />
+        <router-view />
     </main>
 </template>
 
 <script setup>
     import { onMounted, onBeforeUnmount, ref } from 'vue';
-    import { useRouter } from 'vue-router';
 
     import Sidebar from '../../components/Sidebar.vue';
     import Navbar from '../../components/Navbar.vue';
-    import Dashboard from '../../components/dashboard/Dashboard.vue';
-
-    import DashboardService from '../../services/useDashboard';
-    import LocalStorage from '../../services/useLocalStorage';
-
-    const router = useRouter();
 
     const dropdownOpen = ref(false);
     const dropdownRef = ref(null);
     const isAsideVisible = ref(true);
     const isMobile = ref(false);
-    const items = ref();
 
     onMounted(async () => {
         document.addEventListener('click', handleClickOutside);
         checkScreenSize();
         window.addEventListener('resize', checkScreenSize);
-
-        items.value = await DashboardService.getActividades();
     });
 
     onBeforeUnmount(() => {
