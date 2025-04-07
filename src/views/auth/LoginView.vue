@@ -1,10 +1,10 @@
 <template>
     <Login :loginData="loginData" @login="loginDataValidation" :validation-error-status="validationErrorStatus"
-        :validation-error-message="validationErrorMessage" />
+        :validation-error-message="validationErrorMessage" :isLoading="isLoading" />
 </template>
 
 <script setup>
-import { reactive, onBeforeMount } from 'vue'
+import { ref, reactive, onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 
@@ -13,8 +13,14 @@ import LocalStorage from '../../services/useLocalStorage'
 
 import Login from '../../components/auth/Login.vue'
 
+import { useSnackbar } from "vue3-snackbar";
+
 const router = useRouter()
 const authStore = useAuthStore()
+
+const snackbar = useSnackbar();
+
+const isLoading = ref(false)
 
 onBeforeMount(() => {
     if (authStore.isAuth) {
@@ -61,14 +67,19 @@ const loginDataValidation = () => {
 
 const doLogin = async () => {
     try {
+        isLoading.value = true
         const response = await AuthService.login(loginData)
         if (response) {
             LocalStorage.createSession()
-
+            isLoading.value = false
             router.push({ name: 'dashboard' })
         }
     } catch (error) {
-        console.log(error);
+        isLoading.value = false
+        snackbar.add({
+            type: 'error',
+            text: error.message
+        })
     }
 }
 </script>

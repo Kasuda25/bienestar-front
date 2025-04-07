@@ -35,7 +35,8 @@
                                         <input type="email" class="form-control" id="inputEmail"
                                             v-model="props.loginData.email" placeholder=" "
                                             :class="{ 'is-invalid': props.validationErrorStatus.email }">
-                                        <label class="form-label" for="inputEmail" :class="{ 'invalid-feedback-fix': props.validationErrorStatus.email }">Correo</label>
+                                        <label class="form-label" for="inputEmail"
+                                            :class="{ 'invalid-feedback-fix': props.validationErrorStatus.email }">Correo</label>
                                         <div class="invalid-feedback">
                                             {{ props.validationErrorMessage.email }}
                                         </div>
@@ -44,19 +45,20 @@
                                         <input type="password" class="form-control" id="inputPassword"
                                             v-model="props.loginData.password" placeholder=" "
                                             :class="{ 'is-invalid': props.validationErrorStatus.password }">
-                                        <label class="form-label" for="inputPassword" :class="{ 'invalid-feedback-fix': props.validationErrorStatus.password }">Contraseña</label>
+                                        <label class="form-label" for="inputPassword"
+                                            :class="{ 'invalid-feedback-fix': props.validationErrorStatus.password }">Contraseña</label>
                                         <div class="invalid-feedback">
                                             {{ props.validationErrorMessage.password }}
                                         </div>
                                     </div>
-                                    <div class="form-check form-switch d-flex align-items-center mb-3">
-                                        <input class="form-check-input" type="checkbox" id="rememberMe">
-                                        <label class="form-check-label mb-0 ms-3" for="rememberMe">Recordarme</label>
-                                    </div>
                                     <div class="text-center">
-                                        <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2"
-                                            @click="login">Iniciar
-                                            sesión</button>
+                                        <button v-if="!isLoading" type="button" class="btn bg-gradient-dark w-100 my-4 mb-2"
+                                            @click="login">Iniciar sesión</button>
+                                        <button v-if="isLoading" type="button" class="btn bg-gradient-dark w-100 my-4 mb-2">
+                                            <div class="spinner-border spinner-border-sm" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -84,7 +86,8 @@ const emit = defineEmits()
 const props = defineProps({
     loginData: Object,
     validationErrorStatus: Object,
-    validationErrorMessage: Object
+    validationErrorMessage: Object,
+    isLoading: Boolean
 })
 
 const login = () => {

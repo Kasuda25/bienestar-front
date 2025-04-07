@@ -13,7 +13,11 @@ class AuthService {
                 return response.data
             }
         } catch (error) {
-            throw new Error(error);
+            if (error.response.status === 400) {
+                throw new Error('Credenciales incorrectas')
+            } else {
+                throw new Error('Error al iniciar sesión')
+            }
         }
     }
 }
