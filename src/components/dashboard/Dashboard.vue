@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid py-2">
+    <div class="container-fluid py-2 pe-3">
         <div class="row">
             <div class="ms-3 mb-4">
                 <h3 class="mb-0 h4 font-weight-bolder">Dashboard</h3>
@@ -15,7 +15,7 @@
                             </div>
                             <div class="col-6 text-end">
                                 <RouterLink
-                                    to="/activities/create"
+                                    to="/activities"
                                     v-slot="{ navigate }"
                                     custom
                                 >
@@ -23,10 +23,7 @@
                                         class="btn bg-gradient-dark mb-0"
                                         @click="navigate"
                                     >
-                                        <i
-                                            class="material-symbols-rounded text-sm"
-                                            >add</i
-                                        >&nbsp;&nbsp;Crear
+                                        Ver todas
                                     </a>
                                 </RouterLink>
                             </div>
@@ -84,7 +81,7 @@
                                     </tr>
                                     <tr
                                         v-if="actividades"
-                                        v-for="item in actividades"
+                                        v-for="item in actividades.slice(0, 5)"
                                         :key="item"
                                     >
                                         <td>
@@ -330,32 +327,16 @@
                 </div>
             </div>
         </div>
-        <footer class="footer py-4">
-            <div class="container-fluid">
-                <div class="row align-items-center justify-content-lg-between">
-                    <div class="col-lg-6 mb-lg-0 mb-4">
-                        <div
-                            class="copyright text-center text-sm text-muted text-lg-start"
-                        >
-                            © 2025
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
 </template>
 
 <script setup>
-    import { ref, onMounted, onBeforeUnmount } from 'vue';
+    import { ref } from 'vue';
 
     const emit = defineEmits();
     const props = defineProps({
         actividades: Array,
-        isLoading: Boolean,
     });
-
-    const isLoading = ref(false);
 </script>
 
 <style scope>

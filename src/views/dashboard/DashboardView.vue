@@ -23,6 +23,7 @@
             :isAsideVisible="isAsideVisible"
             :isMobile="isMobile"
         />
+        <Footer />
     </main>
 </template>
 
@@ -32,9 +33,10 @@
 
     import Sidebar from '../../components/Sidebar.vue';
     import Navbar from '../../components/Navbar.vue';
+    import Footer from '../../components/Footer.vue';
     import Dashboard from '../../components/dashboard/Dashboard.vue';
 
-    import DashboardService from '../../services/useDashboard';
+    import ActividadesServices from '../../services/useActividades';
     import LocalStorage from '../../services/useLocalStorage';
 
     const router = useRouter();
@@ -50,7 +52,7 @@
         checkScreenSize();
         window.addEventListener('resize', checkScreenSize);
 
-        items.value = await DashboardService.getActividades();
+        items.value = await ActividadesServices.getActividades();
     });
 
     onBeforeUnmount(() => {

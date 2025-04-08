@@ -14,16 +14,26 @@
             </button>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0">
-                    <li class="breadcrumb-item text-sm">
-                        <a class="opacity-5 text-dark" href="javascript:;"
-                            >Páginas</a
-                        >
+                    <li class="breadcrumb-item text-sm text-gray active">
+                        Bienestar
                     </li>
                     <li
-                        class="breadcrumb-item text-sm text-dark active"
+                        :class="[
+                            'breadcrumb-item text-sm',
+                            pageSubname
+                                ? 'text-gray active'
+                                : 'text-dark active',
+                        ]"
                         aria-current="page"
                     >
                         {{ pageName }}
+                    </li>
+                    <li
+                        v-if="pageSubname"
+                        class="breadcrumb-item text-sm text-dark active"
+                        aria-current="page"
+                    >
+                        {{ pageSubname }}
                     </li>
                 </ol>
             </nav>
@@ -95,6 +105,7 @@
     ]);
     const props = defineProps({
         pageName: String,
+        pageSubname: String,
         isAsideVisible: Boolean,
         isMobile: Boolean,
         dropdownOpen: Boolean,

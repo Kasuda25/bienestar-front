@@ -1,6 +1,6 @@
 import axios from './useAxios'
 
-class DashboardService {
+class ActividadesServices {
     async getActividades() {
         try {
             const response = await axios.get('/actividades/creadas')
@@ -13,4 +13,4 @@ class DashboardService {
     }
 }
 
-export default new DashboardService()
+export default new ActividadesServices()
