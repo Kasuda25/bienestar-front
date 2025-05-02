@@ -13,7 +13,10 @@
                             <div class="col-6">
                                 <h5 class="mb-0 mt-2">Actividades</h5>
                             </div>
-                            <div class="col-6 text-end">
+                            <div
+                                v-if="actividades && actividades[0]"
+                                class="col-6 text-end"
+                            >
                                 <RouterLink
                                     to="/activities"
                                     v-slot="{ navigate }"
@@ -29,10 +32,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body px-0 pb-2">
-                        <div class="table-responsive">
+                    <div class="card-body px-0 pb-3">
+                        <div class="table-responsive no-scroll">
                             <table class="table align-items-center mb-0">
-                                <thead>
+                                <div v-if="!actividades">
+                                    <div class="d-flex justify-content-center">
+                                        <div
+                                            class="spinner-border"
+                                            role="status"
+                                        >
+                                            <span class="visually-hidden"
+                                                >Loading...</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <thead v-if="actividades && actividades[0]">
                                     <tr>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
@@ -61,24 +76,14 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr v-if="!actividades">
-                                        <td colspan="5" class="text-center">
-                                            <div
-                                                class="d-flex justify-content-center"
-                                            >
-                                                <div
-                                                    class="spinner-border"
-                                                    role="status"
-                                                >
-                                                    <span
-                                                        class="visually-hidden"
-                                                        >Loading...</span
-                                                    >
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <div v-if="actividades && !actividades[0]">
+                                    <div class="d-flex justify-content-center">
+                                        <h4 class="my-auto">
+                                            No hay actividades para mostrar
+                                        </h4>
+                                    </div>
+                                </div>
+                                <tbody v-if="actividades && actividades[0]">
                                     <tr
                                         v-if="actividades"
                                         v-for="item in actividades.slice(0, 5)"
@@ -331,15 +336,13 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-
     const emit = defineEmits();
     const props = defineProps({
         actividades: Array,
     });
 </script>
 
-<style scope>
+<style scoped>
     .slide-left-enter-active,
     .slide-left-leave-active {
         transition:
@@ -369,5 +372,9 @@
 
     .sidebar-button {
         z-index: 2000;
+    }
+
+    .no-scroll {
+        overflow: hidden;
     }
 </style>

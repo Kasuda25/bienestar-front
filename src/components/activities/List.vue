@@ -31,10 +31,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body px-0 pb-2">
-                        <div class="table-responsive p-0">
+                    <div class="card-body px-0 pb-3">
+                        <div class="table-responsive p-0 no-scroll">
                             <table class="table align-items-center mb-0">
-                                <thead>
+                                <div v-if="!actividades">
+                                    <div class="d-flex justify-content-center">
+                                        <div
+                                            class="spinner-border"
+                                            role="status"
+                                        >
+                                            <span class="visually-hidden"
+                                                >Loading...</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <thead v-if="actividades && actividades[0]">
                                     <tr>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
@@ -67,23 +79,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-if="!actividades">
-                                        <td colspan="5" class="text-center">
-                                            <div
-                                                class="d-flex justify-content-center"
-                                            >
-                                                <div
-                                                    class="spinner-border"
-                                                    role="status"
-                                                >
-                                                    <span
-                                                        class="visually-hidden"
-                                                        >Loading...</span
-                                                    >
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <div v-if="actividades && !actividades[0]">
+                                        <div
+                                            class="d-flex justify-content-center"
+                                        >
+                                            <h4 class="my-auto">
+                                                Aún no hay actividades
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </tbody>
+                                <tbody v-if="actividades && actividades[0]">
                                     <tr
                                         v-if="actividades"
                                         v-for="item in actividades"
@@ -183,10 +189,14 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-
     const emit = defineEmits();
     const props = defineProps({
         actividades: Array,
     });
 </script>
+
+<style scoped>
+    .no-scroll {
+        overflow: hidden;
+    }
+</style>

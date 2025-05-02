@@ -1,11 +1,11 @@
-import axios from './useAxios'
+import axios from './useAxios';
 
 class ActividadesServices {
     async getActividades() {
         try {
-            const response = await axios.get('/actividades/creadas')
+            const response = await axios.get('/actividades/creadas');
             if (response.status === 200) {
-                return response.data.data
+                return response.data.data;
             }
         } catch (error) {
             throw new Error(error);
@@ -13,4 +13,4 @@ class ActividadesServices {
     }
 }
 
-export default new ActividadesServices()
+export default new ActividadesServices();

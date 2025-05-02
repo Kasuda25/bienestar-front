@@ -23,7 +23,9 @@ export function setupInterceptors() {
         (response) => response,
         async (error) => {
             const originalRequest = error.config;
-            if (
+            if (!error.response) {
+                return Promise.reject(error);
+            } else if (
                 (error.response.status === 401 && !originalRequest._retry) ||
                 (error.response.status === 403 && !originalRequest._retry)
             ) {
