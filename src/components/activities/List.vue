@@ -159,11 +159,11 @@
                                             >
                                                 {{
                                                     item.instructor.nombre
-                                                        .nombre
+                                                        .usuario.nombre
                                                 }}
                                                 {{
                                                     item.instructor.nombre
-                                                        .apellido
+                                                        .usuario.apellido
                                                 }}
                                             </span>
                                         </td>

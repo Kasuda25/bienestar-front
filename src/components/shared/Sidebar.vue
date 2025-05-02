@@ -19,7 +19,7 @@
                     target="_blank"
                 >
                     <img
-                        src="../assets/img/logo-ct-dark.png"
+                        src="../../assets/img/logo-ct-dark.png"
                         class="navbar-brand-img"
                         width="26"
                         height="26"

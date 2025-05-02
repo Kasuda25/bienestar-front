@@ -28,9 +28,9 @@
     import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
     import { useRoute } from 'vue-router';
 
-    import Sidebar from '../../components/Sidebar.vue';
-    import Navbar from '../../components/Navbar.vue';
-    import Footer from '../../components/Footer.vue';
+    import Sidebar from '../../components/shared/Sidebar.vue';
+    import Navbar from '../../components/shared/Navbar.vue';
+    import Footer from '../../components/shared/Footer.vue';
 
     import ActividadesServices from '../../services/useActividades';
 

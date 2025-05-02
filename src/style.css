@@ -1,19 +1,19 @@
 body {
-  font-family: 'Inter', sans-serif !important;
-  overflow-x: hidden;
+    font-family: 'Inter', sans-serif !important;
+    overflow-x: hidden;
 }
 
 /* Para los iconos Material Symbols Rounded */
 .material-icon {
-  font-family: 'Material Symbols Rounded';
-  font-weight: 400;
-  font-style: normal;
-  font-size: 24px; /* Ajusta el tamaño según necesidad */
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
+    font-family: 'Material Symbols Rounded';
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24px; /* Ajusta el tamaño según necesidad */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
 }
