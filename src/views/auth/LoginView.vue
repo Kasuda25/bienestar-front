@@ -12,18 +12,17 @@
     import { ref, reactive, onBeforeMount } from 'vue';
     import { useRouter } from 'vue-router';
     import { useAuthStore } from '../../stores/auth';
+    import { useSnackbar } from 'vue3-snackbar';
 
     import AuthService from '../../services/useAuth';
     import LocalStorage from '../../services/useLocalStorage';
 
     import Login from '../../components/auth/Login.vue';
 
-    import { useSnackbar } from 'vue3-snackbar';
-
     const router = useRouter();
-    const authStore = useAuthStore();
-
     const snackbar = useSnackbar();
+    
+    const authStore = useAuthStore();
 
     const isLoading = ref(false);
 

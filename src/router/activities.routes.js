@@ -13,5 +13,6 @@ export default [
         path: ':id',
         name: 'activities-detail',
         component: () => import('../components/activities/Detail.vue'),
+        props: true,
     },
 ];

@@ -2,7 +2,7 @@
     <div class="container-fluid py-2 pe-3">
         <div class="row">
             <div class="col-12">
-                <div class="card my-4 w-25">
+                <div class="card my-4">
                     <div
                         class="card-header p-0 position-relative mt-n4 mx-3 z-index-2"
                     >
@@ -12,154 +12,338 @@
                             <h6 class="text-white ps-3 my-auto">Actividad</h6>
                         </div>
                     </div>
-                    <div class="card-body px-0 pb-2">
-                        <div class="table-responsive p-0">
-                            <table class="table align-items-center mb-0">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
-                                                >
-                                                    <h6 class="mb-0 text-sm">
-                                                        Nombre
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-xs"> name </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
-                                                >
-                                                    <h6 class="mb-0 text-sm">
-                                                        Fecha de inicio
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-xs">
-                                                fechaInicio
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
-                                                >
-                                                    <h6 class="mb-0 text-sm">
-                                                        Fecha de finlización
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-xs">
-                                                fechaFin
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
-                                                >
-                                                    <h6 class="mb-0 text-sm">
-                                                        Hora de inicio
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-xs">
-                                                horaInicio
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
-                                                >
-                                                    <h6 class="mb-0 text-sm">
-                                                        Hora de finalización
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-xs">
-                                                horaFin
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
-                                                >
-                                                    <h6 class="mb-0 text-sm">
-                                                        Ubicación
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-xs">
-                                                ubicación
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
-                                                >
-                                                    <h6 class="mb-0 text-sm">
-                                                        Máximo de estudiantes
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-xs">
-                                                maxEstudiantes
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
-                                                >
-                                                    <h6 class="mb-0 text-sm">
-                                                        Instructor
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="text-xs">
-                                                instructor
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div class="card-body pb-2">
+                        <div v-if="isLoading">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden"
+                                        >Loading...</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="nameInput"
+                                        >Nombre</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <input
+                                        v-if="isReadOnly"
+                                        class="form-control"
+                                        id="nameInput"
+                                        type="text"
+                                        :value="activity.nombre"
+                                        tabindex="-1"
+                                        :style="{
+                                            pointerEvents: 'none',
+                                            backgroundColor: '#fff',
+                                            cursor: 'default',
+                                        }"
+                                        readonly
+                                    />
+
+                                    <!-- Input editable -->
+                                    <input
+                                        v-else
+                                        class="form-control"
+                                        id="nameInput"
+                                        type="text"
+                                        v-model="props.activityData.name"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
+                                        for="startDateInput"
+                                        >Fecha de inicio</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <input
+                                        v-if="isReadOnly"
+                                        class="form-control"
+                                        id="startDateInput"
+                                        type="text"
+                                        :value="formatStartDate"
+                                        tabindex="-1"
+                                        :style="{
+                                            pointerEvents: 'none',
+                                            backgroundColor: '#fff',
+                                            cursor: 'default',
+                                        }"
+                                        readonly
+                                    />
+                                    <input
+                                        v-else
+                                        class="form-control"
+                                        id="startDateInput"
+                                        type="date"
+                                        v-model="props.activityData.startDate"
+                                        onfocus="this.showPicker()"
+                                        onkeydown="return false;"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="endDateInput"
+                                        >Fecha de fin</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <input
+                                        v-if="isReadOnly"
+                                        class="form-control"
+                                        id="endDateInput"
+                                        type="text"
+                                        :value="formatEndDate"
+                                        tabindex="-1"
+                                        :style="{
+                                            pointerEvents: 'none',
+                                            backgroundColor: '#fff',
+                                            cursor: 'default',
+                                        }"
+                                        readonly
+                                    />
+                                    <input
+                                        v-else
+                                        class="form-control"
+                                        id="endDateInput"
+                                        type="date"
+                                        v-model="props.activityData.endDate"
+                                        onfocus="this.showPicker()"
+                                        onkeydown="return false;"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
+                                        for="startHourInput"
+                                        >Hora de inicio</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <input
+                                        v-if="isReadOnly"
+                                        class="form-control"
+                                        id="startHourInput"
+                                        type="text"
+                                        :value="formatStartHour"
+                                        tabindex="-1"
+                                        :style="{
+                                            pointerEvents: 'none',
+                                            backgroundColor: '#fff',
+                                            cursor: 'default',
+                                        }"
+                                        readonly
+                                    />
+                                    <input
+                                        v-else
+                                        class="form-control"
+                                        id="startHourInput"
+                                        type="time"
+                                        v-model="props.activityData.startHour"
+                                        onfocus="this.showPicker()"
+                                        onkeydown="return false;"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="endHourInput"
+                                        >Hora de fin</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <input
+                                        v-if="isReadOnly"
+                                        class="form-control"
+                                        id="endHourInput"
+                                        type="text"
+                                        :value="formatEndHour"
+                                        tabindex="-1"
+                                        :style="{
+                                            pointerEvents: 'none',
+                                            backgroundColor: '#fff',
+                                            cursor: 'default',
+                                        }"
+                                        readonly
+                                    />
+                                    <input
+                                        v-else
+                                        class="form-control"
+                                        id="endHourInput"
+                                        type="time"
+                                        v-model="props.activityData.endHour"
+                                        onfocus="this.showPicker()"
+                                        onkeydown="return false;"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
+                                        for="maxStudentsInput"
+                                        >Máximo de estudiantes</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <input
+                                        v-if="isReadOnly"
+                                        class="form-control"
+                                        id="maxStudentsInput"
+                                        type="text"
+                                        :value="activity.maxEstudiantes"
+                                        tabindex="-1"
+                                        :style="{
+                                            pointerEvents: 'none',
+                                            backgroundColor: '#fff',
+                                            cursor: 'default',
+                                        }"
+                                        readonly
+                                    />
+                                    <input
+                                        v-else
+                                        class="form-control"
+                                        id="maxStudentsInput"
+                                        type="number"
+                                        v-model="props.activityData.maxStudents"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label">Instructor</label>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <input
+                                        v-if="isReadOnly"
+                                        class="form-control"
+                                        id="instructorInput"
+                                        type="text"
+                                        :value="
+                                            activity.instructor?.nombre
+                                                ?.nombreCompleto
+                                        "
+                                        tabindex="-1"
+                                        :style="{
+                                            pointerEvents: 'none',
+                                            backgroundColor: '#fff',
+                                            cursor: 'default',
+                                        }"
+                                        readonly
+                                    />
+                                    <select
+                                        v-else
+                                        class="form-select"
+                                        for="instructorInput"
+                                        id="instructorInput"
+                                        type="select"
+                                        :v-model="props.activityData.instructor"
+                                    >
+                                        <option
+                                            :value="
+                                                activity.instructor?.nombre
+                                                    ?.usuario?.id
+                                            "
+                                            selected
+                                        >
+                                            {{
+                                                activity.instructor?.nombre
+                                                    ?.nombreCompleto
+                                            }}
+                                        </option>
+                                        <div
+                                            v-for="instructor in instructores"
+                                            :key="instructor"
+                                        >
+                                            <option :value="instructor.id">
+                                                {{ instructor.usuario.nombre }}
+                                                {{
+                                                    instructor.usuario.apellido
+                                                }}
+                                            </option>
+                                        </div>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
+                                        for="lacationInput"
+                                        >Ubicación</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <input
+                                        v-if="isReadOnly"
+                                        class="form-control"
+                                        id="lacationInput"
+                                        type="text"
+                                        :value="activity.ubicacion"
+                                        tabindex="-1"
+                                        :style="{
+                                            pointerEvents: 'none',
+                                            backgroundColor: '#fff',
+                                            cursor: 'default',
+                                        }"
+                                        readonly
+                                    />
+                                    <input
+                                        v-else
+                                        class="form-control"
+                                        id="lacationInput"
+                                        type="text"
+                                        v-model="props.activityData.location"
+                                    />
+                                </div>
+                            </div>
+                            <div class="d-flex w-100">
+                                <div v-if="isReadOnly" class="w-100 text-end">
+                                    <div
+                                        role="button"
+                                        class="btn bg-gradient-dark mt-3 me-2"
+                                        @click="startEdit"
+                                    >
+                                        Editar
+                                    </div>
+                                    <div
+                                        role="button"
+                                        class="btn bg-danger mt-3"
+                                        @click=""
+                                        :style="{
+                                            color: 'white',
+                                        }"
+                                    >
+                                        Eliminar
+                                    </div>
+                                </div>
+                                <div v-else class="w-100 text-end">
+                                    <div
+                                        role="button"
+                                        class="btn bg-gradient-dark mt-3 me-2"
+                                        @click="cancelEdit"
+                                    >
+                                        Cancelar
+                                    </div>
+                                    <div
+                                        role="button"
+                                        class="btn bg-gradient-dark mt-3 me-2"
+                                        @click=""
+                                    >
+                                        Guardar
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -168,4 +352,81 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+    import { ref, onMounted, computed, toRaw } from 'vue';
+    import { useRouter } from 'vue-router';
+
+    import ActividadesServices from '../../services/useActividades';
+    import InstructoresService from '../../services/useInstructores';
+
+    const router = useRouter();
+
+    const emit = defineEmits();
+    const props = defineProps({
+        activityData: Object,
+        // validationErrorStatus: Object,
+        // validationErrorMessage: Object,
+    });
+    const instructores = ref([]);
+    const activityId = router.currentRoute.value.params.id;
+    const activity = ref({});
+    const isLoading = ref(false);
+    const isReadOnly = ref(true);
+
+    onMounted(async () => {
+        isLoading.value = true;
+        activity.value = await ActividadesServices.getActividad(activityId);
+        isLoading.value = false;
+        instructores.value = await InstructoresService.getInstructores();
+    });
+
+    const setEditFields = () => {
+        props.activityData.name = activity.value.nombre;
+        props.activityData.startDate = activity.value.fechaInicio;
+        props.activityData.endDate = activity.value.fechaFin;
+        props.activityData.startHour = activity.value.horaInicio;
+        props.activityData.endHour = activity.value.horaFin;
+        props.activityData.maxStudents = activity.value.maxEstudiantes;
+        props.activityData.instructor = activity.value.instructor;
+        props.activityData.location = activity.value.ubicacion;
+    };
+
+    const startEdit = () => {
+        setEditFields();
+        isReadOnly.value = false;
+    };
+    const cancelEdit = () => {
+        isReadOnly.value = true;
+    };
+
+    const formatStartDate = computed(() => {
+        const date = activity.value.fechaInicio;
+        if (!date) return '';
+        const [year, month, day] = date.split('-');
+        return `${day}-${month}-${year}`;
+    });
+
+    const formatEndDate = computed(() => {
+        const date = activity.value.fechaFin;
+        if (!date) return '';
+        const [year, month, day] = date.split('-');
+        return `${day}-${month}-${year}`;
+    });
+
+    const formatTimeTo12Hour = (time) => {
+        if (!time || !time.includes(':')) return '';
+        const [hour, minute] = time.split(':');
+        let formattedHour = parseInt(hour, 10);
+        const ampm = formattedHour >= 12 ? 'PM' : 'AM';
+        formattedHour = formattedHour % 12;
+        formattedHour = formattedHour ? formattedHour : 12; // 12 AM or 12 PM
+        return `${formattedHour}:${minute} ${ampm}`;
+    };
+
+    const formatStartHour = computed(() =>
+        formatTimeTo12Hour(activity.value.horaInicio)
+    );
+    const formatEndHour = computed(() =>
+        formatTimeTo12Hour(activity.value.horaFin)
+    );
+</script>
