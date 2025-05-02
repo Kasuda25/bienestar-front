@@ -4,14 +4,14 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import { Vue3Snackbar } from "vue3-snackbar"
+    import { onMounted } from 'vue';
+    import { Vue3Snackbar } from 'vue3-snackbar';
 
-import LocalStorage from '../src/services/useLocalStorage'
+    import LocalStorage from '../src/services/useLocalStorage';
 
-onMounted(() => {
-    LocalStorage.restoreSession()
-})
+    onMounted(() => {
+        LocalStorage.restoreSession();
+    });
 </script>
 
 <style scoped></style>

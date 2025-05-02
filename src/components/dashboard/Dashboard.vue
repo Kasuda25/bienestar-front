@@ -331,8 +331,6 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-
     const emit = defineEmits();
     const props = defineProps({
         actividades: Array,

@@ -1,9 +1,9 @@
 import axios from './useAxios';
 
-class ActividadesServices {
-    async getActividades() {
+class InstructoresService {
+    async getInstructores() {
         try {
-            const response = await axios.get('/actividades/creadas');
+            const response = await axios.get('/admin/instructores-activos');
             if (response.status === 200) {
                 return response.data.data;
             }
@@ -13,4 +13,4 @@ class ActividadesServices {
     }
 }
 
-export default new ActividadesServices();
+export default new InstructoresService();
