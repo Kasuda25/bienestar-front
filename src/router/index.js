@@ -19,6 +19,7 @@ const routes = [
     },
     {
         path: '/activities',
+        name: 'activities',
         component: () => import('../views/activities/ActivitiesView.vue'),
         meta: { requiresAuth: true },
         children: activitiesRoutes,

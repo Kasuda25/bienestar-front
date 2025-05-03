@@ -1,34 +1,15 @@
 <template>
-    <Sidebar
-        :isAsideVisible="isAsideVisible"
-        :isMobile="isMobile"
-        @toggleAside="toggleAside"
-        @logOut="logOut"
-    />
-    <main
-        class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
-    >
-        <Navbar
-            pageName="Actividades"
-            :pageSubname="pageSubname"
-            :isAsideVisible="isAsideVisible"
-            :isMobile="isMobile"
-            :dropdownOpen="dropdownOpen"
-            @toggleAside="toggleAside"
-            @toggleDropdown="toggleDropdown"
-            @logOut="logOut"
-            @setDropdownRef="(el) => (dropdownRef = el)"
-        />
         <router-view
             :activities="activities"
             :activityData="activityData"
             :validation-error-status="validationErrorStatus"
             :validation-error-message="validationErrorMessage"
             :isLoading="isLoading"
-            @createActividad="createActividadValidation"
+            :listError="listError"
+            :key="viewKey"
+            @sendActivityData="validateActivityData"
+            @deleteActivity="deleteActivity"
         />
-        <Footer />
-    </main>
 </template>
 
 <script setup>
@@ -36,22 +17,14 @@
     import { useRoute, useRouter } from 'vue-router';
     import { useSnackbar } from 'vue3-snackbar';
 
-    import Sidebar from '../../components/shared/Sidebar.vue';
-    import Navbar from '../../components/shared/Navbar.vue';
-    import Footer from '../../components/shared/Footer.vue';
-
     import ActividadesServices from '../../services/useActividades';
 
-    const route = useRoute();
     const router = useRouter();
     const snackbar = useSnackbar();
 
-    const pageSubname = ref('');
-    const dropdownOpen = ref(false);
-    const dropdownRef = ref(null);
-    const isAsideVisible = ref(true);
-    const isMobile = ref(false);
     const isLoading = ref(false);
+    const listError = ref(false);
+    const viewKey = ref(0);
 
     const activities = ref();
     const activityData = reactive({
@@ -63,85 +36,20 @@
         maxStudents: null,
         instructor: null,
         location: '',
+        id: null,
     });
-
-    watch(
-        () => route.name,
-        async () => {
-            setPageSubname();
-        }
-    );
 
     onMounted(async () => {
-        setPageSubname();
-
-        document.addEventListener('click', handleClickOutside);
-        checkScreenSize();
-        window.addEventListener('resize', checkScreenSize);
-
-        activities.value = await ActividadesServices.getActividades();
+        try {
+            activities.value = await ActividadesServices.getActivities();
+        } catch (error) {
+            listError.value = true;
+            snackbar.add({
+                type: 'error',
+                text: 'Ha ocurrido un error. Por favor intenta de nuevo mas tade',
+            });
+        }
     });
-
-    onBeforeUnmount(() => {
-        document.removeEventListener('click', handleClickOutside);
-        window.removeEventListener('resize', checkScreenSize);
-    });
-
-    const setPageSubname = () => {
-        switch (route.name) {
-            case 'activities-list':
-                pageSubname.value = 'Listar';
-                break;
-
-            case 'activities-create':
-                pageSubname.value = 'Crear';
-                break;
-
-            case 'activities-detail':
-                pageSubname.value = 'Detalle';
-                break;
-
-            case '':
-                pageSubname.value = '';
-                break;
-
-            default:
-                break;
-        }
-    };
-
-    const toggleAside = () => {
-        isAsideVisible.value = !isAsideVisible.value;
-    };
-
-    const toggleDropdown = () => {
-        dropdownOpen.value = !dropdownOpen.value;
-    };
-
-    const handleClickOutside = (event) => {
-        if (
-            dropdownOpen.value &&
-            dropdownRef.value &&
-            !dropdownRef.value.contains(event.target)
-        ) {
-            dropdownOpen.value = false;
-        }
-    };
-
-    const checkScreenSize = () => {
-        isMobile.value = window.innerWidth < 1200;
-        if (isMobile.value) {
-            isAsideVisible.value = false;
-        } else {
-            isAsideVisible.value = true;
-        }
-    };
-
-    const logOut = () => {
-        LocalStorage.endSession();
-
-        router.push({ name: 'login' });
-    };
 
     const validationErrorStatus = reactive({
         name: false,
@@ -165,7 +73,7 @@
         location: '',
     });
 
-    const createActividadValidation = async () => {
+    const validateActivityData = async (operation) => {
         if (activityData.name === '') {
             validationErrorStatus.name = true;
             validationErrorMessage.name = 'El nombre es requerido';
@@ -242,37 +150,69 @@
             !validationErrorStatus.instructor &&
             !validationErrorStatus.location
         ) {
-            createActividad();
+            sendActivityData(operation);
         }
     };
 
-    const createActividad = async () => {
+    const sendActivityData = async (operation) => {
         try {
             isLoading.value = true;
-            const response = await ActividadesServices.createActividad({
-                nombre: activityData.name,
-                fechaInicio: activityData.startDate,
-                fechaFin: activityData.endDate,
-                horaInicio: activityData.startHour,
-                horaFin: activityData.endHour,
-                maxEstudiantes: activityData.maxStudents,
-                instructorId: activityData.instructor,
-                ubicacion: activityData.location,
-            });
+            let response;
+
+            if (operation === 'create') {
+                response = await ActividadesServices.createActivity({
+                    nombre: activityData.name,
+                    fechaInicio: activityData.startDate,
+                    fechaFin: activityData.endDate,
+                    horaInicio: activityData.startHour,
+                    horaFin: activityData.endHour,
+                    maxEstudiantes: activityData.maxStudents,
+                    instructorId: activityData.instructor,
+                    ubicacion: activityData.location,
+                });
+            }
+
+            if (operation === 'update') {
+                response = await ActividadesServices.putActivity(
+                    activityData.id,
+                    {
+                        nombre: activityData.name,
+                        fechaInicio: activityData.startDate,
+                        fechaFin: activityData.endDate,
+                        horaInicio: activityData.startHour,
+                        horaFin: activityData.endHour,
+                        maxEstudiantes: activityData.maxStudents,
+                        instructorId: activityData.instructor,
+                        ubicacion: activityData.location,
+                    }
+                );
+            }
 
             if (response) {
                 isLoading.value = false;
-                snackbar.add({
-                    type: 'success',
-                    text: 'Actividad creada exitosamente',
-                });
 
-                resetValues();
+                if (operation === 'create') {
+                    snackbar.add({
+                        type: 'success',
+                        text: 'Actividad creada exitosamente',
+                    });
 
-                router.push({
-                    name: 'activities-detail',
-                    params: { id: response.id },
-                });
+                    resetValues();
+
+                    router.push({
+                        name: 'activities-detail',
+                        params: { id: response.id },
+                    });
+                }
+
+                if (operation === 'update') {
+                    snackbar.add({
+                        type: 'success',
+                        text: 'Actividad actualizada exitosamente',
+                    });
+
+                    viewKey.value++
+                }
             }
         } catch (error) {
             isLoading.value = false;
@@ -292,5 +232,28 @@
         activityData.maxStudents = null;
         activityData.instructor = null;
         activityData.location = '';
-    }
+    };
+
+    const deleteActivity = async (id) => {
+        try {
+            isLoading.value = true;
+            const response = await ActividadesServices.deleteActivity(id);
+
+            if (response) {
+                isLoading.value = false;
+                snackbar.add({
+                    type: 'success',
+                    text: 'Se ha eliminado la actividad',
+                });
+
+                router.go(-1);
+            }
+        } catch (error) {
+            isLoading.value = false;
+            snackbar.add({
+                type: 'error',
+                text: 'Ha ocurido un error. Po favor intentalo de nuevo más tarde',
+            });
+        }
+    };
 </script>

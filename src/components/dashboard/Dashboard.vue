@@ -11,10 +11,10 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-6">
-                                <h5 class="mb-0 mt-2">Actividades</h5>
+                                <h5 class="mb-0 mt-2">activities</h5>
                             </div>
                             <div
-                                v-if="actividades && actividades[0]"
+                                v-if="activities && activities[0]"
                                 class="col-6 text-end"
                             >
                                 <RouterLink
@@ -34,8 +34,8 @@
                     </div>
                     <div class="card-body px-0 pb-3">
                         <div class="table-responsive no-scroll">
-                            <table class="table align-items-center mb-0">
-                                <div v-if="!actividades">
+                            <table class="table align-activitys-center mb-0">
+                                <div v-if="!activities && !listError">
                                     <div class="d-flex justify-content-center">
                                         <div
                                             class="spinner-border"
@@ -47,7 +47,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <thead v-if="actividades && actividades[0]">
+                                <thead
+                                    v-if="
+                                        activities &&
+                                        activities[0] &&
+                                        !listError
+                                    "
+                                >
                                     <tr>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
@@ -76,22 +82,49 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <div v-if="actividades && !actividades[0]">
+                                <tbody>
+                                    <div v-if="listError">
+                                        <div
+                                            class="d-flex justify-content-center"
+                                        >
+                                            <h4 class="my-auto">
+                                                Ha ocurrido un error al obtener
+                                                la lista de actividades
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </tbody>
+                                <div
+                                    v-if="
+                                        activities &&
+                                        !activities[0] &&
+                                        !listError
+                                    "
+                                >
                                     <div class="d-flex justify-content-center">
                                         <h4 class="my-auto">
-                                            No hay actividades para mostrar
+                                            No hay activities para mostrar
                                         </h4>
                                     </div>
                                 </div>
-                                <tbody v-if="actividades && actividades[0]">
+                                <tbody
+                                    v-if="
+                                        activities &&
+                                        activities[0] &&
+                                        !listError
+                                    "
+                                >
                                     <tr
-                                        v-if="actividades"
-                                        v-for="item in actividades.slice(0, 5)"
-                                        :key="item"
+                                        v-if="activities"
+                                        v-for="activity in activities.slice(
+                                            0,
+                                            5
+                                        )"
+                                        :key="activity"
                                     >
                                         <td>
                                             <RouterLink
-                                                :to="`/activities/${item.id}`"
+                                                :to="`/activities/${activity.id}`"
                                                 v-slot="{ navigate }"
                                                 custom
                                             >
@@ -105,7 +138,9 @@
                                                         <h6
                                                             class="mb-0 text-sm"
                                                         >
-                                                            {{ item.nombre }}
+                                                            {{
+                                                                activity.nombre
+                                                            }}
                                                         </h6>
                                                     </div>
                                                 </div>
@@ -113,7 +148,7 @@
                                         </td>
                                         <td class="align-middle text-sm">
                                             <RouterLink
-                                                :to="`/activities/${item.id}`"
+                                                :to="`/activities/${activity.id}`"
                                                 v-slot="{ navigate }"
                                                 custom
                                             >
@@ -122,7 +157,7 @@
                                                     @click="navigate"
                                                     >{{
                                                         new Date(
-                                                            item.fechaInicio
+                                                            activity.fechaInicio
                                                         ).toLocaleDateString(
                                                             'es-ES'
                                                         )
@@ -130,7 +165,7 @@
                                                     -
                                                     {{
                                                         new Date(
-                                                            item.fechaFin
+                                                            activity.fechaFin
                                                         ).toLocaleDateString(
                                                             'es-ES'
                                                         )
@@ -140,7 +175,7 @@
                                         </td>
                                         <td class="align-middle text-sm">
                                             <RouterLink
-                                                :to="`/activities/${item.id}`"
+                                                :to="`/activities/${activity.id}`"
                                                 v-slot="{ navigate }"
                                                 custom
                                             >
@@ -148,28 +183,33 @@
                                                     class="text-xs font-weight-bold cursor-pointer"
                                                     @click="navigate"
                                                     >{{
-                                                        item.horaInicio.slice(
+                                                        activity.horaInicio.slice(
                                                             0,
                                                             5
                                                         )
                                                     }}
                                                     -
                                                     {{
-                                                        item.horaFin.slice(0, 5)
+                                                        activity.horaFin.slice(
+                                                            0,
+                                                            5
+                                                        )
                                                     }}</span
                                                 >
                                             </RouterLink>
                                         </td>
                                         <td class="align-middle text-sm">
                                             <RouterLink
-                                                :to="`/activities/${item.id}`"
+                                                :to="`/activities/${activity.id}`"
                                                 v-slot="{ navigate }"
                                                 custom
                                             >
                                                 <span
                                                     class="text-xs font-weight-bold cursor-pointer"
                                                     @click="navigate"
-                                                    >{{ item.ubicacion }}</span
+                                                    >{{
+                                                        activity.ubicacion
+                                                    }}</span
                                                 >
                                             </RouterLink>
                                         </td>
@@ -177,11 +217,11 @@
                                             <span
                                                 class="text-xs font-weight-bold"
                                                 >{{
-                                                    item.instructor.nombre
+                                                    activity.instructor.nombre
                                                         .nombre
                                                 }}
                                                 {{
-                                                    item.instructor.nombre
+                                                    activity.instructor.nombre
                                                         .apellido
                                                 }}</span
                                             >
@@ -338,7 +378,8 @@
 <script setup>
     const emit = defineEmits();
     const props = defineProps({
-        actividades: Array,
+        activities: Array,
+        listError: Boolean
     });
 </script>
 

@@ -250,27 +250,39 @@
                                         :v-model="props.activityData.instructor"
                                     >
                                         <option
-                                            :value="
-                                                activity.instructor?.nombre
-                                                    ?.usuario?.id
-                                            "
+                                            v-if="instructorError"
+                                            value=""
                                             selected
+                                            disabled
                                         >
-                                            {{
-                                                activity.instructor?.nombre
-                                                    ?.nombreCompleto
-                                            }}
+                                            No se pudo obtener la lista de
+                                            instructores
                                         </option>
-                                        <div
-                                            v-for="instructor in instructores"
-                                            :key="instructor"
-                                        >
-                                            <option :value="instructor.id">
-                                                {{ instructor.usuario.nombre }}
+                                        <div v-else>
+                                            <option
+                                                :value="activity.instructor?.id"
+                                                selected
+                                            >
                                                 {{
-                                                    instructor.usuario.apellido
+                                                    activity.instructor?.nombre
+                                                        ?.nombreCompleto
                                                 }}
                                             </option>
+                                            <div
+                                                v-for="instructor in instructores"
+                                                :key="instructor"
+                                            >
+                                                <option :value="instructor.id">
+                                                    {{
+                                                        instructor.usuario
+                                                            .nombre
+                                                    }}
+                                                    {{
+                                                        instructor.usuario
+                                                            .apellido
+                                                    }}
+                                                </option>
+                                            </div>
                                         </div>
                                     </select>
                                 </div>
@@ -317,14 +329,32 @@
                                         Editar
                                     </div>
                                     <div
+                                        v-if="!props.isLoading"
                                         role="button"
                                         class="btn bg-danger mt-3"
-                                        @click=""
+                                        @click="deleteActivity"
                                         :style="{
                                             color: 'white',
                                         }"
                                     >
                                         Eliminar
+                                    </div>
+                                    <div
+                                        v-if="props.isLoading"
+                                        role="button"
+                                        class="btn bg-danger mt-3 px-4"
+                                        :style="{
+                                            color: 'white',
+                                        }"
+                                    >
+                                        <div
+                                            class="spinner-border spinner-border-sm mx-2"
+                                            role="status"
+                                        >
+                                            <span class="visually-hidden"
+                                                >Loading...</span
+                                            >
+                                        </div>
                                     </div>
                                 </div>
                                 <div v-else class="w-100 text-end">
@@ -336,11 +366,26 @@
                                         Cancelar
                                     </div>
                                     <div
+                                        v-if="!props.isLoading"
                                         role="button"
                                         class="btn bg-gradient-dark mt-3 me-2"
-                                        @click=""
+                                        @click="updateActivity"
                                     >
                                         Guardar
+                                    </div>
+                                    <div
+                                        v-if="props.isLoading"
+                                        role="button"
+                                        class="btn bg-gradient-dark mt-3 me-2 px-4"
+                                    >
+                                        <div
+                                            class="spinner-border spinner-border-sm mx-2"
+                                            role="status"
+                                        >
+                                            <span class="visually-hidden"
+                                                >Loading...</span
+                                            >
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -355,29 +400,34 @@
 <script setup>
     import { ref, onMounted, computed, toRaw } from 'vue';
     import { useRouter } from 'vue-router';
+    import { useSnackbar } from 'vue3-snackbar';
+    import Swal from 'sweetalert2';
 
-    import ActividadesServices from '../../services/useActividades';
-    import InstructoresService from '../../services/useInstructores';
+    import ActividadesServices from '@/services/useActividades';
+    import InstructoresService from '@/services/useInstructores';
 
     const router = useRouter();
+    const snackbar = useSnackbar();
 
     const emit = defineEmits();
     const props = defineProps({
         activityData: Object,
-        // validationErrorStatus: Object,
-        // validationErrorMessage: Object,
+        validationErrorStatus: Object,
+        validationErrorMessage: Object,
+        isLoading: Boolean,
     });
-    const instructores = ref([]);
     const activityId = router.currentRoute.value.params.id;
-    const activity = ref({});
     const isLoading = ref(false);
     const isReadOnly = ref(true);
+    const instructorError = ref(false);
+
+    const activity = ref({});
+    const instructores = ref([]);
 
     onMounted(async () => {
         isLoading.value = true;
-        activity.value = await ActividadesServices.getActividad(activityId);
+        activity.value = await ActividadesServices.getActivity(activityId);
         isLoading.value = false;
-        instructores.value = await InstructoresService.getInstructores();
     });
 
     const setEditFields = () => {
@@ -387,16 +437,53 @@
         props.activityData.startHour = activity.value.horaInicio;
         props.activityData.endHour = activity.value.horaFin;
         props.activityData.maxStudents = activity.value.maxEstudiantes;
-        props.activityData.instructor = activity.value.instructor;
+        props.activityData.instructor = activity.value.instructor.id;
         props.activityData.location = activity.value.ubicacion;
+        props.activityData.id = activity.value.id;
     };
 
-    const startEdit = () => {
+    const startEdit = async () => {
+        isLoading.value = true;
         setEditFields();
         isReadOnly.value = false;
+        try {
+            instructores.value = await InstructoresService.getInstructores();
+        } catch (error) {
+            instructorError.value = true;
+            snackbar.add({
+                type: 'error',
+                text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
+            });
+        }
+        isLoading.value = false;
     };
     const cancelEdit = () => {
+        instructorError.value = false;
         isReadOnly.value = true;
+    };
+
+    const updateActivity = () => {
+        emit('sendActivityData', 'update');
+    };
+
+    const deleteActivity = () => {
+        Swal.fire({
+            title: 'Eliminar actividad',
+            text: `Se eliminará la actividad ${activity.value.nombre}. Esta acción no se puede revertir.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#212529',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                popup: 'my-swal-popup',
+            },
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                emit('deleteActivity', activity.value.id);
+            }
+        });
     };
 
     const formatStartDate = computed(() => {
@@ -419,7 +506,7 @@
         let formattedHour = parseInt(hour, 10);
         const ampm = formattedHour >= 12 ? 'PM' : 'AM';
         formattedHour = formattedHour % 12;
-        formattedHour = formattedHour ? formattedHour : 12; // 12 AM or 12 PM
+        formattedHour = formattedHour ? formattedHour : 12;
         return `${formattedHour}:${minute} ${ampm}`;
     };
 
