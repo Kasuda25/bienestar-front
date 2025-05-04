@@ -240,8 +240,22 @@
         props.instructorData.speciality = '';
     };
 
+    const resetErrorStatusAndMessages = () => {
+        props.validationErrorStatus.name = false;
+        props.validationErrorStatus.lastName = false;
+        props.validationErrorStatus.email = false;
+        props.validationErrorStatus.password = false;
+        props.validationErrorStatus.speciality = false;
+        props.validationErrorMessage.name = '';
+        props.validationErrorMessage.lastName = '';
+        props.validationErrorMessage.email = '';
+        props.validationErrorMessage.password = '';
+        props.validationErrorMessage.speciality = '';
+    };
+
     onMounted(async () => {
         resetValues();
+        resetErrorStatusAndMessages();
     });
 
     const toggleShowPassword = () => {

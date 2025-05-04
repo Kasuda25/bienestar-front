@@ -360,6 +360,25 @@
         props.activityData.location = '';
     };
 
+    const resetErrorStatusAndMessages = () => {
+        props.validationErrorStatus.name = false;
+        props.validationErrorStatus.startDate = false;
+        props.validationErrorStatus.endDate = false;
+        props.validationErrorStatus.startHour = false;
+        props.validationErrorStatus.endHour = false;
+        props.validationErrorStatus.maxStudents = false;
+        props.validationErrorStatus.instructor = false;
+        props.validationErrorStatus.location = false;
+        props.validationErrorMessage.name = '';
+        props.validationErrorMessage.startDate = '';
+        props.validationErrorMessage.endDate = '';
+        props.validationErrorMessage.startHour = '';
+        props.validationErrorMessage.endHour = '';
+        props.validationErrorMessage.maxStudents = '';
+        props.validationErrorMessage.instructor = '';
+        props.validationErrorMessage.location = '';
+    };
+
     onMounted(async () => {
         isLoading.value = true;
         try {
@@ -372,6 +391,7 @@
             });
         }
         resetValues();
+        resetErrorStatusAndMessages();
         isLoading.value = false;
     });
 

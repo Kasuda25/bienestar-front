@@ -47,7 +47,7 @@
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="navigate"
+                                @click="toggleAside(); navigate();"
                             >
                                 <i class="material-symbols-rounded opacity-5"
                                     >dashboard</i
@@ -71,7 +71,7 @@
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="navigate"
+                                @click="toggleAside(); navigate();"
                             >
                                 <i class="material-symbols-rounded opacity-5"
                                     >task</i
@@ -96,7 +96,7 @@
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="navigate"
+                                @click="toggleAside(); navigate();"
                             >
                                 <i class="material-symbols-rounded opacity-5"
                                     >person</i

@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="card-body pb-2">
-                        <div v-if="isLoading && !instructorError">
+                        <div v-if="isInstructorLoading && !instructorError">
                             <div class="d-flex justify-content-center">
                                 <div class="spinner-border" role="status">
                                     <span class="visually-hidden"
@@ -30,7 +30,9 @@
                                 </h4>
                             </div>
                         </div>
-                        <div v-else-if="!isLoading && !instructorError">
+                        <div
+                            v-else-if="!isInstructorLoading && !instructorError"
+                        >
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="nameInput"
@@ -55,10 +57,18 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .name,
+                                        }"
                                         id="nameInput"
                                         type="text"
                                         v-model="props.instructorData.name"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{ props.validationErrorMessage.name }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -87,10 +97,21 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .lastName,
+                                        }"
                                         id="lastNameInput"
                                         type="text"
                                         v-model="props.instructorData.lastName"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .lastName
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -117,10 +138,18 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .email,
+                                        }"
                                         id="emailInput"
                                         type="email"
                                         v-model="props.instructorData.email"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{ props.validationErrorMessage.email }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -146,13 +175,48 @@
                                         }"
                                         readonly
                                     />
-                                    <input
-                                        v-else
-                                        class="form-control"
-                                        id="passwordInput"
-                                        type="password"
-                                        v-model="props.instructorData.password"
-                                    />
+                                    <div v-else class="d-flex">
+                                        <input
+                                            class="form-control"
+                                            :class="{
+                                                'is-invalid':
+                                                    props.validationErrorStatus
+                                                        .password,
+                                            }"
+                                            id="passwordInput"
+                                            :type="passwordType"
+                                            v-model="
+                                                props.instructorData.password
+                                            "
+                                        />
+                                        <span
+                                            v-if="!showPassword"
+                                            class="my-auto ms-2 pt-2"
+                                            :style="{ cursor: 'pointer' }"
+                                            @click="toggleShowPassword"
+                                            ><i
+                                                class="material-symbols-rounded opacity-5"
+                                                >visibility</i
+                                            ></span
+                                        >
+                                        <span
+                                            v-if="showPassword"
+                                            class="my-auto ms-2 pt-2"
+                                            :style="{ cursor: 'pointer' }"
+                                            @click="toggleShowPassword"
+                                            ><span
+                                                class="material-symbols-rounded opacity-5"
+                                            >
+                                                visibility_off
+                                            </span></span
+                                        >
+                                    </div>
+                                    <div class="invalid-feedback d-block">
+                                        {{
+                                            props.validationErrorMessage
+                                                .password
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -181,12 +245,23 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .speciality,
+                                        }"
                                         id="specialityInput"
                                         type="text"
                                         v-model="
                                             props.instructorData.speciality
                                         "
                                     />
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .speciality
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="d-flex w-100">
@@ -264,6 +339,153 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="card my-4">
+                    <div
+                        class="card-header p-0 position-relative mt-n4 mx-3 z-index-2"
+                    >
+                        <div
+                            class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
+                        >
+                            <h6 class="text-white ps-3 my-auto">
+                                Actividades asignadas
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-3">
+                        <div class="table-responsive p-0 no-scroll">
+                            <table class="table align-activitys-center mb-0">
+                                <div v-if="!activities && !activitiesError">
+                                    <div class="d-flex justify-content-center">
+                                        <div
+                                            class="spinner-border"
+                                            role="status"
+                                        >
+                                            <span class="visually-hidden"
+                                                >Loading...</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <thead
+                                    v-if="
+                                        activities &&
+                                        activities[0] &&
+                                        !activitiesError
+                                    "
+                                >
+                                    <tr>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                        >
+                                            Nombre
+                                        </th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
+                                            Fecha
+                                        </th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
+                                            Horario
+                                        </th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
+                                            Ubicación
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-if="activitiesError">
+                                        <td colspan="4" class="text-center">
+                                            <h4 class="my-auto">
+                                                Ha ocurrido un error al obtener
+                                                la lista de actividades
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        v-if="
+                                            activities &&
+                                            !activities[0] &&
+                                            !activitiesError
+                                        "
+                                    >
+                                        <td colspan="4" class="text-center">
+                                            <h4 class="my-auto">
+                                                No hay actividades asignadas
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        v-for="activity in activities"
+                                        :key="activity.id"
+                                        @click="
+                                            $router.push(
+                                                `/activities/${activity.id}`
+                                            )
+                                        "
+                                        class="cursor-pointer"
+                                    >
+                                        <td class="px-4">
+                                            <h6 class="mb-0 text-sm">
+                                                {{ activity.nombre }}
+                                            </h6>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-xs font-weight-bold"
+                                            >
+                                                {{
+                                                    new Date(
+                                                        activity.fechaInicio
+                                                    ).toLocaleDateString(
+                                                        'es-ES'
+                                                    )
+                                                }}
+                                                -
+                                                {{
+                                                    new Date(
+                                                        activity.fechaFin
+                                                    ).toLocaleDateString(
+                                                        'es-ES'
+                                                    )
+                                                }}
+                                            </span>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <span
+                                                class="text-xs font-weight-bold"
+                                            >
+                                                {{
+                                                    activity.horaInicio.slice(
+                                                        0,
+                                                        5
+                                                    )
+                                                }}
+                                                -
+                                                {{
+                                                    activity.horaFin.slice(0, 5)
+                                                }}
+                                            </span>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <span
+                                                class="text-xs font-weight-bold"
+                                                >{{ activity.ubicacion }}</span
+                                            >
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -273,7 +495,7 @@
     import { useSnackbar } from 'vue3-snackbar';
     import Swal from 'sweetalert2';
 
-    // import ActivitiesService from '@/services/useActivities';
+    import ActivitiesService from '@/services/useActivities';
     import InstructorsService from '@/services/useInstructors';
 
     const router = useRouter();
@@ -282,42 +504,78 @@
     const emit = defineEmits();
     const props = defineProps({
         instructorData: Object,
-        // validationErrorStatus: Object,
-        // validationErrorMessage: Object,
+        validationErrorStatus: Object,
+        validationErrorMessage: Object,
         isLoading: Boolean,
     });
     const instructorId = router.currentRoute.value.params.id;
-    const isLoading = ref(false);
+    const isInstructorLoading = ref(false);
+    const isActivitiesLoading = ref(false);
     const isReadOnly = ref(true);
-    // const activityError = ref(false);
+    const activitiesError = ref(false);
     const instructorError = ref(false);
+    const showPassword = ref(false);
 
-    // const activity = ref({});
     const instructor = ref({});
+    const activities = ref();
+
+    const queryInstructor = async () => {
+        await InstructorsService.getInstructor(instructorId)
+            .then((response) => {
+                instructor.value = response;
+            })
+            .catch((error) => {
+                instructorError.value = true;
+            })
+            .finally(() => {
+                isInstructorLoading.value = false;
+            });
+    };
+
+    const queryActivities = async () => {
+        await ActivitiesService.getActivitiesByInstructor(instructor.value.id)
+            .then((response) => {
+                activities.value = response.data;
+            })
+            .catch((error) => {
+                activitiesError.value = true;
+            })
+            .finally(() => {
+                isActivitiesLoading.value = false;
+            });
+    };
 
     onMounted(async () => {
+        isInstructorLoading.value = true;
+        isActivitiesLoading.value = true;
+
         const id = parseInt(instructorId);
         if (isNaN(id)) {
             router.replace('/404');
             return;
         }
 
-        isLoading.value = true;
-        try {
-            instructor.value =
-                await InstructorsService.getInstructor(instructorId);
-        } catch (error) {
-            if (error.message === 'Instructor no encontrado') {
-                router.replace('/404');
-            } else {
-                snackbar.add({
-                    type: 'error',
-                    text: 'Error al cargar los datos del instructor',
-                });
-            }
+        await queryInstructor();
+
+        if (instructor.value) {
+            await queryActivities();
         }
-        isLoading.value = false;
     });
+
+    const toggleShowPassword = () => {
+        showPassword.value = !showPassword.value;
+    };
+
+    const passwordType = computed(() => {
+        if (showPassword.value) {
+            return 'text';
+        }
+        return 'password';
+    });
+
+    const createIntructor = () => {
+        emit('sendInstructorData', 'create');
+    };
 
     const setEditFields = () => {
         props.instructorData.name = instructor.value.usuario.nombre;
@@ -327,18 +585,31 @@
         props.instructorData.id = instructor.value.id;
     };
 
+    const resetErrorStatusAndMessages = () => {
+        props.validationErrorStatus.name = false;
+        props.validationErrorStatus.lastName = false;
+        props.validationErrorStatus.email = false;
+        props.validationErrorStatus.password = false;
+        props.validationErrorStatus.speciality = false;
+        props.validationErrorMessage.name = '';
+        props.validationErrorMessage.lastName = '';
+        props.validationErrorMessage.email = '';
+        props.validationErrorMessage.password = '';
+        props.validationErrorMessage.speciality = '';
+    };
+
     const startEdit = async () => {
         setEditFields();
         isReadOnly.value = false;
     };
 
     const cancelEdit = () => {
+        resetErrorStatusAndMessages();
         instructorError.value = false;
         isReadOnly.value = true;
     };
 
     const updateInstructor = () => {
-        console.log('1');
         emit('sendInstructorData', 'update');
     };
 

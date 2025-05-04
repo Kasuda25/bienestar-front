@@ -109,7 +109,7 @@
                 validationErrorStatus.password = false;
                 validationErrorMessage.password = '';
             }
-        } else if (instructorData.password === '') {
+        } else if (instructorData.password === '' && operation === 'create') {
             validationErrorStatus.password = true;
             validationErrorMessage.password = 'La contraseña es obligatoria';
         } else {

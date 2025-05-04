@@ -95,7 +95,7 @@
 
         if (activityData.startDate === '') {
             validationErrorStatus.startDate = true;
-            validationErrorMessage.startDate = 'La fecha de inicio es o';
+            validationErrorMessage.startDate = 'La fecha de inicio es obligatoria';
         } else {
             validationErrorStatus.startDate = false;
             validationErrorMessage.startDate = '';
@@ -103,7 +103,7 @@
 
         if (activityData.endDate === '') {
             validationErrorStatus.endDate = true;
-            validationErrorMessage.endDate = 'La fecha de fin es o';
+            validationErrorMessage.endDate = 'La fecha de fin es obligatoria';
         } else {
             validationErrorStatus.endDate = false;
             validationErrorMessage.endDate = '';
@@ -111,7 +111,7 @@
 
         if (activityData.startHour === '') {
             validationErrorStatus.startHour = true;
-            validationErrorMessage.startHour = 'La hora de inicio es o';
+            validationErrorMessage.startHour = 'La hora de inicio es obligatoria';
         } else {
             validationErrorStatus.startHour = false;
             validationErrorMessage.startHour = '';
@@ -119,7 +119,7 @@
 
         if (activityData.endHour === '') {
             validationErrorStatus.endHour = true;
-            validationErrorMessage.endHour = 'La hora de fin es o';
+            validationErrorMessage.endHour = 'La hora de fin es obligatoria';
         } else {
             validationErrorStatus.endHour = false;
             validationErrorMessage.endHour = '';
@@ -144,7 +144,7 @@
 
         if (activityData.location === '') {
             validationErrorStatus.location = true;
-            validationErrorMessage.location = 'La ubicación es o';
+            validationErrorMessage.location = 'La ubicación es obligatoria';
         } else {
             validationErrorStatus.location = false;
             validationErrorMessage.location = '';

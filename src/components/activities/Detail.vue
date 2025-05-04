@@ -55,10 +55,18 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .name,
+                                        }"
                                         id="nameInput"
                                         type="text"
                                         v-model="props.activityData.name"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{ props.validationErrorMessage.name }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -87,12 +95,29 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="[
+                                            'form-control',
+                                            {
+                                                'transparent-placeholder':
+                                                    !props.activityData
+                                                        .startDate,
+                                                'is-invalid':
+                                                    props.validationErrorStatus
+                                                        .startDate,
+                                            },
+                                        ]"
                                         id="startDateInput"
                                         type="date"
                                         v-model="props.activityData.startDate"
                                         onfocus="this.showPicker()"
                                         onkeydown="return false;"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .startDate
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -119,12 +144,27 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="[
+                                            'form-control',
+                                            {
+                                                'transparent-placeholder':
+                                                    !props.activityData.endDate,
+                                                'is-invalid':
+                                                    props.validationErrorStatus
+                                                        .endDate,
+                                            },
+                                        ]"
                                         id="endDateInput"
                                         type="date"
                                         v-model="props.activityData.endDate"
                                         onfocus="this.showPicker()"
                                         onkeydown="return false;"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage.endDate
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -153,12 +193,29 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="[
+                                            'form-control',
+                                            {
+                                                'transparent-placeholder':
+                                                    !props.activityData
+                                                        .startHour,
+                                                'is-invalid':
+                                                    props.validationErrorStatus
+                                                        .startHour,
+                                            },
+                                        ]"
                                         id="startHourInput"
                                         type="time"
                                         v-model="props.activityData.startHour"
                                         onfocus="this.showPicker()"
                                         onkeydown="return false;"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .startHour
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -185,12 +242,27 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="[
+                                            'form-control',
+                                            {
+                                                'transparent-placeholder':
+                                                    !props.activityData.endHour,
+                                                'is-invalid':
+                                                    props.validationErrorStatus
+                                                        .endHour,
+                                            },
+                                        ]"
                                         id="endHourInput"
                                         type="time"
                                         v-model="props.activityData.endHour"
                                         onfocus="this.showPicker()"
                                         onkeydown="return false;"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage.endHour
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -219,10 +291,21 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .maxStudents,
+                                        }"
                                         id="maxStudentsInput"
                                         type="number"
                                         v-model="props.activityData.maxStudents"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .maxStudents
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -250,6 +333,11 @@
                                     <select
                                         v-else
                                         class="form-select"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .instructor,
+                                        }"
                                         for="instructorInput"
                                         id="instructorInput"
                                         type="select"
@@ -291,6 +379,12 @@
                                             </div>
                                         </div>
                                     </select>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .instructor
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -319,10 +413,21 @@
                                     <input
                                         v-else
                                         class="form-control"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .location,
+                                        }"
                                         id="lacationInput"
                                         type="text"
                                         v-model="props.activityData.location"
                                     />
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .location
+                                        }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="d-flex w-100">
@@ -457,6 +562,25 @@
         props.activityData.id = activity.value.id;
     };
 
+    const resetErrorStatusAndMessages = () => {
+        props.validationErrorStatus.name = false;
+        props.validationErrorStatus.startDate = false;
+        props.validationErrorStatus.endDate = false;
+        props.validationErrorStatus.startHour = false;
+        props.validationErrorStatus.endHour = false;
+        props.validationErrorStatus.maxStudents = false;
+        props.validationErrorStatus.instructor = false;
+        props.validationErrorStatus.location = false;
+        props.validationErrorMessage.name = '';
+        props.validationErrorMessage.startDate = '';
+        props.validationErrorMessage.endDate = '';
+        props.validationErrorMessage.startHour = '';
+        props.validationErrorMessage.endHour = '';
+        props.validationErrorMessage.maxStudents = '';
+        props.validationErrorMessage.instructor = '';
+        props.validationErrorMessage.location = '';
+    };
+
     const startEdit = async () => {
         isLoading.value = true;
         setEditFields();
@@ -474,6 +598,7 @@
     };
 
     const cancelEdit = () => {
+        resetErrorStatusAndMessages();
         instructorError.value = false;
         isReadOnly.value = true;
     };

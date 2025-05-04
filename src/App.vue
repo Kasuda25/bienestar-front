@@ -137,7 +137,9 @@
     );
 
     const toggleAside = () => {
-        isAsideVisible.value = !isAsideVisible.value;
+        if (isMobile.value) {
+            isAsideVisible.value = !isAsideVisible.value;
+        }
     };
 
     const toggleDropdown = () => {
