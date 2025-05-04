@@ -10,11 +10,11 @@
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
                             <h6 class="text-white ps-3 my-auto">
-                                Lista de activities
+                                Lista de instructores
                             </h6>
                             <div class="pe-3">
                                 <RouterLink
-                                    to="/activities/create"
+                                    to="/instructors/create"
                                     v-slot="{ navigate }"
                                     custom
                                 >
@@ -25,7 +25,7 @@
                                         <i
                                             class="material-symbols-rounded text-sm"
                                             >add</i
-                                        >&nbsp;&nbsp;Crear
+                                        >&nbsp;&nbsp;Agregar
                                     </a>
                                 </RouterLink>
                             </div>
@@ -34,7 +34,7 @@
                     <div class="card-body px-0 pb-3">
                         <div class="table-responsive p-0 no-scroll">
                             <table class="table align-activitys-center mb-0">
-                                <div v-if="!activities && !listError">
+                                <div v-if="!instructors && !listError">
                                     <div class="d-flex justify-content-center">
                                         <div
                                             class="spinner-border"
@@ -48,8 +48,8 @@
                                 </div>
                                 <thead
                                     v-if="
-                                        activities &&
-                                        activities[0] &&
+                                        instructors &&
+                                        instructors[0] &&
                                         !listError
                                     "
                                 >
@@ -62,22 +62,12 @@
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
-                                            Fecha
+                                            correo
                                         </th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
-                                            Horario
-                                        </th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                        >
-                                            Ubicación
-                                        </th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                        >
-                                            Instructor
+                                            Especialidad
                                         </th>
                                     </tr>
                                 </thead>
@@ -88,7 +78,7 @@
                                         >
                                             <h4 class="my-auto">
                                                 Ha ocurrido un error al obtener
-                                                la lista de actividades
+                                                la lista de instructores
                                             </h4>
                                         </div>
                                     </div>
@@ -96,8 +86,8 @@
                                 <tbody>
                                     <div
                                         v-if="
-                                            activities &&
-                                            !activities[0] &&
+                                            instructors &&
+                                            !instructors[0] &&
                                             !listError
                                         "
                                     >
@@ -105,25 +95,25 @@
                                             class="d-flex justify-content-center"
                                         >
                                             <h4 class="my-auto">
-                                                Aún no hay actividades
+                                                Aún no hay instructores
                                             </h4>
                                         </div>
                                     </div>
                                 </tbody>
                                 <tbody
                                     v-if="
-                                        activities &&
-                                        activities[0] &&
+                                        instructors &&
+                                        instructors[0] &&
                                         !listError
                                     "
                                 >
                                     <tr
-                                        v-if="activities"
-                                        v-for="activity in activities"
-                                        :key="activity.id"
+                                        v-if="instructors"
+                                        v-for="instructor in instructors"
+                                        :key="instructor.id"
                                         @click="
                                             $router.push(
-                                                `/activities/${activity.id}`
+                                                `/instructors/${instructor.id}`
                                             )
                                         "
                                         class="cursor-pointer"
@@ -134,7 +124,9 @@
                                                     class="d-flex flex-column justify-content-center"
                                                 >
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ activity.nombre }}
+                                                        {{
+                                                            instructor.nombreCompleto
+                                                        }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -143,58 +135,14 @@
                                             <span
                                                 class="text-xs font-weight-bold"
                                             >
-                                                {{
-                                                    new Date(
-                                                        activity.fechaInicio
-                                                    ).toLocaleDateString(
-                                                        'es-ES'
-                                                    )
-                                                }}
-                                                -
-                                                {{
-                                                    new Date(
-                                                        activity.fechaFin
-                                                    ).toLocaleDateString(
-                                                        'es-ES'
-                                                    )
-                                                }}
+                                                {{ instructor.usuario.email }}
                                             </span>
                                         </td>
                                         <td class="align-middle text-sm">
                                             <span
                                                 class="text-xs font-weight-bold"
                                             >
-                                                {{
-                                                    activity.horaInicio.slice(
-                                                        0,
-                                                        5
-                                                    )
-                                                }}
-                                                -
-                                                {{
-                                                    activity.horaFin.slice(0, 5)
-                                                }}</span
-                                            >
-                                        </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
-                                            >
-                                                {{ activity.ubicacion }}
-                                            </span>
-                                        </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
-                                            >
-                                                {{
-                                                    activity.instructor.nombre
-                                                        .usuario.nombre
-                                                }}
-                                                {{
-                                                    activity.instructor.nombre
-                                                        .usuario.apellido
-                                                }}
+                                                {{ instructor.especialidad }}
                                             </span>
                                         </td>
                                     </tr>
@@ -211,7 +159,7 @@
 <script setup>
     const emit = defineEmits();
     const props = defineProps({
-        activities: Array,
+        instructors: Array,
         listError: Boolean,
     });
 </script>

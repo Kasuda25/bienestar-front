@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="card-body pb-2">
-                        <div v-if="isLoading">
+                        <div v-if="isLoading && !activityError">
                             <div class="d-flex justify-content-center">
                                 <div class="spinner-border" role="status">
                                     <span class="visually-hidden"
@@ -22,7 +22,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-else>
+                        <div v-if="activityError">
+                            <div class="d-flex justify-content-center">
+                                <h4 class="my-auto">
+                                    Ha ocurrido un error al obtener la lista de
+                                    actividades
+                                </h4>
+                            </div>
+                        </div>
+                        <div v-else-if="!isLoading && !activityError">
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="nameInput"
@@ -44,8 +52,6 @@
                                         }"
                                         readonly
                                     />
-
-                                    <!-- Input editable -->
                                     <input
                                         v-else
                                         class="form-control"
@@ -403,8 +409,8 @@
     import { useSnackbar } from 'vue3-snackbar';
     import Swal from 'sweetalert2';
 
-    import ActividadesServices from '@/services/useActividades';
-    import InstructoresService from '@/services/useInstructores';
+    import ActivitiesService from '@/services/useActivities';
+    import InstructorsService from '@/services/useInstructors';
 
     const router = useRouter();
     const snackbar = useSnackbar();
@@ -419,6 +425,7 @@
     const activityId = router.currentRoute.value.params.id;
     const isLoading = ref(false);
     const isReadOnly = ref(true);
+    const activityError = ref(false);
     const instructorError = ref(false);
 
     const activity = ref({});
@@ -426,7 +433,15 @@
 
     onMounted(async () => {
         isLoading.value = true;
-        activity.value = await ActividadesServices.getActivity(activityId);
+        try {
+            activity.value = await ActivitiesService.getActivity(activityId);
+        } catch (error) {
+            activityError.value = true;
+            snackbar.add({
+                type: 'error',
+                text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
+            });
+        }
         isLoading.value = false;
     });
 
@@ -447,7 +462,7 @@
         setEditFields();
         isReadOnly.value = false;
         try {
-            instructores.value = await InstructoresService.getInstructores();
+            instructores.value = await InstructorsService.getInstructors();
         } catch (error) {
             instructorError.value = true;
             snackbar.add({
@@ -457,6 +472,7 @@
         }
         isLoading.value = false;
     };
+
     const cancelEdit = () => {
         instructorError.value = false;
         isReadOnly.value = true;

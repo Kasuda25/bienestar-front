@@ -239,7 +239,7 @@
                                         </option>
                                         <div v-else>
                                             <div
-                                                v-for="instructor in instructores"
+                                                v-for="instructor in instructors"
                                                 :key="instructor"
                                             >
                                                 <option :value="instructor.id">
@@ -332,7 +332,7 @@
     import { ref, watch, onMounted } from 'vue';
     import { useSnackbar } from 'vue3-snackbar';
 
-    import InstructoresService from '@/services/useInstructores';
+    import InstructorsService from '@/services/useInstructors';
 
     const snackbar = useSnackbar();
 
@@ -347,7 +347,7 @@
     const isLoading = ref(false);
     const instructorError = ref(false);
 
-    const instructores = ref([]);
+    const instructors = ref([]);
 
     const resetValues = () => {
         props.activityData.name = '';
@@ -363,7 +363,7 @@
     onMounted(async () => {
         isLoading.value = true;
         try {
-            instructores.value = await InstructoresService.getInstructores();
+            instructors.value = await InstructorsService.getInstructors();
         } catch (error) {
             instructorError.value = true;
             snackbar.add({

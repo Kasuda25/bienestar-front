@@ -67,12 +67,16 @@
                 : route.matched[0]?.name;
 
         switch (parentRouteName) {
+            case 'dashboard':
+                pageName.value = 'Dashboard';
+                break;
+
             case 'activities':
                 pageName.value = 'Actividades';
                 break;
 
-            case 'dashboard':
-                pageName.value = 'Dashboard';
+            case 'instructors':
+                pageName.value = 'Instructores';
                 break;
 
             default:

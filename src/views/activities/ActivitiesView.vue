@@ -1,15 +1,15 @@
 <template>
-        <router-view
-            :activities="activities"
-            :activityData="activityData"
-            :validation-error-status="validationErrorStatus"
-            :validation-error-message="validationErrorMessage"
-            :isLoading="isLoading"
-            :listError="listError"
-            :key="viewKey"
-            @sendActivityData="validateActivityData"
-            @deleteActivity="deleteActivity"
-        />
+    <router-view
+        :activities="activities"
+        :activityData="activityData"
+        :validation-error-status="validationErrorStatus"
+        :validation-error-message="validationErrorMessage"
+        :isLoading="isLoading"
+        :listError="listError"
+        :key="viewKey"
+        @sendActivityData="validateActivityData"
+        @deleteActivity="deleteActivity"
+    />
 </template>
 
 <script setup>
@@ -17,7 +17,7 @@
     import { useRoute, useRouter } from 'vue-router';
     import { useSnackbar } from 'vue3-snackbar';
 
-    import ActividadesServices from '../../services/useActividades';
+    import ActivitiesService from '@/services/useActivities';
 
     const router = useRouter();
     const snackbar = useSnackbar();
@@ -39,9 +39,9 @@
         id: null,
     });
 
-    onMounted(async () => {
+    const queryActivities = async () => {
         try {
-            activities.value = await ActividadesServices.getActivities();
+            activities.value = await ActivitiesService.getActivities();
         } catch (error) {
             listError.value = true;
             snackbar.add({
@@ -49,6 +49,17 @@
                 text: 'Ha ocurrido un error. Por favor intenta de nuevo mas tade',
             });
         }
+    };
+
+    watch(
+        () => activities.value,
+        () => {
+            queryActivities();
+        }
+    );
+
+    onMounted(async () => {
+        queryActivities();
     });
 
     const validationErrorStatus = reactive({
@@ -76,7 +87,7 @@
     const validateActivityData = async (operation) => {
         if (activityData.name === '') {
             validationErrorStatus.name = true;
-            validationErrorMessage.name = 'El nombre es requerido';
+            validationErrorMessage.name = 'El nombre es obligatorio';
         } else {
             validationErrorStatus.name = false;
             validationErrorMessage.name = '';
@@ -84,8 +95,7 @@
 
         if (activityData.startDate === '') {
             validationErrorStatus.startDate = true;
-            validationErrorMessage.startDate =
-                'La fecha de inicio es requerida';
+            validationErrorMessage.startDate = 'La fecha de inicio es o';
         } else {
             validationErrorStatus.startDate = false;
             validationErrorMessage.startDate = '';
@@ -93,7 +103,7 @@
 
         if (activityData.endDate === '') {
             validationErrorStatus.endDate = true;
-            validationErrorMessage.endDate = 'La fecha de fin es requerida';
+            validationErrorMessage.endDate = 'La fecha de fin es o';
         } else {
             validationErrorStatus.endDate = false;
             validationErrorMessage.endDate = '';
@@ -101,7 +111,7 @@
 
         if (activityData.startHour === '') {
             validationErrorStatus.startHour = true;
-            validationErrorMessage.startHour = 'La hora de inicio es requerida';
+            validationErrorMessage.startHour = 'La hora de inicio es o';
         } else {
             validationErrorStatus.startHour = false;
             validationErrorMessage.startHour = '';
@@ -109,7 +119,7 @@
 
         if (activityData.endHour === '') {
             validationErrorStatus.endHour = true;
-            validationErrorMessage.endHour = 'La hora de fin es requerida';
+            validationErrorMessage.endHour = 'La hora de fin es o';
         } else {
             validationErrorStatus.endHour = false;
             validationErrorMessage.endHour = '';
@@ -118,7 +128,7 @@
         if (activityData.maxStudents === null) {
             validationErrorStatus.maxStudents = true;
             validationErrorMessage.maxStudents =
-                'El número máximo de estudiantes es requerido';
+                'El número máximo de estudiantes es obligatorio';
         } else {
             validationErrorStatus.maxStudents = false;
             validationErrorMessage.maxStudents = '';
@@ -126,7 +136,7 @@
 
         if (activityData.instructor === null) {
             validationErrorStatus.instructor = true;
-            validationErrorMessage.instructor = 'El instructor es requerido';
+            validationErrorMessage.instructor = 'El instructor es obligatorio';
         } else {
             validationErrorStatus.instructor = false;
             validationErrorMessage.instructor = '';
@@ -134,7 +144,7 @@
 
         if (activityData.location === '') {
             validationErrorStatus.location = true;
-            validationErrorMessage.location = 'La ubicación es requerida';
+            validationErrorMessage.location = 'La ubicación es o';
         } else {
             validationErrorStatus.location = false;
             validationErrorMessage.location = '';
@@ -160,7 +170,7 @@
             let response;
 
             if (operation === 'create') {
-                response = await ActividadesServices.createActivity({
+                response = await ActivitiesService.createActivity({
                     nombre: activityData.name,
                     fechaInicio: activityData.startDate,
                     fechaFin: activityData.endDate,
@@ -173,7 +183,7 @@
             }
 
             if (operation === 'update') {
-                response = await ActividadesServices.putActivity(
+                response = await ActivitiesService.putActivity(
                     activityData.id,
                     {
                         nombre: activityData.name,
@@ -211,7 +221,7 @@
                         text: 'Actividad actualizada exitosamente',
                     });
 
-                    viewKey.value++
+                    viewKey.value++;
                 }
             }
         } catch (error) {
@@ -237,7 +247,7 @@
     const deleteActivity = async (id) => {
         try {
             isLoading.value = true;
-            const response = await ActividadesServices.deleteActivity(id);
+            const response = await ActivitiesService.deleteActivity(id);
 
             if (response) {
                 isLoading.value = false;
@@ -246,6 +256,7 @@
                     text: 'Se ha eliminado la actividad',
                 });
 
+                queryActivities();
                 router.go(-1);
             }
         } catch (error) {

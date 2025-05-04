@@ -7,11 +7,11 @@
         </div>
         <div class="row mb-4">
             <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
-                <div class="card">
+                <div class="card mb-4">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-6">
-                                <h5 class="mb-0 mt-2">activities</h5>
+                                <h5 class="mb-0 mt-2">Actividades</h5>
                             </div>
                             <div
                                 v-if="activities && activities[0]"
@@ -35,7 +35,7 @@
                     <div class="card-body px-0 pb-3">
                         <div class="table-responsive no-scroll">
                             <table class="table align-activitys-center mb-0">
-                                <div v-if="!activities && !listError">
+                                <div v-if="!activities && !activityListError">
                                     <div class="d-flex justify-content-center">
                                         <div
                                             class="spinner-border"
@@ -51,7 +51,7 @@
                                     v-if="
                                         activities &&
                                         activities[0] &&
-                                        !listError
+                                        !activityListError
                                     "
                                 >
                                     <tr>
@@ -83,7 +83,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <div v-if="listError">
+                                    <div v-if="activityListError">
                                         <div
                                             class="d-flex justify-content-center"
                                         >
@@ -121,110 +121,226 @@
                                             5
                                         )"
                                         :key="activity"
+                                        @click="
+                                            $router.push(
+                                                `/activities/${activity.id}`
+                                            )
+                                        "
+                                        class="cursor-pointer"
                                     >
                                         <td>
-                                            <RouterLink
-                                                :to="`/activities/${activity.id}`"
-                                                v-slot="{ navigate }"
-                                                custom
-                                            >
+                                            <div class="d-flex px-2 py-1">
                                                 <div
-                                                    class="d-flex px-2 py-1 cursor-pointer"
-                                                    @click="navigate"
+                                                    class="d-flex flex-column justify-content-center"
                                                 >
-                                                    <div
-                                                        class="d-flex flex-column justify-content-center"
-                                                    >
-                                                        <h6
-                                                            class="mb-0 text-sm"
-                                                        >
-                                                            {{
-                                                                activity.nombre
-                                                            }}
-                                                        </h6>
-                                                    </div>
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ activity.nombre }}
+                                                    </h6>
                                                 </div>
-                                            </RouterLink>
+                                            </div>
                                         </td>
                                         <td class="align-middle text-sm">
-                                            <RouterLink
-                                                :to="`/activities/${activity.id}`"
-                                                v-slot="{ navigate }"
-                                                custom
+                                            <span
+                                                class="text-xs font-weight-bold"
+                                                >{{
+                                                    new Date(
+                                                        activity.fechaInicio
+                                                    ).toLocaleDateString(
+                                                        'es-ES'
+                                                    )
+                                                }}
+                                                -
+                                                {{
+                                                    new Date(
+                                                        activity.fechaFin
+                                                    ).toLocaleDateString(
+                                                        'es-ES'
+                                                    )
+                                                }}</span
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bold cursor-pointer"
-                                                    @click="navigate"
-                                                    >{{
-                                                        new Date(
-                                                            activity.fechaInicio
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}
-                                                    -
-                                                    {{
-                                                        new Date(
-                                                            activity.fechaFin
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}</span
-                                                >
-                                            </RouterLink>
                                         </td>
                                         <td class="align-middle text-sm">
-                                            <RouterLink
-                                                :to="`/activities/${activity.id}`"
-                                                v-slot="{ navigate }"
-                                                custom
+                                            <span
+                                                class="text-xs font-weight-bold"
+                                                >{{
+                                                    activity.horaInicio.slice(
+                                                        0,
+                                                        5
+                                                    )
+                                                }}
+                                                -
+                                                {{
+                                                    activity.horaFin.slice(0, 5)
+                                                }}</span
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bold cursor-pointer"
-                                                    @click="navigate"
-                                                    >{{
-                                                        activity.horaInicio.slice(
-                                                            0,
-                                                            5
-                                                        )
-                                                    }}
-                                                    -
-                                                    {{
-                                                        activity.horaFin.slice(
-                                                            0,
-                                                            5
-                                                        )
-                                                    }}</span
-                                                >
-                                            </RouterLink>
                                         </td>
                                         <td class="align-middle text-sm">
-                                            <RouterLink
-                                                :to="`/activities/${activity.id}`"
-                                                v-slot="{ navigate }"
-                                                custom
+                                            <span
+                                                class="text-xs font-weight-bold"
+                                                >{{ activity.ubicacion }}</span
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bold cursor-pointer"
-                                                    @click="navigate"
-                                                    >{{
-                                                        activity.ubicacion
-                                                    }}</span
-                                                >
-                                            </RouterLink>
                                         </td>
                                         <td class="align-middle text-sm">
                                             <span
                                                 class="text-xs font-weight-bold"
                                                 >{{
                                                     activity.instructor.nombre
-                                                        .nombre
+                                                        .usuario.nombre
                                                 }}
                                                 {{
                                                     activity.instructor.nombre
-                                                        .apellido
+                                                        .usuario.apellido
                                                 }}</span
                                             >
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-6">
+                                <h5 class="mb-0 mt-2">Instructores</h5>
+                            </div>
+                            <div
+                                v-if="instructors && instructors[0]"
+                                class="col-6 text-end"
+                            >
+                                <RouterLink
+                                    to="/instructors"
+                                    v-slot="{ navigate }"
+                                    custom
+                                >
+                                    <a
+                                        class="btn bg-gradient-dark mb-0"
+                                        @click="navigate"
+                                    >
+                                        Ver todos
+                                    </a>
+                                </RouterLink>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-3">
+                        <div class="table-responsive no-scroll">
+                            <table class="table align-activitys-center mb-0">
+                                <div
+                                    v-if="!instructors && !instructorListError"
+                                >
+                                    <div class="d-flex justify-content-center">
+                                        <div
+                                            class="spinner-border"
+                                            role="status"
+                                        >
+                                            <span class="visually-hidden"
+                                                >Loading...</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <thead
+                                    v-if="
+                                        instructors &&
+                                        instructors[0] &&
+                                        !instructorListError
+                                    "
+                                >
+                                    <tr>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                        >
+                                            Nombre
+                                        </th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
+                                            Correo
+                                        </th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
+                                            Especialidad
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <div v-if="instructorListError">
+                                        <div
+                                            class="d-flex justify-content-center"
+                                        >
+                                            <h4 class="my-auto">
+                                                Ha ocurrido un error al obtener
+                                                la lista de instructores
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </tbody>
+                                <div
+                                    v-if="
+                                        instructors &&
+                                        !instructors[0] &&
+                                        !instructorListError
+                                    "
+                                >
+                                    <div class="d-flex justify-content-center">
+                                        <h4 class="my-auto">
+                                            No hay instructores para mostrar
+                                        </h4>
+                                    </div>
+                                </div>
+                                <tbody
+                                    v-if="
+                                        instructors &&
+                                        instructors[0] &&
+                                        !instructorListError
+                                    "
+                                >
+                                    <tr
+                                        v-if="instructors"
+                                        v-for="instructor in instructors.slice(
+                                            0,
+                                            5
+                                        )"
+                                        :key="instructor"
+                                        @click="
+                                            $router.push(
+                                                `/instructors/${instructor.id}`
+                                            )
+                                        "
+                                        class="cursor-pointer"
+                                    >
+                                        <td>
+                                            <div
+                                                class="d-flex px-2 py-1 cursor-pointer"
+                                                @click="navigate"
+                                            >
+                                                <div
+                                                    class="d-flex flex-column justify-content-center"
+                                                >
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{
+                                                            instructor.nombreCompleto
+                                                        }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <span
+                                                class="text-xs font-weight-bold"
+                                            >
+                                                {{ instructor.usuario.email }}
+                                            </span>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <span
+                                                class="text-xs font-weight-bold"
+                                            >
+                                                {{ instructor.especialidad }}
+                                            </span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -379,43 +495,8 @@
     const emit = defineEmits();
     const props = defineProps({
         activities: Array,
-        listError: Boolean
+        instructors: Array,
+        activityListError: Boolean,
+        instructorListError: Boolean,
     });
 </script>
-
-<style scoped>
-    .slide-left-enter-active,
-    .slide-left-leave-active {
-        transition:
-            transform 0.2s ease,
-            opacity 0.2s ease;
-    }
-
-    .slide-left-enter-from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-
-    .slide-left-enter-to {
-        transform: translateX(0%);
-        opacity: 1;
-    }
-
-    .slide-left-leave-from {
-        transform: translateX(0%);
-        opacity: 1;
-    }
-
-    .slide-left-leave-to {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-
-    .sidebar-button {
-        z-index: 2000;
-    }
-
-    .no-scroll {
-        overflow: hidden;
-    }
-</style>

@@ -1,9 +1,12 @@
 import axios from './useAxios';
 
-class ActividadesServices {
-    async createActivity(activity) {
+class InstructorsService {
+    async createInstructor(instructor) {
         try {
-            const response = await axios.post('/actividades/nueva', activity);
+            const response = await axios.post(
+                '/admin/agregar-instructor',
+                instructor
+            );
             if (response.status === 201) {
                 return response.data.data;
             }
@@ -12,9 +15,9 @@ class ActividadesServices {
         }
     }
 
-    async getActivities() {
+    async getInstructors() {
         try {
-            const response = await axios.get('/actividades/creadas');
+            const response = await axios.get('/admin/instructores-activos');
             if (response.status === 200) {
                 return response.data.data;
             }
@@ -23,33 +26,31 @@ class ActividadesServices {
         }
     }
 
-    async getActivity(id) {
+    async getInstructor(id) {
         try {
-            const response = await axios.get(`/actividades/${id}`);
+            const response = await axios.get(`/admin/${id}`);
             if (response.status === 200) {
                 return response.data.data;
             }
         } catch (error) {
-            throw new Error(error);
-        }
-    }
-
-    async putActivity(id, activity) {
-        try {
-            const response = await axios.put(`/actividades/${id}`, activity);
-            if (response.status === 200) {
-                return response.data.data;
-            }
-        } catch (error) {
-            console.error(error);
             throw new Error(error.response.data.message);
         }
     }
 
-    async deleteActivity(id) {
+    async putInstructor(id, instructor) {
         try {
-            const response = await axios.delete(`/actividades/eliminar/${id}`);
-            console.log(response);
+            const response = await axios.put(`/admin/${id}`, instructor);
+            if (response.status === 200) {
+                return response.data.data;
+            }
+        } catch (error) {
+            throw new Error(error.response.data.message);
+        }
+    }
+
+    async deleteInstructor(id) {
+        try {
+            const response = await axios.delete(`/admin/${id}`);
             if (response.status === 200) {
                 return response.data;
             }
@@ -59,4 +60,4 @@ class ActividadesServices {
     }
 }
 
-export default new ActividadesServices();
+export default new InstructorsService();

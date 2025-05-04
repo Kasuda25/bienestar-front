@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import activitiesRoutes from './activities.routes.js';
+import instructorsRoutes from './instructors.routes.js';
 
 const routes = [
     {
@@ -9,20 +10,32 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: () => import('../views/auth/LoginView.vue'),
+        component: () => import('@/views/auth/LoginView.vue'),
     },
     {
         path: '/dashboard',
         name: 'dashboard',
-        component: () => import('../views/dashboard/DashboardView.vue'),
+        component: () => import('@/views/dashboard/DashboardView.vue'),
         meta: { requiresAuth: true },
     },
     {
         path: '/activities',
         name: 'activities',
-        component: () => import('../views/activities/ActivitiesView.vue'),
+        component: () => import('@/views/activities/ActivitiesView.vue'),
         meta: { requiresAuth: true },
         children: activitiesRoutes,
+    },
+    {
+        path: '/instructors',
+        name: 'instructors',
+        component: () => import('@/views/instructors/InstructorsView.vue'),
+        meta: { requiresAuth: true },
+        children: instructorsRoutes,
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('@/views/NotFoundView.vue'),
     },
 ];
 
