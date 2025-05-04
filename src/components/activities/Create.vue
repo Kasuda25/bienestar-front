@@ -41,7 +41,7 @@
                                         }"
                                         id="nameInput"
                                         type="text"
-                                        v-model="props.activityData.name"
+                                        v-model="localActivityData.name"
                                     />
                                     <div class="invalid-feedback">
                                         {{ props.validationErrorMessage.name }}
@@ -63,8 +63,7 @@
                                             'form-control',
                                             {
                                                 'transparent-placeholder':
-                                                    !props.activityData
-                                                        .startDate,
+                                                    !localActivityData.startDate,
                                                 'is-invalid':
                                                     props.validationErrorStatus
                                                         .startDate,
@@ -72,7 +71,7 @@
                                         ]"
                                         id="startDateInput"
                                         type="date"
-                                        v-model="props.activityData.startDate"
+                                        v-model="localActivityData.startDate"
                                         onfocus="this.showPicker()"
                                         onkeydown="return false;"
                                     />
@@ -97,7 +96,7 @@
                                             'form-control',
                                             {
                                                 'transparent-placeholder':
-                                                    !props.activityData.endDate,
+                                                    !localActivityData.endDate,
                                                 'is-invalid':
                                                     props.validationErrorStatus
                                                         .endDate,
@@ -105,7 +104,7 @@
                                         ]"
                                         id="endDateInput"
                                         type="date"
-                                        v-model="props.activityData.endDate"
+                                        v-model="localActivityData.endDate"
                                         onfocus="this.showPicker()"
                                         onkeydown="return false;"
                                     />
@@ -131,8 +130,7 @@
                                             'form-control',
                                             {
                                                 'transparent-placeholder':
-                                                    !props.activityData
-                                                        .startHour,
+                                                    !localActivityData.startHour,
                                                 'is-invalid':
                                                     props.validationErrorStatus
                                                         .startHour,
@@ -140,7 +138,7 @@
                                         ]"
                                         id="startHourInput"
                                         type="time"
-                                        v-model="props.activityData.startHour"
+                                        v-model="localActivityData.startHour"
                                         onfocus="this.showPicker()"
                                     />
                                     <div class="invalid-feedback">
@@ -164,7 +162,7 @@
                                             'form-control',
                                             {
                                                 'transparent-placeholder':
-                                                    !props.activityData.endHour,
+                                                    !localActivityData.endHour,
                                                 'is-invalid':
                                                     props.validationErrorStatus
                                                         .endHour,
@@ -172,7 +170,7 @@
                                         ]"
                                         id="endHourInput"
                                         type="time"
-                                        v-model="props.activityData.endHour"
+                                        v-model="localActivityData.endHour"
                                         onfocus="this.showPicker()"
                                     />
                                     <div class="invalid-feedback">
@@ -200,7 +198,7 @@
                                         }"
                                         id="maxStudentsInput"
                                         type="number"
-                                        v-model="props.activityData.maxStudents"
+                                        v-model="localActivityData.maxStudents"
                                         @keydown="blockInvalidNumberKeys"
                                     />
                                     <div class="invalid-feedback">
@@ -226,7 +224,7 @@
                                         }"
                                         id="instructorInput"
                                         type="select"
-                                        v-model="props.activityData.instructor"
+                                        v-model="localActivityData.instructor"
                                     >
                                         <option
                                             v-if="instructorError"
@@ -286,7 +284,7 @@
                                         }"
                                         id="lacationInput"
                                         type="text"
-                                        v-model="props.activityData.location"
+                                        v-model="localActivityData.location"
                                     />
                                     <div class="invalid-feedback">
                                         {{
@@ -298,7 +296,7 @@
                             </div>
                             <div class="w-100 text-end">
                                 <div
-                                    v-if="!props.isLoading"
+                                    v-if="!props.externalLoading"
                                     role="button"
                                     class="btn bg-gradient-dark mt-3"
                                     @click="createActivity"
@@ -306,7 +304,7 @@
                                     Crear
                                 </div>
                                 <div
-                                    v-if="props.isLoading"
+                                    v-if="props.externalLoading"
                                     role="button"
                                     class="btn bg-gradient-dark mt-3 px-4"
                                 >
@@ -329,54 +327,70 @@
 </template>
 
 <script setup>
-    import { ref, watch, onMounted } from 'vue';
+    import { ref, onMounted, watch } from 'vue';
     import { useSnackbar } from 'vue3-snackbar';
 
     import InstructorsService from '@/services/useInstructors';
 
     const snackbar = useSnackbar();
 
-    const emit = defineEmits();
+    const emit = defineEmits(['sendActivityData']);
     const props = defineProps({
         activityData: Object,
         validationErrorStatus: Object,
         validationErrorMessage: Object,
-        isLoading: Boolean,
-        instructorError: Boolean,
+        externalLoading: Boolean,
     });
     const isLoading = ref(false);
     const instructorError = ref(false);
 
+    const localActivityData = ref({ ...props.activityData });
+
+    watch(
+        localActivityData,
+        (newVal) => {
+            emit('update:activityData', newVal);
+        },
+        { deep: true }
+    );
+
     const instructors = ref([]);
 
     const resetValues = () => {
-        props.activityData.name = '';
-        props.activityData.startDate = '';
-        props.activityData.endDate = '';
-        props.activityData.startHour = '';
-        props.activityData.endHour = '';
-        props.activityData.maxStudents = null;
-        props.activityData.instructor = null;
-        props.activityData.location = '';
+        emit('update:activityData', {
+            name: '',
+            startDate: '',
+            endDate: '',
+            startHour: '',
+            endHour: '',
+            maxStudents: null,
+            instructor: null,
+            location: '',
+        });
     };
 
     const resetErrorStatusAndMessages = () => {
-        props.validationErrorStatus.name = false;
-        props.validationErrorStatus.startDate = false;
-        props.validationErrorStatus.endDate = false;
-        props.validationErrorStatus.startHour = false;
-        props.validationErrorStatus.endHour = false;
-        props.validationErrorStatus.maxStudents = false;
-        props.validationErrorStatus.instructor = false;
-        props.validationErrorStatus.location = false;
-        props.validationErrorMessage.name = '';
-        props.validationErrorMessage.startDate = '';
-        props.validationErrorMessage.endDate = '';
-        props.validationErrorMessage.startHour = '';
-        props.validationErrorMessage.endHour = '';
-        props.validationErrorMessage.maxStudents = '';
-        props.validationErrorMessage.instructor = '';
-        props.validationErrorMessage.location = '';
+        emit('update:validationErrorStatus', {
+            name: false,
+            startDate: false,
+            endDate: false,
+            startHour: false,
+            endHour: false,
+            maxStudents: false,
+            instructor: false,
+            location: false,
+        });
+
+        emit('update:validationErrorMessage', {
+            name: '',
+            startDate: '',
+            endDate: '',
+            startHour: '',
+            endHour: '',
+            maxStudents: '',
+            instructor: '',
+            location: '',
+        });
     };
 
     onMounted(async () => {
@@ -384,11 +398,13 @@
         try {
             instructors.value = await InstructorsService.getInstructors();
         } catch (error) {
-            instructorError.value = true;
-            snackbar.add({
-                type: 'error',
-                text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
-            });
+            if (error) {
+                instructorError.value = true;
+                snackbar.add({
+                    type: 'error',
+                    text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
+                });
+            }
         }
         resetValues();
         resetErrorStatusAndMessages();

@@ -52,7 +52,6 @@ class ActivitiesService {
                 return response.data.data;
             }
         } catch (error) {
-            console.error(error);
             throw new Error(error.response.data.message);
         }
     }
@@ -60,7 +59,6 @@ class ActivitiesService {
     async deleteActivity(id) {
         try {
             const response = await axios.delete(`/actividades/eliminar/${id}`);
-            console.log(response);
             if (response.status === 200) {
                 return response.data;
             }

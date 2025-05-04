@@ -118,7 +118,6 @@
                                     "
                                 >
                                     <tr
-                                        v-if="activities"
                                         v-for="activity in activities"
                                         :key="activity.id"
                                         @click="
@@ -209,8 +208,7 @@
 </template>
 
 <script setup>
-    const emit = defineEmits();
-    const props = defineProps({
+    defineProps({
         activities: Array,
         listError: Boolean,
     });

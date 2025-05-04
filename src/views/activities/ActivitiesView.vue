@@ -1,11 +1,11 @@
 <template>
     <router-view
+        v-model:activityData="activityData"
+        v-model:validationErrorStatus="validationErrorStatus"
+        v-model:validationErrorMessage="validationErrorMessage"
         :activities="activities"
-        :activityData="activityData"
-        :validation-error-status="validationErrorStatus"
-        :validation-error-message="validationErrorMessage"
-        :isLoading="isLoading"
-        :listError="listError"
+        :external-loading="isLoading"
+        :list-error="listError"
         :key="viewKey"
         @sendActivityData="validateActivityData"
         @deleteActivity="deleteActivity"
@@ -13,8 +13,8 @@
 </template>
 
 <script setup>
-    import { onMounted, onBeforeUnmount, ref, watch, reactive } from 'vue';
-    import { useRoute, useRouter } from 'vue-router';
+    import { onMounted, ref, watch } from 'vue';
+    import { useRouter } from 'vue-router';
     import { useSnackbar } from 'vue3-snackbar';
 
     import ActivitiesService from '@/services/useActivities';
@@ -27,7 +27,7 @@
     const viewKey = ref(0);
 
     const activities = ref();
-    const activityData = reactive({
+    const activityData = ref({
         name: '',
         startDate: '',
         endDate: '',
@@ -43,11 +43,13 @@
         try {
             activities.value = await ActivitiesService.getActivities();
         } catch (error) {
-            listError.value = true;
-            snackbar.add({
-                type: 'error',
-                text: 'Ha ocurrido un error. Por favor intenta de nuevo mas tade',
-            });
+            if (error) {
+                listError.value = true;
+                snackbar.add({
+                    type: 'error',
+                    text: 'Ha ocurrido un error. Por favor intenta de nuevo mas tade',
+                });
+            }
         }
     };
 
@@ -62,7 +64,7 @@
         queryActivities();
     });
 
-    const validationErrorStatus = reactive({
+    const validationErrorStatus = ref({
         name: false,
         startDate: false,
         endDate: false,
@@ -73,7 +75,7 @@
         location: false,
     });
 
-    const validationErrorMessage = reactive({
+    const validationErrorMessage = ref({
         name: '',
         startDate: '',
         endDate: '',
@@ -85,80 +87,82 @@
     });
 
     const validateActivityData = async (operation) => {
-        if (activityData.name === '') {
-            validationErrorStatus.name = true;
-            validationErrorMessage.name = 'El nombre es obligatorio';
+        if (activityData.value.name === '') {
+            validationErrorStatus.value.name = true;
+            validationErrorMessage.value.name = 'El nombre es obligatorio';
         } else {
-            validationErrorStatus.name = false;
-            validationErrorMessage.name = '';
+            validationErrorStatus.value.name = false;
+            validationErrorMessage.value.name = '';
         }
 
-        if (activityData.startDate === '') {
-            validationErrorStatus.startDate = true;
-            validationErrorMessage.startDate = 'La fecha de inicio es obligatoria';
+        if (activityData.value.startDate === '') {
+            validationErrorStatus.value.startDate = true;
+            validationErrorMessage.value.startDate =
+                'La fecha de inicio es obligatoria';
         } else {
-            validationErrorStatus.startDate = false;
-            validationErrorMessage.startDate = '';
+            validationErrorStatus.value.startDate = false;
+            validationErrorMessage.value.startDate = '';
         }
 
-        if (activityData.endDate === '') {
-            validationErrorStatus.endDate = true;
-            validationErrorMessage.endDate = 'La fecha de fin es obligatoria';
+        if (activityData.value.endDate === '') {
+            validationErrorStatus.value.endDate = true;
+            validationErrorMessage.value.endDate = 'La fecha de fin es obligatoria';
         } else {
-            validationErrorStatus.endDate = false;
-            validationErrorMessage.endDate = '';
+            validationErrorStatus.value.endDate = false;
+            validationErrorMessage.value.endDate = '';
         }
 
-        if (activityData.startHour === '') {
-            validationErrorStatus.startHour = true;
-            validationErrorMessage.startHour = 'La hora de inicio es obligatoria';
+        if (activityData.value.startHour === '') {
+            validationErrorStatus.value.startHour = true;
+            validationErrorMessage.value.startHour =
+                'La hora de inicio es obligatoria';
         } else {
-            validationErrorStatus.startHour = false;
-            validationErrorMessage.startHour = '';
+            validationErrorStatus.value.startHour = false;
+            validationErrorMessage.value.startHour = '';
         }
 
-        if (activityData.endHour === '') {
-            validationErrorStatus.endHour = true;
-            validationErrorMessage.endHour = 'La hora de fin es obligatoria';
+        if (activityData.value.endHour === '') {
+            validationErrorStatus.value.endHour = true;
+            validationErrorMessage.value.endHour = 'La hora de fin es obligatoria';
         } else {
-            validationErrorStatus.endHour = false;
-            validationErrorMessage.endHour = '';
+            validationErrorStatus.value.endHour = false;
+            validationErrorMessage.value.endHour = '';
         }
 
-        if (activityData.maxStudents === null) {
-            validationErrorStatus.maxStudents = true;
-            validationErrorMessage.maxStudents =
+        if (activityData.value.maxStudents === null) {
+            validationErrorStatus.value.maxStudents = true;
+            validationErrorMessage.value.maxStudents =
                 'El número máximo de estudiantes es obligatorio';
         } else {
-            validationErrorStatus.maxStudents = false;
-            validationErrorMessage.maxStudents = '';
+            validationErrorStatus.value.maxStudents = false;
+            validationErrorMessage.value.maxStudents = '';
         }
 
-        if (activityData.instructor === null) {
-            validationErrorStatus.instructor = true;
-            validationErrorMessage.instructor = 'El instructor es obligatorio';
+        if (activityData.value.instructor === null) {
+            validationErrorStatus.value.instructor = true;
+            validationErrorMessage.value.instructor = 'El instructor es obligatorio';
         } else {
-            validationErrorStatus.instructor = false;
-            validationErrorMessage.instructor = '';
+            validationErrorStatus.value.instructor = false;
+            validationErrorMessage.value.instructor = '';
         }
 
-        if (activityData.location === '') {
-            validationErrorStatus.location = true;
-            validationErrorMessage.location = 'La ubicación es obligatoria';
+        if (activityData.value.location === '') {
+            validationErrorStatus.value.location = true;
+            validationErrorMessage.value.location = 'La ubicación es obligatoria';
         } else {
-            validationErrorStatus.location = false;
-            validationErrorMessage.location = '';
+            validationErrorStatus.value.location = false;
+            validationErrorMessage.value.location = '';
         }
 
         if (
-            !validationErrorStatus.name &&
-            !validationErrorStatus.startDate &&
-            !validationErrorStatus.endDate &&
-            !validationErrorStatus.startHour &&
-            !validationErrorStatus.endHour &&
-            !validationErrorStatus.maxStudents &&
-            !validationErrorStatus.instructor &&
-            !validationErrorStatus.location
+            !validationErrorStatus.value.name &&
+            !validationErrorStatus.value.startDate &&
+            !validationErrorStatus.value.endDate &&
+            !validationErrorStatus.value.startHour &&
+            !validationErrorStatus.value.endHour &&
+            !validationErrorStatus.value.maxStudents &&
+            !validationErrorStatus.value.instructor &&
+            !validationErrorStatus.value.location
         ) {
             sendActivityData(operation);
         }
@@ -171,29 +175,29 @@
 
             if (operation === 'create') {
                 response = await ActivitiesService.createActivity({
-                    nombre: activityData.name,
-                    fechaInicio: activityData.startDate,
-                    fechaFin: activityData.endDate,
-                    horaInicio: activityData.startHour,
-                    horaFin: activityData.endHour,
-                    maxEstudiantes: activityData.maxStudents,
-                    instructorId: activityData.instructor,
-                    ubicacion: activityData.location,
+                    nombre: activityData.value.name,
+                    fechaInicio: activityData.value.startDate,
+                    fechaFin: activityData.value.endDate,
+                    horaInicio: activityData.value.startHour,
+                    horaFin: activityData.value.endHour,
+                    maxEstudiantes: activityData.value.maxStudents,
+                    instructorId: activityData.value.instructor,
+                    ubicacion: activityData.value.location,
                 });
             }
 
             if (operation === 'update') {
                 response = await ActivitiesService.putActivity(
-                    activityData.id,
+                    activityData.value.id,
                     {
-                        nombre: activityData.name,
-                        fechaInicio: activityData.startDate,
-                        fechaFin: activityData.endDate,
-                        horaInicio: activityData.startHour,
-                        horaFin: activityData.endHour,
-                        maxEstudiantes: activityData.maxStudents,
-                        instructorId: activityData.instructor,
-                        ubicacion: activityData.location,
+                        nombre: activityData.value.name,
+                        fechaInicio: activityData.value.startDate,
+                        fechaFin: activityData.value.endDate,
+                        horaInicio: activityData.value.startHour,
+                        horaFin: activityData.value.endHour,
+                        maxEstudiantes: activityData.value.maxStudents,
+                        instructorId: activityData.value.instructor,
+                        ubicacion: activityData.value.location,
                     }
                 );
             }
@@ -234,14 +238,17 @@
     };
 
     const resetValues = () => {
-        activityData.name = '';
-        activityData.startDate = '';
-        activityData.endDate = '';
-        activityData.startHour = '';
-        activityData.endHour = '';
-        activityData.maxStudents = null;
-        activityData.instructor = null;
-        activityData.location = '';
+        activityData.value = {
+            name: '',
+            startDate: '',
+            endDate: '',
+            startHour: '',
+            endHour: '',
+            maxStudents: null,
+            instructor: null,
+            location: '',
+            id: null,
+        };
     };
 
     const deleteActivity = async (id) => {
@@ -260,11 +267,13 @@
                 router.go(-1);
             }
         } catch (error) {
-            isLoading.value = false;
-            snackbar.add({
-                type: 'error',
-                text: 'Ha ocurido un error. Po favor intentalo de nuevo más tarde',
-            });
+            if (error) {
+                isLoading.value = false;
+                snackbar.add({
+                    type: 'error',
+                    text: 'Ha ocurido un error. Po favor intentalo de nuevo más tarde',
+                });
+            }
         }
     };
 </script>
