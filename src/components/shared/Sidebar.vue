@@ -3,7 +3,7 @@
         <aside
             class="sidenav navbar navbar-vertical navbar-expand-xs border-radius-lg fixed-start ms-2 bg-white my-2"
             id="sidenav-main"
-            v-show="isAsideVisible"
+            v-if="isAsideVisible"
         >
             <div class="sidenav-header">
                 <button

@@ -1,5 +1,6 @@
 <template>
     <Sidebar
+        v-if="!isLogin"
         :isAsideVisible="isAsideVisible"
         :isMobile="isMobile"
         @toggleAside="toggleAside"
@@ -9,6 +10,7 @@
         class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
     >
         <Navbar
+            :class="[isLogin ? 'd-none' : '']"
             :pageName="pageName"
             :pageSubname="pageSubname"
             :isAsideVisible="isAsideVisible"
@@ -20,7 +22,7 @@
             @setDropdownRef="(el) => (dropdownRef = el)"
         />
         <router-view />
-        <Footer />
+        <Footer :class="[isLogin ? 'd-none' : '']" />
     </main>
     <vue3-snackbar bottom right :duration="4000"></vue3-snackbar>
 </template>
@@ -44,10 +46,30 @@
     const isAsideVisible = ref(true);
     const isMobile = ref(false);
 
+    const isLogin = ref(false);
+
     const pageName = ref('');
     const pageSubname = ref('');
 
+    const isLoginView = () => {
+        if (route.name === 'login') {
+            isLogin.value = true;
+            return;
+        } else {
+            isLogin.value = false;
+        }
+    };
+
+    watch(
+        () => route.name,
+        () => {
+            isLoginView();
+        },
+        { immediate: true }
+    );
+
     onMounted(() => {
+        isLogin.value = true;
         LocalStorage.restoreSession();
 
         document.addEventListener('click', handleClickOutside);

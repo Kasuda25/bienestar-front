@@ -100,6 +100,7 @@
                                                     props.validationErrorStatus
                                                         .password,
                                             }"
+                                            @keyup.enter="login"
                                         />
                                         <label
                                             class="form-label"
