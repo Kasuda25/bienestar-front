@@ -63,7 +63,7 @@
                                             type="email"
                                             class="form-control"
                                             id="inputEmail"
-                                            v-model="props.loginData.email"
+                                            v-model="localLoginData.email"
                                             placeholder=" "
                                             :class="{
                                                 'is-invalid':
@@ -93,7 +93,7 @@
                                             type="password"
                                             class="form-control"
                                             id="inputPassword"
-                                            v-model="props.loginData.password"
+                                            v-model="localLoginData.password"
                                             placeholder=" "
                                             :class="{
                                                 'is-invalid':
@@ -169,13 +169,25 @@
 </template>
 
 <script setup>
-    const emit = defineEmits();
+    import { ref, watch } from 'vue';
+
+    const emit = defineEmits(['login']);
     const props = defineProps({
         loginData: Object,
         validationErrorStatus: Object,
         validationErrorMessage: Object,
         isLoading: Boolean,
     });
+
+    const localLoginData = ref({ ...props.loginData });
+
+    watch(
+        localLoginData,
+        (newVal) => {
+            emit('update:loginData', newVal);
+        },
+        { deep: true }
+    );
 
     const login = () => {
         emit('login');

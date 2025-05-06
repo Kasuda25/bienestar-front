@@ -1,15 +1,15 @@
 <template>
     <Login
-        :loginData="loginData"
+        v-model:login-data="loginData"
+        v-model:validation-error-status="validationErrorStatus"
+        v-model:validation-error-message="validationErrorMessage"
+        :is-loading="isLoading"
         @login="loginDataValidation"
-        :validation-error-status="validationErrorStatus"
-        :validation-error-message="validationErrorMessage"
-        :isLoading="isLoading"
     />
 </template>
 
 <script setup>
-    import { ref, reactive, onBeforeMount } from 'vue';
+    import { ref, onBeforeMount } from 'vue';
     import { useRouter } from 'vue-router';
     import { useAuthStore } from '../../stores/auth';
     import { useSnackbar } from 'vue3-snackbar';
@@ -21,7 +21,7 @@
 
     const router = useRouter();
     const snackbar = useSnackbar();
-    
+
     const authStore = useAuthStore();
 
     const isLoading = ref(false);
@@ -32,39 +32,42 @@
         }
     });
 
-    const loginData = reactive({
+    const loginData = ref({
         email: '',
         password: '',
     });
 
-    const validationErrorStatus = reactive({
+    const validationErrorStatus = ref({
         email: false,
         password: false,
     });
 
-    const validationErrorMessage = reactive({
+    const validationErrorMessage = ref({
         email: '',
         password: '',
     });
 
     const loginDataValidation = () => {
-        if (loginData.email === '') {
-            validationErrorStatus.email = true;
-            validationErrorMessage.email = 'Ingresa tu correo.';
+        if (loginData.value.email === '') {
+            validationErrorStatus.value.email = true;
+            validationErrorMessage.value.email = 'Ingresa tu correo.';
         } else {
-            validationErrorStatus.email = false;
-            validationErrorMessage.email = '';
+            validationErrorStatus.value.email = false;
+            validationErrorMessage.value.email = '';
         }
 
-        if (loginData.password === '') {
-            validationErrorStatus.password = true;
-            validationErrorMessage.password = 'Ingresa tu contraseña.';
+        if (loginData.value.password === '') {
+            validationErrorStatus.value.password = true;
+            validationErrorMessage.value.password = 'Ingresa tu contraseña.';
         } else {
-            validationErrorStatus.password = false;
-            validationErrorMessage.password = '';
+            validationErrorStatus.value.password = false;
+            validationErrorMessage.value.password = '';
         }
 
-        if (!validationErrorStatus.email && !validationErrorStatus.password) {
+        if (
+            !validationErrorStatus.value.email &&
+            !validationErrorStatus.value.password
+        ) {
             doLogin();
         }
     };
