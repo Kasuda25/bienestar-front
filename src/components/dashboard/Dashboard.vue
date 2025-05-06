@@ -115,7 +115,6 @@
                                     "
                                 >
                                     <tr
-                                        v-if="activities"
                                         v-for="activity in activities.slice(
                                             0,
                                             5
@@ -299,7 +298,6 @@
                                     "
                                 >
                                     <tr
-                                        v-if="instructors"
                                         v-for="instructor in instructors.slice(
                                             0,
                                             5
@@ -492,8 +490,7 @@
 </template>
 
 <script setup>
-    const emit = defineEmits();
-    const props = defineProps({
+    defineProps({
         activities: Array,
         instructors: Array,
         activityListError: Boolean,
