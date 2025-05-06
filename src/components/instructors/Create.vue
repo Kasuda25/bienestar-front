@@ -41,7 +41,7 @@
                                         }"
                                         id="nameInput"
                                         type="text"
-                                        v-model="props.instructorData.name"
+                                        v-model="localInstructorData.name"
                                     />
                                     <div class="invalid-feedback">
                                         {{ props.validationErrorMessage.name }}
@@ -66,7 +66,7 @@
                                         }"
                                         id="lastNameInput"
                                         type="text"
-                                        v-model="props.instructorData.lastName"
+                                        v-model="localInstructorData.lastName"
                                     />
                                     <div class="invalid-feedback">
                                         {{
@@ -92,7 +92,7 @@
                                         }"
                                         id="emailInput"
                                         type="email"
-                                        v-model="props.instructorData.email"
+                                        v-model="localInstructorData.email"
                                     />
                                     <div class="invalid-feedback">
                                         {{ props.validationErrorMessage.email }}
@@ -119,7 +119,7 @@
                                             id="passwordInput"
                                             :type="passwordType"
                                             v-model="
-                                                props.instructorData.password
+                                                localInstructorData.password
                                             "
                                         />
                                         <span
@@ -170,9 +170,7 @@
                                         }"
                                         id="specialityInput"
                                         type="text"
-                                        v-model="
-                                            props.instructorData.speciality
-                                        "
+                                        v-model="localInstructorData.speciality"
                                     />
                                     <div class="invalid-feedback">
                                         {{
@@ -184,7 +182,7 @@
                             </div>
                             <div class="w-100 text-end">
                                 <div
-                                    v-if="!props.isLoading"
+                                    v-if="!props.externalLoading"
                                     role="button"
                                     class="btn bg-gradient-dark mt-3"
                                     @click="createIntructor"
@@ -192,7 +190,7 @@
                                     Crear
                                 </div>
                                 <div
-                                    v-if="props.isLoading"
+                                    v-if="props.externalLoading"
                                     role="button"
                                     class="btn bg-gradient-dark mt-3 px-4"
                                 >
@@ -216,41 +214,53 @@
 
 <script setup>
     import { ref, watch, computed, onMounted } from 'vue';
-    import { useSnackbar } from 'vue3-snackbar';
 
-    import InstructorsService from '@/services/useInstructors';
-
-    const snackbar = useSnackbar();
-
-    const emit = defineEmits();
+    const emit = defineEmits(['sendInstructorData']);
     const props = defineProps({
         instructorData: Object,
         validationErrorStatus: Object,
         validationErrorMessage: Object,
-        isLoading: Boolean,
+        externalLoading: Boolean,
     });
     const isLoading = ref(false);
     const showPassword = ref(false);
 
+    const localInstructorData = ref({ ...props.instructorDat });
+
+    watch(
+        localInstructorData,
+        (newValue) => {
+            emit('update:instructorData', newValue);
+        },
+        { deep: true }
+    );
+
     const resetValues = () => {
-        props.instructorData.name = '';
-        props.instructorData.lastName = '';
-        props.instructorData.email = '';
-        props.instructorData.password = '';
-        props.instructorData.speciality = '';
+        emit('update:instructorData', {
+            name: '',
+            lastName: '',
+            email: '',
+            password: '',
+            speciality: '',
+        });
     };
 
     const resetErrorStatusAndMessages = () => {
-        props.validationErrorStatus.name = false;
-        props.validationErrorStatus.lastName = false;
-        props.validationErrorStatus.email = false;
-        props.validationErrorStatus.password = false;
-        props.validationErrorStatus.speciality = false;
-        props.validationErrorMessage.name = '';
-        props.validationErrorMessage.lastName = '';
-        props.validationErrorMessage.email = '';
-        props.validationErrorMessage.password = '';
-        props.validationErrorMessage.speciality = '';
+        emit('update:validationErrorStatus', {
+            name: false,
+            lastName: false,
+            email: false,
+            password: false,
+            speciality: false,
+        });
+
+        emit('update:validationErrorMessage', {
+            name: '',
+            lastName: '',
+            email: '',
+            password: '',
+            speciality: '',
+        });
     };
 
     onMounted(async () => {

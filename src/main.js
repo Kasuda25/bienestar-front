@@ -10,7 +10,7 @@ import 'vue3-snackbar/styles';
 
 import App from '@/App.vue';
 import router from '@/router';
-import instance, { setupInterceptors } from '@/services/useAxios';
+import { setupInterceptors } from '@/services/useAxios';
 
 const app = createApp(App);
 

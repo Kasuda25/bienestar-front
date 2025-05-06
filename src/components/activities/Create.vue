@@ -393,21 +393,32 @@
         });
     };
 
+    const queryInstructors = async () => {
+        await InstructorsService.getInstructors()
+            .then((response) => {
+                instructors.value = response;
+            })
+            .catch((error) => {
+                if (error) {
+                    instructorError.value = true;
+                    snackbar.add({
+                        type: 'error',
+                        text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
+                    });
+                }
+            })
+            .finally(() => {
+                isLoading.value = false;
+            });
+    };
+
     onMounted(async () => {
         isLoading.value = true;
-        try {
-            instructors.value = await InstructorsService.getInstructors();
-        } catch (error) {
-            if (error) {
-                instructorError.value = true;
-                snackbar.add({
-                    type: 'error',
-                    text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
-                });
-            }
-        }
+
+        queryInstructors();
         resetValues();
         resetErrorStatusAndMessages();
+        
         isLoading.value = false;
     });
 

@@ -108,7 +108,6 @@
                                     "
                                 >
                                     <tr
-                                        v-if="instructors"
                                         v-for="instructor in instructors"
                                         :key="instructor.id"
                                         @click="
@@ -157,8 +156,7 @@
 </template>
 
 <script setup>
-    const emit = defineEmits();
-    const props = defineProps({
+    defineProps({
         instructors: Array,
         listError: Boolean,
     });

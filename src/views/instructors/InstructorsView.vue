@@ -1,11 +1,11 @@
 <template>
     <router-view
+        v-model:instructorData="instructorData"
+        v-model:validationErrorStatus="validationErrorStatus"
+        v-model:validationErrorMessage="validationErrorMessage"
         :instructors="instructors"
-        :instructorData="instructorData"
-        :validation-error-status="validationErrorStatus"
-        :validation-error-message="validationErrorMessage"
-        :isLoading="isLoading"
-        :listError="listError"
+        :external-loading="isLoading"
+        :list-error="listError"
         :key="viewKey"
         @sendInstructorData="validateInstructorData"
         @deleteInstructor="deleteInstructor"
@@ -13,8 +13,8 @@
 </template>
 
 <script setup>
-    import { onMounted, onBeforeUnmount, ref, watch, reactive } from 'vue';
-    import { useRoute, useRouter } from 'vue-router';
+    import { onMounted, ref } from 'vue';
+    import { useRouter } from 'vue-router';
     import { useSnackbar } from 'vue3-snackbar';
 
     import InstructorsService from '@/services/useInstructors';
@@ -27,7 +27,7 @@
     const viewKey = ref(0);
 
     const instructors = ref();
-    const instructorData = reactive({
+    const instructorData = ref({
         name: '',
         lastName: '',
         email: '',
@@ -40,26 +40,21 @@
         try {
             instructors.value = await InstructorsService.getInstructors();
         } catch (error) {
-            listError.value = true;
-            snackbar.add({
-                type: 'error',
-                text: 'Ha ocurrido un error. Por favor intenta de nuevo mas tade',
-            });
+            if (error) {
+                listError.value = true;
+                snackbar.add({
+                    type: 'error',
+                    text: 'Ha ocurrido un error. Por favor intenta de nuevo mas tade',
+                });
+            }
         }
     };
 
-    watch(
-        () => instructors.value,
-        () => {
-            queryInstructors();
-        }
-    );
-
     onMounted(async () => {
-        queryInstructors();
+        await queryInstructors();
     });
 
-    const validationErrorStatus = reactive({
+    const validationErrorStatus = ref({
         name: false,
         lastName: false,
         email: false,
@@ -67,7 +62,7 @@
         speciality: false,
     });
 
-    const validationErrorMessage = reactive({
+    const validationErrorMessage = ref({
         name: '',
         lastName: '',
         email: '',
@@ -76,62 +71,70 @@
     });
 
     const validateInstructorData = async (operation) => {
-        if (instructorData.name === '') {
-            validationErrorStatus.name = true;
-            validationErrorMessage.name = 'El nombre es obligatorio';
+        if (instructorData.value.name === '' || !instructorData.value.name) {
+            validationErrorStatus.value.name = true;
+            validationErrorMessage.value.name = 'El nombre es obligatorio';
         } else {
-            validationErrorStatus.name = false;
-            validationErrorMessage.name = '';
+            validationErrorStatus.value.name = false;
+            validationErrorMessage.value.name = '';
         }
 
-        if (instructorData.lastName === '') {
-            validationErrorStatus.lastName = true;
-            validationErrorMessage.lastName = 'El apellido es obligatorio';
+        if (instructorData.value.lastName === '' || !instructorData.value.lastName) {
+            validationErrorStatus.value.lastName = true;
+            validationErrorMessage.value.lastName =
+                'El apellido es obligatorio';
         } else {
-            validationErrorStatus.lastName = false;
-            validationErrorMessage.lastName = '';
+            validationErrorStatus.value.lastName = false;
+            validationErrorMessage.value.lastName = '';
         }
 
-        if (instructorData.email === '') {
-            validationErrorStatus.email = true;
-            validationErrorMessage.email = 'El correo es obligatorio';
+        if (instructorData.value.email === '' || !instructorData.value.email) {
+            validationErrorStatus.value.email = true;
+            validationErrorMessage.value.email = 'El correo es obligatorio';
         } else {
-            validationErrorStatus.email = false;
-            validationErrorMessage.email = '';
+            validationErrorStatus.value.email = false;
+            validationErrorMessage.value.email = '';
         }
 
-        if (instructorData.password != '' && operation === 'update') {
-            if (instructorData.password.length < 8) {
-                validationErrorStatus.password = true;
-                validationErrorMessage.password =
+        if (instructorData.value.password != '' && operation === 'update') {
+            if (instructorData.value.password.length < 8) {
+                validationErrorStatus.value.password = true;
+                validationErrorMessage.value.password =
                     'La contraseña debe tener al menos 8 caracteres';
             } else {
-                validationErrorStatus.password = false;
-                validationErrorMessage.password = '';
+                validationErrorStatus.value.password = false;
+                validationErrorMessage.value.password = '';
             }
-        } else if (instructorData.password === '' && operation === 'create') {
-            validationErrorStatus.password = true;
-            validationErrorMessage.password = 'La contraseña es obligatoria';
+        } else if (
+            instructorData.value.password === ''  || !instructorData.value.password &&
+            operation === 'create'
+        ) {
+            validationErrorStatus.value.password = true;
+            validationErrorMessage.value.password =
+                'La contraseña es obligatoria';
+        } else if (instructorData.value.password.length < 8) {
+            validationErrorStatus.value.password = true;
+            validationErrorMessage.value.password = 'La contraseña debe tener al menos 8 caracteres';
         } else {
-            validationErrorStatus.password = false;
-            validationErrorMessage.password = '';
+            validationErrorStatus.value.password = false;
+            validationErrorMessage.value.password = '';
         }
 
-        if (instructorData.speciality === '') {
-            validationErrorStatus.speciality = true;
-            validationErrorMessage.speciality =
+        if (instructorData.value.speciality === '' || !instructorData.value.speciality) {
+            validationErrorStatus.value.speciality = true;
+            validationErrorMessage.value.speciality =
                 'La especialidad es obligatoria';
         } else {
-            validationErrorStatus.speciality = false;
-            validationErrorMessage.speciality = '';
+            validationErrorStatus.value.speciality = false;
+            validationErrorMessage.value.speciality = '';
         }
 
         if (
-            !validationErrorStatus.name &&
-            !validationErrorStatus.lastName &&
-            !validationErrorStatus.email &&
-            !validationErrorStatus.password &&
-            !validationErrorStatus.speciality
+            !validationErrorStatus.value.name &&
+            !validationErrorStatus.value.lastName &&
+            !validationErrorStatus.value.email &&
+            !validationErrorStatus.value.password &&
+            !validationErrorStatus.value.speciality
         ) {
             sendinstructorData(operation);
         }
@@ -144,28 +147,29 @@
 
             if (operation === 'create') {
                 response = await InstructorsService.createInstructor({
-                    nombre: instructorData.name,
-                    apellido: instructorData.lastName,
-                    email: instructorData.email,
-                    password: instructorData.password,
-                    especialidad: instructorData.speciality,
+                    nombre: instructorData.value.name,
+                    apellido: instructorData.value.lastName,
+                    email: instructorData.value.email,
+                    password: instructorData.value.password,
+                    especialidad: instructorData.value.speciality,
                 });
             }
 
             if (operation === 'update') {
                 response = await InstructorsService.putInstructor(
-                    instructorData.id,
+                    instructorData.value.id,
                     {
-                        nombre: instructorData.name,
-                        apellido: instructorData.lastName,
-                        correo: instructorData.email,
-                        contrasena: instructorData.password,
-                        especialidad: instructorData.speciality,
+                        nombre: instructorData.value.name,
+                        apellido: instructorData.value.lastName,
+                        correo: instructorData.value.email,
+                        contrasena: instructorData.value.password,
+                        especialidad: instructorData.value.speciality,
                     }
                 );
             }
 
             if (response) {
+                await queryInstructors();
                 isLoading.value = false;
 
                 if (operation === 'create') {
@@ -177,7 +181,7 @@
                     resetValues();
 
                     router.push({
-                        name: 'instructor-detail',
+                        name: 'instructors-detail',
                         params: { id: response.id },
                     });
                 }
@@ -192,20 +196,24 @@
                 }
             }
         } catch (error) {
-            isLoading.value = false;
-            snackbar.add({
-                type: 'error',
-                text: error.message,
-            });
+            if (error) {
+                isLoading.value = false;
+                snackbar.add({
+                    type: 'error',
+                    text: error.message,
+                });
+            }
         }
     };
 
     const resetValues = () => {
-        instructorData.name = '';
-        instructorData.lastName = '';
-        instructorData.email = '';
-        instructorData.password = '';
-        instructorData.speciality = '';
+        instructorData.value = {
+            name: '',
+            lastName: '',
+            email: '',
+            password: '',
+            speciality: '',
+        };
     };
 
     const deleteInstructor = async (id) => {
@@ -214,6 +222,7 @@
             const response = await InstructorsService.deleteInstructor(id);
 
             if (response) {
+                await queryInstructors();
                 isLoading.value = false;
                 snackbar.add({
                     type: 'success',
@@ -223,11 +232,13 @@
                 router.go(-1);
             }
         } catch (error) {
-            isLoading.value = false;
-            snackbar.add({
-                type: 'error',
-                text: 'Ha ocurido un error. Po favor intentalo de nuevo más tarde',
-            });
+            if (error) {
+                isLoading.value = false;
+                snackbar.add({
+                    type: 'error',
+                    text: 'Ha ocurido un error. Po favor intentalo de nuevo más tarde',
+                });
+            }
         }
     };
 </script>

@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-    import { onMounted, ref, watch } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useRouter } from 'vue-router';
     import { useSnackbar } from 'vue3-snackbar';
 
@@ -52,13 +52,6 @@
             }
         }
     };
-
-    watch(
-        () => activities.value,
-        () => {
-            queryActivities();
-        }
-    );
 
     onMounted(async () => {
         queryActivities();
@@ -203,6 +196,7 @@
             }
 
             if (response) {
+                await queryActivities();
                 isLoading.value = false;
 
                 if (operation === 'create') {
@@ -257,13 +251,13 @@
             const response = await ActivitiesService.deleteActivity(id);
 
             if (response) {
+                await queryActivities();
                 isLoading.value = false;
                 snackbar.add({
                     type: 'success',
                     text: 'Se ha eliminado la actividad',
                 });
 
-                queryActivities();
                 router.go(-1);
             }
         } catch (error) {

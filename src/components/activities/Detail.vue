@@ -544,20 +544,35 @@
         { deep: true }
     );
 
+    const queryActivity = async () => {
+        await ActivitiesService.getActivity(activityId)
+            .then((response) => {
+                activity.value = response;
+            })
+            .catch((error) => {
+                if (error) {
+                    activityError.value = true;
+                    snackbar.add({
+                        type: 'error',
+                        text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
+                    });
+                }
+            })
+            .finally(() => {
+                isLoading.value = false;
+            });
+    };
+
     onMounted(async () => {
         isLoading.value = true;
-        try {
-            activity.value = await ActivitiesService.getActivity(activityId);
-        } catch (error) {
-            if (error) {
-                activityError.value = true;
-                snackbar.add({
-                    type: 'error',
-                    text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
-                });
-            }
+
+        const id = parseInt(activityId);
+        if (isNaN(id)) {
+            router.replace('/404');
+            return;
         }
-        isLoading.value = false;
+
+        await queryActivity();
     });
 
     const setEditFields = () => {
