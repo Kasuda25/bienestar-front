@@ -101,7 +101,8 @@
         'logOut',
         'setDropdownRef',
     ]);
-    const props = defineProps({
+    
+    defineProps({
         pageName: String,
         pageSubname: String,
         isAsideVisible: Boolean,

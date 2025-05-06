@@ -130,15 +130,12 @@
 </template>
 
 <script setup>
-    import { ref, onMounted, onBeforeUnmount } from 'vue';
-
-    const emit = defineEmits();
-    const props = defineProps({
+const emit = defineEmits(['toggleAside']);
+    
+    defineProps({
         isAsideVisible: Boolean,
         isMobile: Boolean,
     });
-
-    const mainUrl = ref(import.meta.env.VITE_MAIN_URL);
 
     const toggleAside = () => {
         emit('toggleAside');
