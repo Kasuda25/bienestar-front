@@ -6,6 +6,7 @@ class LocalStorage {
 
         localStorage.setItem('user', JSON.stringify(authStore.user));
         localStorage.setItem('token', authStore.token);
+        localStorage.setItem('rtoken', authStore.rtoken);
         localStorage.setItem('isAuth', authStore.isAuth);
     }
 
@@ -14,6 +15,7 @@ class LocalStorage {
 
         authStore.user = JSON.parse(localStorage.getItem('user'));
         authStore.token = localStorage.getItem('token');
+        authStore.rtoken = localStorage.getItem('rtoken');
         authStore.isAuth = localStorage.getItem('isAuth');
     }
 
@@ -22,6 +24,7 @@ class LocalStorage {
 
         localStorage.removeItem('user');
         localStorage.removeItem('token');
+        localStorage.removeItem('rtoken');
         localStorage.removeItem('isAuth');
 
         authStore.user = {};

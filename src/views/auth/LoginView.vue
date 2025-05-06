@@ -75,7 +75,7 @@
     const doLogin = async () => {
         try {
             isLoading.value = true;
-            const response = await AuthService.login(loginData);
+            const response = await AuthService.login(loginData.value);
             if (response) {
                 LocalStorage.createSession();
                 isLoading.value = false;

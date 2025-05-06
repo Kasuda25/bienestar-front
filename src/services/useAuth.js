@@ -9,6 +9,7 @@ class AuthService {
                 const authStore = useAuthStore();
                 authStore.user = response.data.usuario;
                 authStore.token = response.data.token;
+                authStore.rtoken = response.data.refreshToken;
                 authStore.isAuth = true;
                 return response.data;
             }
