@@ -4,7 +4,6 @@
         :isAsideVisible="isAsideVisible"
         :isMobile="isMobile"
         @toggleAside="toggleAside"
-        @logOut="logOut"
     />
     <main
         class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
@@ -18,11 +17,11 @@
             :dropdownOpen="dropdownOpen"
             @toggleAside="toggleAside"
             @toggleDropdown="toggleDropdown"
-            @logOut="logOut"
+            @logout="logout"
             @setDropdownRef="(el) => (dropdownRef = el)"
         />
         <router-view />
-        <Footer :class="[isLogin ? 'd-none' : '']" />
+        <Footer v-if="!isLogin" />
     </main>
     <vue3-snackbar bottom right :duration="4000"></vue3-snackbar>
 </template>
@@ -121,6 +120,18 @@
                 pageSubname.value = 'Detalle';
                 break;
 
+            case 'instructors-list':
+                pageSubname.value = 'Listar';
+                break;
+
+            case 'instructors-create':
+                pageSubname.value = 'Crear';
+                break;
+
+            case 'instructors-detail':
+                pageSubname.value = 'Detalle';
+                break;
+
             default:
                 pageSubname.value = '';
                 break;
@@ -165,7 +176,7 @@
         }
     };
 
-    const logOut = () => {
+    const logout = () => {
         LocalStorage.endSession();
 
         router.push({ name: 'login' });

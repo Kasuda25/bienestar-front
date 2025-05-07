@@ -1,5 +1,6 @@
 <template>
-    <Dashboard
+    <AdminDashboard
+        v-if="authStore.user.rol === 'ADMIN'"
         :activities="activities"
         :instructors="instructors"
         :activity-list-error="activityListError"
@@ -11,13 +12,16 @@
     import { onMounted, ref } from 'vue';
     import { useSnackbar } from 'vue3-snackbar';
 
+    import AdminDashboard from '@/components/dashboard/AdminDashboard.vue';
 
-    import Dashboard from '@/components/dashboard/Dashboard.vue';
+    import { useAuthStore } from '@/stores/auth';
 
     import ActivitiesService from '@/services/useActivities';
     import InstructorsService from '@/services/useInstructors';
 
     const snackbar = useSnackbar();
+
+    const authStore = useAuthStore();
 
     const activityListError = ref(false);
     const instructorListError = ref(false);

@@ -19,17 +19,23 @@ const routes = [
         meta: { requiresAuth: true },
     },
     {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('@/views/profile/ProfileView.vue'),
+        meta: { requiresAuth: true },
+    },
+    {
         path: '/activities',
         name: 'activities',
         component: () => import('@/views/activities/ActivitiesView.vue'),
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, role: 'ADMIN' },
         children: activitiesRoutes,
     },
     {
         path: '/instructors',
         name: 'instructors',
         component: () => import('@/views/instructors/InstructorsView.vue'),
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, role: 'ADMIN' },
         children: instructorsRoutes,
     },
     {
@@ -58,6 +64,10 @@ router.beforeEach(async (to, from, next) => {
 
     if (to.meta.requiresAuth && !authStore.isAuth) {
         return next('/login');
+    }
+
+    if (to.path === '/activities' || to.path === '/instructors' && authStore.user.rol !== to.meta.role) {
+        return next('/dashboard');
     }
 
     next();

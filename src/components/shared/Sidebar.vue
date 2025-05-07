@@ -116,12 +116,28 @@
                         </h6>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="">
-                            <i class="material-symbols-rounded opacity-5"
-                                >person</i
+                        <RouterLink
+                            to="/profile"
+                            v-slot="{ isActive, navigate }"
+                            custom
+                        >
+                            <a
+                                :class="[
+                                    'nav-link cursor-pointer',
+                                    isActive
+                                        ? 'active bg-dark text-white'
+                                        : 'text-dark',
+                                ]"
+                                @click="toggleAside(); navigate();"
                             >
-                            <span class="nav-link-text ms-1">Perfil</span>
-                        </a>
+                                <i class="material-symbols-rounded opacity-5"
+                                    >account_circle</i
+                                >
+                                <span class="nav-link-text ms-1"
+                                    >Perfil</span
+                                >
+                            </a>
+                        </RouterLink>
                     </li>
                 </ul>
             </div>

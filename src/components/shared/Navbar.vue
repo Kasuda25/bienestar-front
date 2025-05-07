@@ -62,7 +62,7 @@
                             :class="{ show: dropdownOpen }"
                         >
                             <li class="mb-2">
-                                <div class="dropdown-item border-radius-md">
+                                <div class="dropdown-item border-radius-md" @click="profile">
                                     <div class="d-flex py-1">
                                         <div
                                             class="d-flex flex-column justify-content-center"
@@ -75,7 +75,7 @@
                             <li>
                                 <div
                                     class="dropdown-item border-radius-md"
-                                    @click="logOut"
+                                    @click="logout"
                                 >
                                     <div class="d-flex py-1">
                                         <div
@@ -98,8 +98,9 @@
     const emit = defineEmits([
         'toggleAside',
         'toggleDropdown',
-        'logOut',
+        'logout',
         'setDropdownRef',
+        'profile',
     ]);
     
     defineProps({
@@ -119,8 +120,12 @@
         emit('toggleDropdown');
     };
 
-    const logOut = () => {
-        emit('logOut');
+    const profile = () => {
+        emit('profile');
+    };
+
+    const logout = () => {
+        emit('logout');
     };
 
     const setDropdownRef = (el) => {

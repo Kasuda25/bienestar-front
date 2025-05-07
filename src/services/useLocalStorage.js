@@ -29,6 +29,7 @@ class LocalStorage {
 
         authStore.user = {};
         authStore.token = '';
+        authStore.rtoken = '';
         authStore.isAuth = false;
     }
 }
