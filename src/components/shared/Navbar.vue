@@ -62,7 +62,10 @@
                             :class="{ show: dropdownOpen }"
                         >
                             <li class="mb-2">
-                                <div class="dropdown-item border-radius-md" @click="profile">
+                                <div
+                                    class="dropdown-item border-radius-md"
+                                    @click="profile"
+                                >
                                     <div class="d-flex py-1">
                                         <div
                                             class="d-flex flex-column justify-content-center"
@@ -95,6 +98,9 @@
 </template>
 
 <script setup>
+    import { ref, watch } from 'vue';
+    import { useRoute } from 'vue-router';
+
     const emit = defineEmits([
         'toggleAside',
         'toggleDropdown',
@@ -102,15 +108,90 @@
         'setDropdownRef',
         'profile',
     ]);
-    
+
     defineProps({
-        pageName: String,
-        pageSubname: String,
+        // pageName: String,
+        // pageSubname: String,
         isAsideVisible: Boolean,
         isMobile: Boolean,
         dropdownOpen: Boolean,
         dropdownRef: Object,
     });
+
+    const route = useRoute();
+
+    const pageName = ref('');
+    const pageSubname = ref('');
+
+    const setPageName = () => {
+        const parentRouteName =
+            route.matched.length > 1
+                ? route.matched[route.matched.length - 2].name
+                : route.matched[0]?.name;
+
+        switch (parentRouteName) {
+            case 'dashboard':
+                pageName.value = 'Dashboard';
+                break;
+
+            case 'activities':
+                pageName.value = 'Actividades';
+                break;
+
+            case 'instructors':
+                pageName.value = 'Instructores';
+                break;
+
+            case 'profile':
+                pageName.value = 'Perfil';
+                break;
+
+            default:
+                pageName.value = '';
+                break;
+        }
+    };
+
+    const setPageSubname = () => {
+        switch (route.name) {
+            case 'activities-list':
+                pageSubname.value = 'Listar';
+                break;
+
+            case 'activities-create':
+                pageSubname.value = 'Crear';
+                break;
+
+            case 'activities-detail':
+                pageSubname.value = 'Detalle';
+                break;
+
+            case 'instructors-list':
+                pageSubname.value = 'Listar';
+                break;
+
+            case 'instructors-create':
+                pageSubname.value = 'Crear';
+                break;
+
+            case 'instructors-detail':
+                pageSubname.value = 'Detalle';
+                break;
+
+            default:
+                pageSubname.value = '';
+                break;
+        }
+    };
+
+    watch(
+        () => route.fullPath,
+        () => {
+            setPageName();
+            setPageSubname();
+        },
+        { immediate: true }
+    );
 
     const toggleAside = () => {
         emit('toggleAside');

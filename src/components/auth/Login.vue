@@ -18,42 +18,10 @@
                                     class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1"
                                 >
                                     <h4
-                                        class="text-white font-weight-bolder text-center mt-2 mb-0"
+                                        class="text-white font-weight-bolder text-center my-4"
                                     >
                                         Iniciar sesión
                                     </h4>
-                                    <div class="row mt-3">
-                                        <div class="col-2 text-center ms-auto">
-                                            <a
-                                                class="btn btn-link px-3"
-                                                href="javascript:;"
-                                            >
-                                                <i
-                                                    class="fa fa-facebook text-white text-lg"
-                                                ></i>
-                                            </a>
-                                        </div>
-                                        <div class="col-2 text-center px-1">
-                                            <a
-                                                class="btn btn-link px-3"
-                                                href="javascript:;"
-                                            >
-                                                <i
-                                                    class="fa fa-github text-white text-lg"
-                                                ></i>
-                                            </a>
-                                        </div>
-                                        <div class="col-2 text-center me-auto">
-                                            <a
-                                                class="btn btn-link px-3"
-                                                href="javascript:;"
-                                            >
-                                                <i
-                                                    class="fa fa-google text-white text-lg"
-                                                ></i>
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -119,6 +87,21 @@
                                             }}
                                         </div>
                                     </div>
+                                    <div
+                                        class="form-check form-switch d-flex align-items-center mb-3"
+                                    >
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            id="rememberMe"
+                                            checked
+                                        />
+                                        <label
+                                            class="form-check-label mt mb-0 ms-3"
+                                            for="rememberMe"
+                                            >Recordar contraseña</label
+                                        >
+                                    </div>
                                     <div class="text-center">
                                         <button
                                             v-if="!isLoading"
@@ -143,6 +126,14 @@
                                             </div>
                                         </button>
                                     </div>
+                                    <p class="mt-4 text-sm text-center">
+                                        ¿Olvidaste tu contraseña?
+                                        <a
+                                            href="../pages/sign-up.html"
+                                            class="text-info text-gradient font-weight-bold"
+                                            >Haz clic aquí</a
+                                        >
+                                    </p>
                                 </form>
                             </div>
                         </div>
@@ -203,6 +194,7 @@
     .form-control {
         padding: 10px 10px 10px 12px;
         font-size: 16px;
+        outline: 1px solid #d2d6da;
     }
 
     .form-label {
@@ -230,11 +222,12 @@
 
     .form-control:focus {
         border-color: #007bff;
-        outline: none;
+        outline: 1px solid gray;
     }
 
     .form-control.is-invalid {
         border-color: #dc3545;
+        outline: none;
     }
 
     .invalid-feedback {
