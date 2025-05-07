@@ -1,29 +1,31 @@
 <template>
-    <Sidebar
-        v-if="!isLogin"
-        :isAsideVisible="isAsideVisible"
-        :isMobile="isMobile"
-        @toggleAside="toggleAside"
-    />
-    <main
-        class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
-    >
-        <Navbar
-            :class="[isLogin ? 'd-none' : '']"
-            :pageName="pageName"
-            :pageSubname="pageSubname"
+    <div class="bg-gray-100 vh-100">
+        <Sidebar
+            v-if="!isLogin"
             :isAsideVisible="isAsideVisible"
             :isMobile="isMobile"
-            :dropdownOpen="dropdownOpen"
             @toggleAside="toggleAside"
-            @toggleDropdown="toggleDropdown"
-            @logout="logout"
-            @setDropdownRef="(el) => (dropdownRef = el)"
         />
-        <router-view />
-        <Footer v-if="!isLogin" />
-    </main>
-    <vue3-snackbar bottom right :duration="4000"></vue3-snackbar>
+        <main
+            class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+        >
+            <Navbar
+                :class="[isLogin ? 'd-none' : '']"
+                :pageName="pageName"
+                :pageSubname="pageSubname"
+                :isAsideVisible="isAsideVisible"
+                :isMobile="isMobile"
+                :dropdownOpen="dropdownOpen"
+                @toggleAside="toggleAside"
+                @toggleDropdown="toggleDropdown"
+                @logout="logout"
+                @setDropdownRef="(el) => (dropdownRef = el)"
+            />
+            <router-view />
+            <Footer v-if="!isLogin" />
+        </main>
+        <vue3-snackbar bottom right :duration="4000"></vue3-snackbar>
+    </div>
 </template>
 
 <script setup>
@@ -98,6 +100,10 @@
 
             case 'instructors':
                 pageName.value = 'Instructores';
+                break;
+
+            case 'profile':
+                pageName.value = 'Perfil';
                 break;
 
             default:

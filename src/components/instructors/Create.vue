@@ -24,7 +24,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-else>
+                        <form v-else>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="nameInput"
@@ -32,17 +32,21 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .name,
                                         }"
-                                        id="nameInput"
-                                        type="text"
-                                        v-model="localInstructorData.name"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="nameInput"
+                                            type="text"
+                                            v-model="localInstructorData.name"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{ props.validationErrorMessage.name }}
                                     </div>
@@ -57,17 +61,23 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .lastName,
                                         }"
-                                        id="lastNameInput"
-                                        type="text"
-                                        v-model="localInstructorData.lastName"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="lastNameInput"
+                                            type="text"
+                                            v-model="
+                                                localInstructorData.lastName
+                                            "
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -83,17 +93,21 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .email,
                                         }"
-                                        id="emailInput"
-                                        type="email"
-                                        v-model="localInstructorData.email"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="emailInput"
+                                            type="email"
+                                            v-model="localInstructorData.email"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{ props.validationErrorMessage.email }}
                                     </div>
@@ -108,14 +122,16 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <div class="d-flex">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .password,
+                                        }"
+                                    >
                                         <input
                                             class="form-control"
-                                            :class="{
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .password,
-                                            }"
                                             id="passwordInput"
                                             :type="passwordType"
                                             v-model="
@@ -161,17 +177,23 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .speciality,
                                         }"
-                                        id="specialityInput"
-                                        type="text"
-                                        v-model="localInstructorData.speciality"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="specialityInput"
+                                            type="text"
+                                            v-model="
+                                                localInstructorData.speciality
+                                            "
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -204,7 +226,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

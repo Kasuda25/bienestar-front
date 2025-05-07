@@ -40,32 +40,36 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="nameInput"
-                                        type="text"
-                                        :value="instructor.usuario?.nombre"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .name,
                                         }"
-                                        id="nameInput"
-                                        type="text"
-                                        v-model="localIntructorData.name"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="nameInput"
+                                            type="text"
+                                            :value="instructor.usuario?.nombre"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="nameInput"
+                                            type="text"
+                                            v-model="localIntructorData.name"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{ props.validationErrorMessage.name }}
                                     </div>
@@ -80,32 +84,40 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="lastNameInput"
-                                        type="text"
-                                        :value="instructor.usuario?.apellido"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .lastName,
                                         }"
-                                        id="lastNameInput"
-                                        type="text"
-                                        v-model="localIntructorData.lastName"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="lastNameInput"
+                                            type="text"
+                                            :value="
+                                                instructor.usuario?.apellido
+                                            "
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="lastNameInput"
+                                            type="text"
+                                            v-model="
+                                                localIntructorData.lastName
+                                            "
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -121,32 +133,36 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="emailInput"
-                                        type="email"
-                                        :value="instructor.usuario?.email"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .email,
                                         }"
-                                        id="emailInput"
-                                        type="email"
-                                        v-model="localIntructorData.email"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="emailInput"
+                                            type="email"
+                                            :value="instructor.usuario?.email"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="emailInput"
+                                            type="email"
+                                            v-model="localIntructorData.email"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{ props.validationErrorMessage.email }}
                                     </div>
@@ -161,28 +177,31 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="passwordInput"
-                                        type="password"
-                                        value=""
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .password,
                                         }"
-                                        readonly
-                                    />
-                                    <div v-else class="d-flex">
+                                    >
                                         <input
+                                            v-if="isReadOnly"
                                             class="form-control"
-                                            :class="{
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .password,
+                                            id="passwordInput"
+                                            type="password"
+                                            value=""
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
                                             }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
                                             id="passwordInput"
                                             :type="passwordType"
                                             v-model="
@@ -228,34 +247,38 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="specialityInput"
-                                        type="text"
-                                        :value="instructor.especialidad"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .speciality,
                                         }"
-                                        id="specialityInput"
-                                        type="text"
-                                        v-model="
-                                            localIntructorData.speciality
-                                        "
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="specialityInput"
+                                            type="text"
+                                            :value="instructor.especialidad"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="specialityInput"
+                                            type="text"
+                                            v-model="
+                                                localIntructorData.speciality
+                                            "
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -568,6 +591,8 @@
         }
 
         await queryInstructor();
+
+        resetErrorStatusAndMessages();
 
         if (instructor.value) {
             await queryActivities();

@@ -32,17 +32,21 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .name,
                                         }"
-                                        id="nameInput"
-                                        type="text"
-                                        v-model="localActivityData.name"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="nameInput"
+                                            type="text"
+                                            v-model="localActivityData.name"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{ props.validationErrorMessage.name }}
                                     </div>
@@ -57,10 +61,9 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="[
-                                            'form-control',
                                             {
                                                 'transparent-placeholder':
                                                     !localActivityData.startDate,
@@ -69,12 +72,18 @@
                                                         .startDate,
                                             },
                                         ]"
-                                        id="startDateInput"
-                                        type="date"
-                                        v-model="localActivityData.startDate"
-                                        onfocus="this.showPicker()"
-                                        onkeydown="return false;"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="startDateInput"
+                                            type="date"
+                                            v-model="
+                                                localActivityData.startDate
+                                            "
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -90,10 +99,9 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="[
-                                            'form-control',
                                             {
                                                 'transparent-placeholder':
                                                     !localActivityData.endDate,
@@ -102,12 +110,16 @@
                                                         .endDate,
                                             },
                                         ]"
-                                        id="endDateInput"
-                                        type="date"
-                                        v-model="localActivityData.endDate"
-                                        onfocus="this.showPicker()"
-                                        onkeydown="return false;"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="endDateInput"
+                                            type="date"
+                                            v-model="localActivityData.endDate"
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage.endDate
@@ -124,10 +136,9 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="[
-                                            'form-control',
                                             {
                                                 'transparent-placeholder':
                                                     !localActivityData.startHour,
@@ -136,11 +147,17 @@
                                                         .startHour,
                                             },
                                         ]"
-                                        id="startHourInput"
-                                        type="time"
-                                        v-model="localActivityData.startHour"
-                                        onfocus="this.showPicker()"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="startHourInput"
+                                            type="time"
+                                            v-model="
+                                                localActivityData.startHour
+                                            "
+                                            onfocus="this.showPicker()"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -156,10 +173,9 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="[
-                                            'form-control',
                                             {
                                                 'transparent-placeholder':
                                                     !localActivityData.endHour,
@@ -168,11 +184,15 @@
                                                         .endHour,
                                             },
                                         ]"
-                                        id="endHourInput"
-                                        type="time"
-                                        v-model="localActivityData.endHour"
-                                        onfocus="this.showPicker()"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="endHourInput"
+                                            type="time"
+                                            v-model="localActivityData.endHour"
+                                            onfocus="this.showPicker()"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage.endHour
@@ -189,18 +209,24 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .maxStudents,
                                         }"
-                                        id="maxStudentsInput"
-                                        type="number"
-                                        v-model="localActivityData.maxStudents"
-                                        @keydown="blockInvalidNumberKeys"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="maxStudentsInput"
+                                            type="number"
+                                            v-model="
+                                                localActivityData.maxStudents
+                                            "
+                                            @keydown="blockInvalidNumberKeys"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -214,50 +240,60 @@
                                     <label class="form-label">Instructor</label>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <select
-                                        class="form-select"
+                                    <div
+                                        class="input-group input-group-outline"
                                         for="instructorInput"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .instructor,
                                         }"
-                                        id="instructorInput"
-                                        type="select"
-                                        v-model="localActivityData.instructor"
                                     >
-                                        <option
-                                            v-if="instructorError"
-                                            value=""
-                                            selected
-                                            disabled
+                                        <select
+                                            class="form-control form-select"
+                                            id="instructorInput"
+                                            type="select"
+                                            v-model="
+                                                localActivityData.instructor
+                                            "
                                         >
-                                            No se pudo obtener la lista de
-                                            instructores
-                                        </option>
-                                        <div v-else>
-                                            <div
-                                                v-for="instructor in instructors"
-                                                :key="instructor"
-                                            >
-                                                <option :value="instructor.id">
-                                                    {{
-                                                        instructor.usuario
-                                                            .nombre
-                                                    }}
-                                                    {{
-                                                        instructor.usuario
-                                                            .apellido
-                                                    }}
-                                                </option>
-                                            </div>
                                             <option
+                                                v-if="instructorError"
+                                                value=""
                                                 selected
-                                                hidden
                                                 disabled
-                                            ></option>
-                                        </div>
-                                    </select>
+                                            >
+                                                No se pudo obtener la lista de
+                                                instructores
+                                            </option>
+                                            <div v-else>
+                                                <option
+                                                    selected
+                                                    hidden
+                                                    disabled
+                                                >
+                                                    Selecciona
+                                                </option>
+                                                <div
+                                                    v-for="instructor in instructors"
+                                                    :key="instructor"
+                                                >
+                                                    <option
+                                                        :value="instructor.id"
+                                                    >
+                                                        {{
+                                                            instructor.usuario
+                                                                .nombre
+                                                        }}
+                                                        {{
+                                                            instructor.usuario
+                                                                .apellido
+                                                        }}
+                                                    </option>
+                                                </div>
+                                            </div>
+                                        </select>
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -275,17 +311,21 @@
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .location,
                                         }"
-                                        id="lacationInput"
-                                        type="text"
-                                        v-model="localActivityData.location"
-                                    />
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="lacationInput"
+                                            type="text"
+                                            v-model="localActivityData.location"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -415,10 +455,10 @@
     onMounted(async () => {
         isLoading.value = true;
 
-        queryInstructors();
+        await queryInstructors();
         resetValues();
         resetErrorStatusAndMessages();
-        
+
         isLoading.value = false;
     });
 

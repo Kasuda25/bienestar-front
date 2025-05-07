@@ -34,36 +34,40 @@
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="nameInput"
-                                        >Nombre</label
+                                        ><strong>Nombre</strong></label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="nameInput"
-                                        type="text"
-                                        :value="activity.nombre"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .name,
                                         }"
-                                        id="nameInput"
-                                        type="text"
-                                        v-model="localActivityData.name"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="nameInput"
+                                            type="text"
+                                            :value="activity.nombre"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="nameInput"
+                                            type="text"
+                                            v-model="localActivityData.name"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{ props.validationErrorMessage.name }}
                                     </div>
@@ -74,29 +78,13 @@
                                     <label
                                         class="form-label"
                                         for="startDateInput"
-                                        >Fecha de inicio</label
+                                        ><strong>Fecha de inicio</strong></label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="startDateInput"
-                                        type="text"
-                                        :value="formatStartDate"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="[
-                                            'form-control',
                                             {
                                                 'transparent-placeholder':
                                                     !localActivityData.startDate,
@@ -105,12 +93,33 @@
                                                         .startDate,
                                             },
                                         ]"
-                                        id="startDateInput"
-                                        type="date"
-                                        v-model="localActivityData.startDate"
-                                        onfocus="this.showPicker()"
-                                        onkeydown="return false;"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="startDateInput"
+                                            type="text"
+                                            :value="formatStartDate"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="startDateInput"
+                                            type="date"
+                                            v-model="
+                                                localActivityData.startDate
+                                            "
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -122,29 +131,13 @@
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="endDateInput"
-                                        >Fecha de fin</label
+                                        ><strong>Fecha de fin</strong></label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="endDateInput"
-                                        type="text"
-                                        :value="formatEndDate"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="[
-                                            'form-control',
                                             {
                                                 'transparent-placeholder':
                                                     !localActivityData.endDate,
@@ -153,12 +146,31 @@
                                                         .endDate,
                                             },
                                         ]"
-                                        id="endDateInput"
-                                        type="date"
-                                        v-model="localActivityData.endDate"
-                                        onfocus="this.showPicker()"
-                                        onkeydown="return false;"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="endDateInput"
+                                            type="text"
+                                            :value="formatEndDate"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="endDateInput"
+                                            type="date"
+                                            v-model="localActivityData.endDate"
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage.endDate
@@ -171,29 +183,13 @@
                                     <label
                                         class="form-label"
                                         for="startHourInput"
-                                        >Hora de inicio</label
+                                        ><strong>Hora de inicio</strong></label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="startHourInput"
-                                        type="text"
-                                        :value="formatStartHour"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="[
-                                            'form-control',
                                             {
                                                 'transparent-placeholder':
                                                     !localActivityData.startHour,
@@ -202,12 +198,33 @@
                                                         .startHour,
                                             },
                                         ]"
-                                        id="startHourInput"
-                                        type="time"
-                                        v-model="localActivityData.startHour"
-                                        onfocus="this.showPicker()"
-                                        onkeydown="return false;"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="startHourInput"
+                                            type="text"
+                                            :value="formatStartHour"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="startHourInput"
+                                            type="time"
+                                            v-model="
+                                                localActivityData.startHour
+                                            "
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -219,29 +236,13 @@
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="endHourInput"
-                                        >Hora de fin</label
+                                        ><strong>Hora de fin</strong></label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="endHourInput"
-                                        type="text"
-                                        :value="formatEndHour"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="[
-                                            'form-control',
                                             {
                                                 'transparent-placeholder':
                                                     !localActivityData.endHour,
@@ -250,12 +251,31 @@
                                                         .endHour,
                                             },
                                         ]"
-                                        id="endHourInput"
-                                        type="time"
-                                        v-model="localActivityData.endHour"
-                                        onfocus="this.showPicker()"
-                                        onkeydown="return false;"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="endHourInput"
+                                            type="text"
+                                            :value="formatEndHour"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="endHourInput"
+                                            type="time"
+                                            v-model="localActivityData.endHour"
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage.endHour
@@ -268,36 +288,44 @@
                                     <label
                                         class="form-label"
                                         for="maxStudentsInput"
-                                        >Máximo de estudiantes</label
+                                        ><strong
+                                            >Máximo de estudiantes</strong
+                                        ></label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="maxStudentsInput"
-                                        type="text"
-                                        :value="activity.maxEstudiantes"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .maxStudents,
                                         }"
-                                        id="maxStudentsInput"
-                                        type="number"
-                                        v-model="localActivityData.maxStudents"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="maxStudentsInput"
+                                            type="text"
+                                            :value="activity.maxEstudiantes"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="maxStudentsInput"
+                                            type="number"
+                                            v-model="
+                                                localActivityData.maxStudents
+                                            "
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -308,75 +336,88 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
-                                    <label class="form-label">Instructor</label>
+                                    <label class="form-label"
+                                        ><strong>Instructor</strong></label
+                                    >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="instructorInput"
-                                        type="text"
-                                        :value="
-                                            activity.instructor?.nombre
-                                                ?.nombreCompleto
-                                        "
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <select
-                                        v-else
-                                        class="form-select"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .instructor,
                                         }"
-                                        for="instructorInput"
-                                        id="instructorInput"
-                                        type="select"
-                                        :v-model="localActivityData.instructor"
                                     >
-                                        <option
-                                            v-if="instructorError"
-                                            value=""
-                                            selected
-                                            disabled
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="instructorInput"
+                                            type="text"
+                                            :value="
+                                                activity.instructor?.nombre
+                                                    ?.nombreCompleto
+                                            "
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <select
+                                            v-else
+                                            class="form-control form-select"
+                                            for="instructorInput"
+                                            id="instructorInput"
+                                            type="select"
+                                            :v-model="
+                                                localActivityData.instructor
+                                            "
                                         >
-                                            No se pudo obtener la lista de
-                                            instructores
-                                        </option>
-                                        <div v-else>
                                             <option
-                                                :value="activity.instructor?.id"
+                                                v-if="instructorError"
+                                                value=""
                                                 selected
+                                                disabled
                                             >
-                                                {{
-                                                    activity.instructor?.nombre
-                                                        ?.nombreCompleto
-                                                }}
+                                                No se pudo obtener la lista de
+                                                instructores
                                             </option>
-                                            <div
-                                                v-for="instructor in instructores"
-                                                :key="instructor"
-                                            >
-                                                <option :value="instructor.id">
+                                            <div v-else>
+                                                <option
+                                                    :value="
+                                                        activity.instructor?.id
+                                                    "
+                                                    selected
+                                                >
                                                     {{
-                                                        instructor.usuario
-                                                            .nombre
-                                                    }}
-                                                    {{
-                                                        instructor.usuario
-                                                            .apellido
+                                                        activity.instructor
+                                                            ?.nombre
+                                                            ?.nombreCompleto
                                                     }}
                                                 </option>
+                                                <div
+                                                    v-for="instructor in instructores"
+                                                    :key="instructor"
+                                                >
+                                                    <option
+                                                        :value="instructor.id"
+                                                    >
+                                                        {{
+                                                            instructor.usuario
+                                                                .nombre
+                                                        }}
+                                                        {{
+                                                            instructor.usuario
+                                                                .apellido
+                                                        }}
+                                                    </option>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </select>
+                                        </select>
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -390,36 +431,40 @@
                                     <label
                                         class="form-label"
                                         for="lacationInput"
-                                        >Ubicación</label
+                                        ><strong>Ubicación</strong></label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input
-                                        v-if="isReadOnly"
-                                        class="form-control"
-                                        id="lacationInput"
-                                        type="text"
-                                        :value="activity.ubicacion"
-                                        tabindex="-1"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
-                                    <input
-                                        v-else
-                                        class="form-control"
+                                    <div
+                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .location,
                                         }"
-                                        id="lacationInput"
-                                        type="text"
-                                        v-model="localActivityData.location"
-                                    />
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="lacationInput"
+                                            type="text"
+                                            :value="activity.ubicacion"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="lacationInput"
+                                            type="text"
+                                            v-model="localActivityData.location"
+                                        />
+                                    </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
@@ -573,6 +618,7 @@
         }
 
         await queryActivity();
+        resetErrorStatusAndMessages();
     });
 
     const setEditFields = () => {

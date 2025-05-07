@@ -7,25 +7,22 @@
         >
             <div class="sidenav-header">
                 <button
-                    class="btn btn-secondary mb-0 mt-1 me-1 end-0 position-absolute"
+                    class="btn mb-0 mt-1 me-1 end-0 position-absolute"
                     @click="toggleAside"
                     v-if="isAsideVisible && isMobile"
                 >
                     <i class="fas fa-times"></i>
                 </button>
                 <a
-                    class="navbar-brand px-4 py-3 m-0"
+                    class="navbar-brand text-center px-4 py-3 m-0"
                     href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard "
                     target="_blank"
                 >
                     <img
                         src="../../assets/img/logo-ct-dark.png"
                         class="navbar-brand-img"
-                        width="26"
-                        height="26"
                         alt="main_logo"
                     />
-                    <span class="ms-1 text-sm text-dark">Creative Tim</span>
                 </a>
             </div>
             <hr class="horizontal dark mt-0 mb-2" />
@@ -47,7 +44,10 @@
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="toggleAside(); navigate();"
+                                @click="
+                                    toggleAside();
+                                    navigate();
+                                "
                             >
                                 <i class="material-symbols-rounded opacity-5"
                                     >dashboard</i
@@ -71,7 +71,10 @@
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="toggleAside(); navigate();"
+                                @click="
+                                    toggleAside();
+                                    navigate();
+                                "
                             >
                                 <i class="material-symbols-rounded opacity-5"
                                     >task</i
@@ -96,7 +99,10 @@
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="toggleAside(); navigate();"
+                                @click="
+                                    toggleAside();
+                                    navigate();
+                                "
                             >
                                 <i class="material-symbols-rounded opacity-5"
                                     >person</i
@@ -128,16 +134,25 @@
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="toggleAside(); navigate();"
+                                @click="
+                                    toggleAside();
+                                    navigate();
+                                "
                             >
                                 <i class="material-symbols-rounded opacity-5"
                                     >account_circle</i
                                 >
-                                <span class="nav-link-text ms-1"
-                                    >Perfil</span
-                                >
+                                <span class="nav-link-text ms-1">Perfil</span>
                             </a>
                         </RouterLink>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link text-dark cursor-pointer" @click="logout">
+                            <i class="material-symbols-rounded opacity-5"
+                                >logout</i
+                            >
+                            <span class="nav-link-text ms-1">Cerrar sesión</span>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -146,8 +161,8 @@
 </template>
 
 <script setup>
-const emit = defineEmits(['toggleAside']);
-    
+    const emit = defineEmits(['toggleAside']);
+
     defineProps({
         isAsideVisible: Boolean,
         isMobile: Boolean,
@@ -155,6 +170,10 @@ const emit = defineEmits(['toggleAside']);
 
     const toggleAside = () => {
         emit('toggleAside');
+    };
+
+    const logout = () => {
+        emit('logout');
     };
 </script>
 

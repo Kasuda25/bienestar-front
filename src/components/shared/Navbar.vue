@@ -6,7 +6,7 @@
     >
         <div class="container-fluid py-1 pe-3 ps-0">
             <button
-                class="btn btn-secondary mb-0 me-3 sidebar-button z-index-1032"
+                class="btn btn-outline-secondary mb-0 me-3 sidebar-button z-index-1032"
                 @click="toggleAside"
                 v-if="isMobile"
             >

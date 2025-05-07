@@ -66,7 +66,11 @@ router.beforeEach(async (to, from, next) => {
         return next('/login');
     }
 
-    if (to.path === '/activities' || to.path === '/instructors' && authStore.user.rol !== to.meta.role) {
+    if (to.path === '/activities' && authStore.user.rol !== to.meta.role) {
+        return next('/dashboard');
+    }
+
+    if (to.path === '/instructors' && authStore.user.rol !== to.meta.role) {
         return next('/dashboard');
     }
 
