@@ -7,6 +7,9 @@
         <div class="container-fluid py-1 pe-3 ps-0">
             <button
                 class="btn btn-outline-secondary mb-0 me-3 sidebar-button z-index-1032"
+                :style="{
+                    border: 'none',
+                }"
                 @click="toggleAside"
                 v-if="isMobile"
             >
@@ -58,14 +61,11 @@
                             >
                         </a>
                         <ul
-                            class="dropdown-menu dropdown-menu-end"
+                            class="dropdown-menu dropdown-menu-end py-0"
                             :class="{ show: dropdownOpen }"
                         >
-                            <li class="mb-2">
-                                <div
-                                    class="dropdown-item border-radius-md"
-                                    @click="profile"
-                                >
+                            <li>
+                                <a :href="`/profile`" class="dropdown-item">
                                     <div class="d-flex py-1">
                                         <div
                                             class="d-flex flex-column justify-content-center"
@@ -73,13 +73,10 @@
                                             <span>Perfil</span>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </li>
                             <li>
-                                <div
-                                    class="dropdown-item border-radius-md"
-                                    @click="logout"
-                                >
+                                <div class="dropdown-item" @click="logout">
                                     <div class="d-flex py-1">
                                         <div
                                             class="d-flex flex-column justify-content-center"
@@ -106,12 +103,9 @@
         'toggleDropdown',
         'logout',
         'setDropdownRef',
-        'profile',
     ]);
 
     defineProps({
-        // pageName: String,
-        // pageSubname: String,
         isAsideVisible: Boolean,
         isMobile: Boolean,
         dropdownOpen: Boolean,
@@ -125,9 +119,9 @@
 
     const setPageName = () => {
         const parentRouteName =
-            route.matched.length > 1
+            route.matched.length > 2
                 ? route.matched[route.matched.length - 2].name
-                : route.matched[0]?.name;
+                : route.matched[1]?.name;
 
         switch (parentRouteName) {
             case 'dashboard':
@@ -199,10 +193,6 @@
 
     const toggleDropdown = () => {
         emit('toggleDropdown');
-    };
-
-    const profile = () => {
-        emit('profile');
     };
 
     const logout = () => {

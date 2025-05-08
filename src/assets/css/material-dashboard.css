@@ -4656,6 +4656,7 @@ fieldset:disabled .btn {
 .dropdown-item:focus {
     color: var(--bs-dropdown-link-hover-color);
     background-color: var(--bs-dropdown-link-hover-bg);
+    border-radius: 0.375rem 0rem;
 }
 
 .dropdown-item.active,
