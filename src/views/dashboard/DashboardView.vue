@@ -6,6 +6,7 @@
         :activity-list-error="activityListError"
         :instructor-list-error="instructorListError"
     />
+    <InstructorDashboard v-if="authStore.user.rol === 'INSTRUCTOR'" />
 </template>
 
 <script setup>
@@ -13,6 +14,7 @@
     import { useSnackbar } from 'vue3-snackbar';
 
     import AdminDashboard from '@/components/dashboard/AdminDashboard.vue';
+    import InstructorDashboard from '@/components/dashboard/InstructorDashboard.vue';
 
     import { useAuthStore } from '@/stores/auth';
 
@@ -30,27 +32,29 @@
     const instructors = ref();
 
     onMounted(async () => {
-        try {
-            activities.value = await ActivitiesService.getActivities();
-        } catch (error) {
-            if (error) {
-                activityListError.value = true;
-                snackbar.add({
-                    type: 'error',
-                    text: 'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo mas tade',
-                });
+        if (authStore.user.rol === 'ADMIN') {
+            try {
+                activities.value = await ActivitiesService.getActivities();
+            } catch (error) {
+                if (error) {
+                    activityListError.value = true;
+                    snackbar.add({
+                        type: 'error',
+                        text: 'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo mas tade',
+                    });
+                }
             }
-        }
 
-        try {
-            instructors.value = await InstructorsService.getInstructors();
-        } catch (error) {
-            if (error) {
-                instructorListError.value = true;
-                snackbar.add({
-                    type: 'error',
-                    text: 'Ha ocurrido un error al obtener la lista de instructores. Por favor intenta de nuevo mas tade',
-                });
+            try {
+                instructors.value = await InstructorsService.getInstructors();
+            } catch (error) {
+                if (error) {
+                    instructorListError.value = true;
+                    snackbar.add({
+                        type: 'error',
+                        text: 'Ha ocurrido un error al obtener la lista de instructores. Por favor intenta de nuevo mas tade',
+                    });
+                }
             }
         }
     });

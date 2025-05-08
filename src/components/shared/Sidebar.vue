@@ -59,7 +59,7 @@
                             </a>
                         </RouterLink>
                     </li>
-                    <li class="nav-item">
+                    <li v-if="authStore.user.rol === 'ADMIN'" class="nav-item">
                         <RouterLink
                             to="/activities"
                             v-slot="{ isActive, navigate }"
@@ -87,8 +87,7 @@
                             </a>
                         </RouterLink>
                     </li>
-
-                    <li class="nav-item">
+                    <li v-if="authStore.user.rol === 'ADMIN'" class="nav-item">
                         <RouterLink
                             to="/instructors"
                             v-slot="{ isActive, navigate }"
@@ -170,12 +169,16 @@
 </template>
 
 <script setup>
+    import { useAuthStore } from '@/stores/auth';
+
     const emit = defineEmits(['toggleAside']);
 
     defineProps({
         isAsideVisible: Boolean,
         isMobile: Boolean,
     });
+
+    const authStore = useAuthStore();
 
     const toggleAside = () => {
         emit('toggleAside');
