@@ -110,39 +110,52 @@
                                     <tr
                                         v-for="instructor in instructors"
                                         :key="instructor.id"
-                                        @click="
-                                            $router.push(
-                                                `/instructors/${instructor.id}`
-                                            )
-                                        "
-                                        class="cursor-pointer"
                                     >
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/instructors/${instructor.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark d-flex align-items-center ps-3"
+                                            >
+                                                <div>
+                                                    <img
+                                                        src=""
+                                                        class="avatar avatar-sm me-3"
+                                                    />
+                                                </div>
                                                 <div
                                                     class="d-flex flex-column justify-content-center"
                                                 >
-                                                    <h6 class="mb-0 text-sm">
+                                                    <h6 class="mb-0 text-sm font-weight-bolder opacity-8">
                                                         {{
                                                             instructor.nombreCompleto
                                                         }}
                                                     </h6>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </td>
-                                        <td>
-                                            <span
-                                                class="text-xs font-weight-bold"
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/instructors/${instructor.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                {{ instructor.usuario.email }}
-                                            </span>
+                                                <span class="text-xs font-weight-bolder opacity-6">
+                                                    {{
+                                                        instructor.usuario.email
+                                                    }}
+                                                </span>
+                                            </a>
                                         </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/instructors/${instructor.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                {{ instructor.especialidad }}
-                                            </span>
+                                                <span class="text-xs font-weight-bolder opacity-6">
+                                                    {{
+                                                        instructor.especialidad
+                                                    }}
+                                                </span>
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>

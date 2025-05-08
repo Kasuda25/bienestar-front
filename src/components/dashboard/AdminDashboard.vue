@@ -23,6 +23,7 @@
                                     custom
                                 >
                                     <a
+                                        :href="`/activities`"
                                         class="btn bg-gradient-dark mb-0"
                                         @click="navigate"
                                     >
@@ -120,77 +121,99 @@
                                             5
                                         )"
                                         :key="activity"
-                                        @click="
-                                            $router.push(
-                                                `/activities/${activity.id}`
-                                            )
-                                        "
-                                        class="cursor-pointer"
                                     >
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/activities/${activity.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            >
+                                                <h6
+                                                    class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
                                                 >
-                                                    <h6 class="mb-0 text-sm">
-                                                        {{ activity.nombre }}
-                                                    </h6>
-                                                </div>
-                                            </div>
+                                                    {{ activity.nombre }}
+                                                </h6>
+                                            </a>
                                         </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
-                                                >{{
-                                                    new Date(
-                                                        activity.fechaInicio
-                                                    ).toLocaleDateString(
-                                                        'es-ES'
-                                                    )
-                                                }}
-                                                -
-                                                {{
-                                                    new Date(
-                                                        activity.fechaFin
-                                                    ).toLocaleDateString(
-                                                        'es-ES'
-                                                    )
-                                                }}</span
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/activities/${activity.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                    >{{
+                                                        new Date(
+                                                            activity.fechaInicio
+                                                        ).toLocaleDateString(
+                                                            'es-ES'
+                                                        )
+                                                    }}
+                                                    -
+                                                    {{
+                                                        new Date(
+                                                            activity.fechaFin
+                                                        ).toLocaleDateString(
+                                                            'es-ES'
+                                                        )
+                                                    }}</span
+                                                >
+                                            </a>
                                         </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
-                                                >{{
-                                                    activity.horaInicio.slice(
-                                                        0,
-                                                        5
-                                                    )
-                                                }}
-                                                -
-                                                {{
-                                                    activity.horaFin.slice(0, 5)
-                                                }}</span
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/activities/${activity.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                    >{{
+                                                        activity.horaInicio.slice(
+                                                            0,
+                                                            5
+                                                        )
+                                                    }}
+                                                    -
+                                                    {{
+                                                        activity.horaFin.slice(
+                                                            0,
+                                                            5
+                                                        )
+                                                    }}</span
+                                                >
+                                            </a>
                                         </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
-                                                >{{ activity.ubicacion }}</span
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/activities/${activity.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                    >{{
+                                                        activity.ubicacion
+                                                    }}</span
+                                                >
+                                            </a>
                                         </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
-                                                >{{
-                                                    activity.instructor.nombre
-                                                        .usuario.nombre
-                                                }}
-                                                {{
-                                                    activity.instructor.nombre
-                                                        .usuario.apellido
-                                                }}</span
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/activities/${activity.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                    >{{
+                                                        activity.instructor
+                                                            .nombre.usuario
+                                                            .nombre
+                                                    }}
+                                                    {{
+                                                        activity.instructor
+                                                            .nombre.usuario
+                                                            .apellido
+                                                    }}</span
+                                                >
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -214,6 +237,7 @@
                                     custom
                                 >
                                     <a
+                                        :href="`/instructors`"
                                         class="btn bg-gradient-dark mb-0"
                                         @click="navigate"
                                     >
@@ -303,42 +327,58 @@
                                             5
                                         )"
                                         :key="instructor"
-                                        @click="
-                                            $router.push(
-                                                `/instructors/${instructor.id}`
-                                            )
-                                        "
-                                        class="cursor-pointer"
                                     >
-                                        <td>
-                                            <div
-                                                class="d-flex px-2 py-1 cursor-pointer"
-                                                @click="navigate"
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/instructors/${instructor.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark d-flex align-items-center ps-3"
                                             >
+                                                <div>
+                                                    <img
+                                                        src=""
+                                                        class="avatar avatar-sm me-3"
+                                                    />
+                                                </div>
                                                 <div
                                                     class="d-flex flex-column justify-content-center"
                                                 >
-                                                    <h6 class="mb-0 text-sm">
+                                                    <h6
+                                                        class="mb-0 text-sm font-weight-bolder opacity-8"
+                                                    >
                                                         {{
                                                             instructor.nombreCompleto
                                                         }}
                                                     </h6>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/instructors/${instructor.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                {{ instructor.usuario.email }}
-                                            </span>
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
+                                                    {{
+                                                        instructor.usuario.email
+                                                    }}
+                                                </span>
+                                            </a>
                                         </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/instructors/${instructor.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                {{ instructor.especialidad }}
-                                            </span>
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
+                                                    {{
+                                                        instructor.especialidad
+                                                    }}
+                                                </span>
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>

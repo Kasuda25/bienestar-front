@@ -38,6 +38,7 @@
                             custom
                         >
                             <a
+                                :href="`/dashboard`"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
@@ -65,6 +66,7 @@
                             custom
                         >
                             <a
+                                :href="`/activities`"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
@@ -93,6 +95,7 @@
                             custom
                         >
                             <a
+                                :href="`/instructors`"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
@@ -127,7 +130,8 @@
                             v-slot="{ isActive, navigate }"
                             custom
                         >
-                            <a
+                            <a  
+                                :href="`/profile`"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
@@ -147,11 +151,16 @@
                         </RouterLink>
                     </li>
                     <li class="nav-item">
-                        <div class="nav-link text-dark cursor-pointer" @click="logout">
+                        <div
+                            class="nav-link text-dark cursor-pointer"
+                            @click="logout"
+                        >
                             <i class="material-symbols-rounded opacity-5"
                                 >logout</i
                             >
-                            <span class="nav-link-text ms-1">Cerrar sesión</span>
+                            <span class="nav-link-text ms-1"
+                                >Cerrar sesión</span
+                            >
                         </div>
                     </li>
                 </ul>
