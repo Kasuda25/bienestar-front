@@ -385,37 +385,26 @@
                                                 No se pudo obtener la lista de
                                                 instructores
                                             </option>
-                                            <div v-else>
-                                                <option
-                                                    :value="
-                                                        activity.instructor?.id
-                                                    "
-                                                    selected
-                                                >
-                                                    {{
-                                                        activity.instructor
-                                                            ?.nombre
-                                                            ?.nombreCompleto
-                                                    }}
-                                                </option>
-                                                <div
-                                                    v-for="instructor in instructores"
-                                                    :key="instructor"
-                                                >
-                                                    <option
-                                                        :value="instructor.id"
-                                                    >
-                                                        {{
-                                                            instructor.usuario
-                                                                .nombre
-                                                        }}
-                                                        {{
-                                                            instructor.usuario
-                                                                .apellido
-                                                        }}
-                                                    </option>
-                                                </div>
-                                            </div>
+                                            <option
+                                                v-else
+                                                :value="activity.instructor?.id"
+                                                selected
+                                            >
+                                                {{
+                                                    activity.instructor?.nombre
+                                                        ?.nombreCompleto
+                                                }}
+                                            </option>
+                                            <option
+                                                v-for="instructor in instructores"
+                                                :key="instructor"
+                                                :value="instructor.id"
+                                            >
+                                                {{ instructor.usuario.nombre }}
+                                                {{
+                                                    instructor.usuario.apellido
+                                                }}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="invalid-feedback">

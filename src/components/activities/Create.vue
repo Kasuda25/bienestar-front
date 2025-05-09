@@ -266,32 +266,24 @@
                                                 No se pudo obtener la lista de
                                                 instructores
                                             </option>
-                                            <div v-else>
-                                                <option
-                                                    selected
-                                                    hidden
-                                                    disabled
-                                                >
-                                                    Selecciona
-                                                </option>
-                                                <div
-                                                    v-for="instructor in instructors"
-                                                    :key="instructor"
-                                                >
-                                                    <option
-                                                        :value="instructor.id"
-                                                    >
-                                                        {{
-                                                            instructor.usuario
-                                                                .nombre
-                                                        }}
-                                                        {{
-                                                            instructor.usuario
-                                                                .apellido
-                                                        }}
-                                                    </option>
-                                                </div>
-                                            </div>
+                                            <option
+                                                v-else
+                                                selected
+                                                hidden
+                                                disabled
+                                            >
+                                                Selecciona
+                                            </option>
+                                            <option
+                                                v-for="instructor in instructors"
+                                                :key="instructor"
+                                                :value="instructor.id"
+                                            >
+                                                {{ instructor.usuario.nombre }}
+                                                {{
+                                                    instructor.usuario.apellido
+                                                }}
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="invalid-feedback">
