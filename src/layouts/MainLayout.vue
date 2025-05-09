@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 vh-100">
+    <div class="bg-gray-100 min-vh-100 d-flex flex-column">
         <Sidebar
             :isAsideVisible="isAsideVisible"
             :isMobile="isMobile"
@@ -7,7 +7,7 @@
             @logout="logout"
         />
         <main
-            class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+            class="main-content flex-grow-1 position-relative border-radius-lg"
         >
             <Navbar
                 :pageName="pageName"
