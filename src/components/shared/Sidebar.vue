@@ -15,8 +15,7 @@
                 </button>
                 <a
                     class="navbar-brand text-center px-4 py-3 m-0"
-                    href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard "
-                    target="_blank"
+                    :href="`/`"
                 >
                     <img
                         src="../../assets/img/logo-ct-dark.png"

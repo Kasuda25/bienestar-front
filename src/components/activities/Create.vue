@@ -224,7 +224,7 @@
                                             v-model="
                                                 localActivityData.maxStudents
                                             "
-                                            @keydown="blockInvalidNumberKeys"
+                                            @input="filterNumberInput"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
@@ -458,12 +458,10 @@
         emit('sendActivityData', 'create');
     };
 
-    const blockInvalidNumberKeys = (e) => {
-        const invalidKeys = ['-', '+', '.', ',', 'e', 'E'];
-
-        if (invalidKeys.includes(e.key)) {
-            e.preventDefault();
-        }
+    const filterNumberInput = (e) => {
+        const cleanedValue = e.target.value.replace(/[^\d]/g, '');
+        e.target.value = cleanedValue;
+        localActivityData.value.maxStudents = cleanedValue;
     };
 </script>
 

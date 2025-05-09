@@ -41,16 +41,6 @@
                                             Perfil
                                         </h6>
                                     </div>
-                                    <div class="col-md-4 text-end">
-                                        <a href="javascript:;">
-                                            <i
-                                                class="fas fa-user-edit text-secondary text-sm"
-                                                data-bs-toggle="tooltip"
-                                                data-bs-placement="top"
-                                                title="Edit Profile"
-                                            ></i>
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                             <div class="card-body p-3">
