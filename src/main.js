@@ -1,7 +1,12 @@
+import '@/assets/css/nucleo-icons.css';
+import '@/assets/css/nucleo-svg.css';
+import '@/assets/css/material-dashboard.css';
+import '@/assets/fonts/fontawesome/css/all.min.css';
 import '@/assets/css/style.css';
-import '@/assets/fonts/fontawesome/css/all.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import '@/assets/js/core/popper.min.js';
+import '@/assets/js/core/bootstrap.min.js';
+import '@/assets/js/plugins/perfect-scrollbar.min.js';
+import '@/assets/js/material-dashboard.min.js';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
