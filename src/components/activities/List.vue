@@ -10,7 +10,7 @@
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
                             <h6 class="text-white ps-3 my-auto">
-                                Lista de activities
+                                Lista de actividades
                             </h6>
                             <div class="pe-3">
                                 <RouterLink
