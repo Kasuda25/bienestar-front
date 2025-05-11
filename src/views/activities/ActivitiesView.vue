@@ -45,9 +45,20 @@
         } catch (error) {
             if (error) {
                 listError.value = true;
+                let message =
+                    'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo más tarde.';
+
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
                 snackbar.add({
                     type: 'error',
-                    text: 'Ha ocurrido un error. Por favor intenta de nuevo mas tade',
+                    text: message,
                 });
             }
         }
@@ -224,10 +235,23 @@
             }
         } catch (error) {
             isLoading.value = false;
-            snackbar.add({
-                type: 'error',
-                text: error.message,
-            });
+            if (error) {
+                let message =
+                    'Ha ocurrido un error. Por favor intenta de nuevo más tarde.';
+
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
+                snackbar.add({
+                    type: 'error',
+                    text: message,
+                });
+            }
         }
     };
 
@@ -261,11 +285,22 @@
                 router.go(-1);
             }
         } catch (error) {
+            isLoading.value = false;
             if (error) {
-                isLoading.value = false;
+                let message =
+                    'Ha ocurrido un error al eliminar la actividad. Por favor intenta de nuevo más tarde.';
+
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
                 snackbar.add({
                     type: 'error',
-                    text: 'Ha ocurido un error. Po favor intentalo de nuevo más tarde',
+                    text: message,
                 });
             }
         }

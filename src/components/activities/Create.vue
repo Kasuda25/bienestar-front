@@ -432,10 +432,20 @@
             })
             .catch((error) => {
                 if (error) {
-                    instructorError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de instructores. Por favor intenta de nuevo más tarde.';
+
+                    if (error.type === 'backend') {
+                        message = error.message;
+                    } else if (error.type === 'network') {
+                        message = error.message;
+                    } else if (error.type === 'unknown') {
+                        message = error.message;
+                    }
+
                     snackbar.add({
                         type: 'error',
-                        text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
+                        text: message,
                     });
                 }
             })

@@ -25,8 +25,8 @@
                         <div v-if="instructorError">
                             <div class="d-flex justify-content-center">
                                 <h4 class="my-auto">
-                                    Ha ocurrido un error al obtener la lista de
-                                    instructores
+                                    Ha ocurrido un error al obtener la
+                                    información del instructor
                                 </h4>
                             </div>
                         </div>
@@ -424,10 +424,10 @@
                                 <tbody>
                                     <tr v-if="activitiesError">
                                         <td colspan="4" class="text-center">
-                                            <h4 class="my-auto">
+                                            <h5 class="my-auto">
                                                 Ha ocurrido un error al obtener
                                                 la lista de actividades
-                                            </h4>
+                                            </h5>
                                         </td>
                                     </tr>
                                     <tr
@@ -515,12 +515,14 @@
 <script setup>
     import { ref, onMounted, computed, watch } from 'vue';
     import { useRouter } from 'vue-router';
+    import { useSnackbar } from 'vue3-snackbar';
     import Swal from 'sweetalert2';
 
     import ActivitiesService from '@/services/useActivities';
     import InstructorsService from '@/services/useInstructors';
 
     const router = useRouter();
+    const snackbar = useSnackbar();
 
     const emit = defineEmits(['sendInstructorData']);
     const props = defineProps({
@@ -557,7 +559,21 @@
             })
             .catch((error) => {
                 if (error) {
-                    instructorError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la información de instructor. Por favor intenta de nuevo más tarde.';
+
+                    if (error.type === 'backend') {
+                        message = error.message;
+                    } else if (error.type === 'network') {
+                        message = error.message;
+                    } else if (error.type === 'unknown') {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
                 }
             })
             .finally(() => {
@@ -573,6 +589,21 @@
             .catch((error) => {
                 if (error) {
                     activitiesError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo más tarde.';
+
+                    if (error.type === 'backend') {
+                        message = error.message;
+                    } else if (error.type === 'network') {
+                        message = error.message;
+                    } else if (error.type === 'unknown') {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
                 }
             })
             .finally(() => {

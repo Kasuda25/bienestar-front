@@ -11,7 +11,27 @@ class InstructorsService {
                 return response.data.data;
             }
         } catch (error) {
-            throw new Error(error.response.data.message);
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.message ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
         }
     }
 
@@ -22,7 +42,27 @@ class InstructorsService {
                 return response.data.data;
             }
         } catch (error) {
-            throw new Error(error);
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.message ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
         }
     }
 
@@ -33,7 +73,27 @@ class InstructorsService {
                 return response.data.data;
             }
         } catch (error) {
-            throw new Error(error.response.data.message);
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.message ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
         }
     }
 
@@ -44,7 +104,27 @@ class InstructorsService {
                 return response.data.data;
             }
         } catch (error) {
-            throw new Error(error.response.data.message);
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.message ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
         }
     }
 
@@ -55,7 +135,30 @@ class InstructorsService {
                 return response.data;
             }
         } catch (error) {
-            throw new Error(error);
+            if (error.response) {
+                // Error del backend
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.message ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                // Error de red o sin respuesta
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                // Otro tipo de error inesperado
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
         }
     }
 }

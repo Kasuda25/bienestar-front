@@ -42,9 +42,20 @@
         } catch (error) {
             if (error) {
                 listError.value = true;
+                let message =
+                    'Ha ocurrido un error al obtener la lista de instructores. Por favor intenta de nuevo más tarde.';
+
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
                 snackbar.add({
                     type: 'error',
-                    text: 'Ha ocurrido un error. Por favor intenta de nuevo mas tade',
+                    text: message,
                 });
             }
         }
@@ -79,7 +90,10 @@
             validationErrorMessage.value.name = '';
         }
 
-        if (instructorData.value.lastName === '' || !instructorData.value.lastName) {
+        if (
+            instructorData.value.lastName === '' ||
+            !instructorData.value.lastName
+        ) {
             validationErrorStatus.value.lastName = true;
             validationErrorMessage.value.lastName =
                 'El apellido es obligatorio';
@@ -106,21 +120,25 @@
                 validationErrorMessage.value.password = '';
             }
         } else if (
-            instructorData.value.password === ''  || !instructorData.value.password &&
-            operation === 'create'
+            instructorData.value.password === '' ||
+            (!instructorData.value.password && operation === 'create')
         ) {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña es obligatoria';
         } else if (instructorData.value.password.length < 8) {
             validationErrorStatus.value.password = true;
-            validationErrorMessage.value.password = 'La contraseña debe tener al menos 8 caracteres';
+            validationErrorMessage.value.password =
+                'La contraseña debe tener al menos 8 caracteres';
         } else {
             validationErrorStatus.value.password = false;
             validationErrorMessage.value.password = '';
         }
 
-        if (instructorData.value.speciality === '' || !instructorData.value.speciality) {
+        if (
+            instructorData.value.speciality === '' ||
+            !instructorData.value.speciality
+        ) {
             validationErrorStatus.value.speciality = true;
             validationErrorMessage.value.speciality =
                 'La especialidad es obligatoria';
@@ -232,13 +250,22 @@
                 router.go(-1);
             }
         } catch (error) {
-            if (error) {
-                isLoading.value = false;
-                snackbar.add({
-                    type: 'error',
-                    text: 'Ha ocurido un error. Po favor intentalo de nuevo más tarde',
-                });
+            isLoading.value = false;
+            let message =
+                'Ha ocurrido un error al tratar de eliminar al instructor. Por favor intenta de nuevo más tarde.';
+
+            if (error.type === 'backend') {
+                message = error.message;
+            } else if (error.type === 'network') {
+                message = error.message;
+            } else if (error.type === 'unknown') {
+                message = error.message;
             }
+
+            snackbar.add({
+                type: 'error',
+                text: message,
+            });
         }
     };
 </script>

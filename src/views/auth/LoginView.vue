@@ -82,11 +82,24 @@
                 router.push({ name: 'dashboard' });
             }
         } catch (error) {
-            isLoading.value = false;
-            snackbar.add({
-                type: 'error',
-                text: error.message,
-            });
+            if (error) {
+                isLoading.value = false;
+                let message =
+                    'Ha ocurrido un error al iniciar sesión. Por favor intenta de nuevo más tarde.';
+
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
+                snackbar.add({
+                    type: 'error',
+                    text: message,
+                });
+            }
         }
     };
 </script>

@@ -14,16 +14,26 @@ class AuthService {
                 return response.data;
             }
         } catch (error) {
-            if (!error.response) {
-                throw new Error('Los servicios de Bienestar no están disponibles actualmente. Intente de nuevo más tarde');
-            } else if (error.response.status >= 500) {
-                throw new Error(
-                    'Ha ocurrido un error. Por favor intente de nuevo más tarde'
-                );
-            } else if (error.response.status === 400) {
-                throw new Error('Credenciales incorrectas');
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.error ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
             } else {
-                throw new Error('Error al iniciar sesión');
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
             }
         }
     }
