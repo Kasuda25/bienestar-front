@@ -207,7 +207,7 @@
             }
 
             if (operation === 'update') {
-                response = await StudentService.putInstructor(
+                response = await StudentService.putStudent(
                     studentData.value.id,
                     {
                         nombre: studentData.value.name,
@@ -217,6 +217,7 @@
                         password: studentData.value.password,
                         programaAcademico: studentData.value.program,
                         semestre: studentData.value.semester,
+                        estado: 'ACTIVO'
                     }
                 );
             }

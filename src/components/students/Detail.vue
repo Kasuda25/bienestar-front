@@ -472,7 +472,7 @@
                                         Cancelar
                                     </div>
                                     <div
-                                        v-if="!props.isLoading"
+                                        v-if="!props.externalLoading"
                                         role="button"
                                         class="btn bg-gradient-dark mt-3 me-2"
                                         @click="updateStudent"
@@ -480,7 +480,7 @@
                                         Guardar
                                     </div>
                                     <div
-                                        v-if="props.isLoading"
+                                        v-if="props.externalLoading"
                                         role="button"
                                         class="btn bg-gradient-dark mt-3 me-2 px-4"
                                     >

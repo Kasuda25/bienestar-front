@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-100 min-vh-100 d-flex flex-column">
+    <div v-if="authStore.isAuth" class="bg-gray-100 min-vh-100 d-flex flex-column">
         <Sidebar
             :isAsideVisible="isAsideVisible"
             :isMobile="isMobile"
@@ -27,6 +27,7 @@
 <script setup>
     import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
+    import { useAuthStore } from '@/stores/auth';
 
     import LocalStorage from '@/services/useLocalStorage';
 
@@ -36,6 +37,7 @@
 
     const route = useRoute();
     const router = useRouter();
+    const authStore = useAuthStore();
 
     const dropdownOpen = ref(false);
     const dropdownRef = ref(null);
