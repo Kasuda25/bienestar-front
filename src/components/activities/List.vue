@@ -19,6 +19,7 @@
                                     custom
                                 >
                                     <a
+                                        :href="`/activities/create`"
                                         class="btn btn-light mb-0"
                                         @click="navigate"
                                     >

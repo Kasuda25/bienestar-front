@@ -10,8 +10,6 @@
             class="main-content flex-grow-1 position-relative border-radius-lg"
         >
             <Navbar
-                :pageName="pageName"
-                :pageSubname="pageSubname"
                 :isAsideVisible="isAsideVisible"
                 :isMobile="isMobile"
                 :dropdownOpen="dropdownOpen"

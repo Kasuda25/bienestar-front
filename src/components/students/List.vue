@@ -10,16 +10,16 @@
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
                             <h6 class="text-white ps-3 my-auto">
-                                Lista de instructores
+                                Lista de estudiantes
                             </h6>
-                            <div class="pe-3">
+                            <div v-if="authStore.user.rol === 'ADMIN'" class="pe-3">
                                 <RouterLink
-                                    to="/instructors/create"
+                                    to="/students/create"
                                     v-slot="{ navigate }"
                                     custom
                                 >
                                     <a
-                                        :href="`/instructors/create`"
+                                        :href="`/students/create`"
                                         class="btn btn-light mb-0"
                                         @click="navigate"
                                     >
@@ -35,7 +35,7 @@
                     <div class="card-body px-0 pb-3">
                         <div class="table-responsive p-0 no-scroll">
                             <table class="table align-activitys-center mb-0">
-                                <div v-if="!instructors && !listError">
+                                <div v-if="!students && !listError">
                                     <div class="d-flex justify-content-center">
                                         <div
                                             class="spinner-border"
@@ -48,11 +48,7 @@
                                     </div>
                                 </div>
                                 <thead
-                                    v-if="
-                                        instructors &&
-                                        instructors[0] &&
-                                        !listError
-                                    "
+                                    v-if="students && students[0] && !listError"
                                 >
                                     <tr>
                                         <th
@@ -63,12 +59,17 @@
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
-                                            correo
+                                            Código
                                         </th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
-                                            Especialidad
+                                            Programa
+                                        </th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
+                                            Semestre
                                         </th>
                                     </tr>
                                 </thead>
@@ -79,7 +80,7 @@
                                         >
                                             <h4 class="my-auto">
                                                 Ha ocurrido un error al obtener
-                                                la lista de instructores
+                                                la lista de estudiantes
                                             </h4>
                                         </div>
                                     </div>
@@ -87,8 +88,8 @@
                                 <tbody>
                                     <div
                                         v-if="
-                                            instructors &&
-                                            !instructors[0] &&
+                                            students &&
+                                            !students[0] &&
                                             !listError
                                         "
                                     >
@@ -96,65 +97,67 @@
                                             class="d-flex justify-content-center"
                                         >
                                             <h4 class="my-auto">
-                                                Aún no hay instructores
+                                                Aún no hay estudiantes
                                             </h4>
                                         </div>
                                     </div>
                                 </tbody>
                                 <tbody
-                                    v-if="
-                                        instructors &&
-                                        instructors[0] &&
-                                        !listError
-                                    "
+                                    v-if="students && students[0] && !listError"
                                 >
                                     <tr
-                                        v-for="instructor in instructors"
-                                        :key="instructor.id"
+                                        v-for="student in students"
+                                        :key="student.id"
                                     >
                                         <td class="align-middle">
                                             <a
-                                                :href="`/instructors/${instructor.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark d-flex align-items-center ps-3"
+                                                :href="`/students/${student.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark ps-3"
                                             >
-                                                <div>
-                                                    <img
-                                                        src=""
-                                                        class="avatar avatar-sm me-3"
-                                                    />
-                                                </div>
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
+                                                <span
+                                                    class="h6 mb-0 text-sm font-weight-bolder opacity-8"
                                                 >
-                                                    <h6 class="mb-0 text-sm font-weight-bolder opacity-8">
-                                                        {{
-                                                            instructor.nombreCompleto
-                                                        }}
-                                                    </h6>
-                                                </div>
+                                                    {{ student.nombreCompleto }}
+                                                </span>
                                             </a>
                                         </td>
                                         <td class="align-middle">
                                             <a
-                                                :href="`/instructors/${instructor.id}`"
+                                                :href="`/students/${student.id}`"
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                <span class="text-xs font-weight-bolder opacity-6">
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
                                                     {{
-                                                        instructor.usuario.email
+                                                        student.codigoEstudiantil
                                                     }}
                                                 </span>
                                             </a>
                                         </td>
                                         <td class="align-middle">
                                             <a
-                                                :href="`/instructors/${instructor.id}`"
+                                                :href="`/students/${student.id}`"
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                <span class="text-xs font-weight-bolder opacity-6">
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
                                                     {{
-                                                        instructor.especialidad
+                                                        student.programaAcademico
                                                     }}
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/students/${student.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            >
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
+                                                    {{ student.semestre }}
                                                 </span>
                                             </a>
                                         </td>
@@ -170,8 +173,12 @@
 </template>
 
 <script setup>
+    import { useAuthStore } from '@/stores/auth';
+
     defineProps({
-        instructors: Array,
+        students: Array,
         listError: Boolean,
     });
+
+    const authStore = useAuthStore();
 </script>

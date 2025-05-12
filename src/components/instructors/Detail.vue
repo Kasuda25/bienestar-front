@@ -524,7 +524,12 @@
     const router = useRouter();
     const snackbar = useSnackbar();
 
-    const emit = defineEmits(['sendInstructorData']);
+    const emit = defineEmits([
+        'sendInstructorData',
+        'update:instructorData',
+        'update:validationErrorStatus',
+        'update:validationErrorMessage',
+    ]);
     const props = defineProps({
         instructorData: Object,
         validationErrorStatus: Object,
@@ -562,11 +567,11 @@
                     let message =
                         'Ha ocurrido un error al obtener la información de instructor. Por favor intenta de nuevo más tarde.';
 
-                    if (error.type === 'backend') {
-                        message = error.message;
-                    } else if (error.type === 'network') {
-                        message = error.message;
-                    } else if (error.type === 'unknown') {
+                    if (
+                        error.type === 'backend' ||
+                        error.type === 'network' ||
+                        error.type === 'unknown'
+                    ) {
                         message = error.message;
                     }
 
@@ -592,11 +597,11 @@
                     let message =
                         'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo más tarde.';
 
-                    if (error.type === 'backend') {
-                        message = error.message;
-                    } else if (error.type === 'network') {
-                        message = error.message;
-                    } else if (error.type === 'unknown') {
+                    if (
+                        error.type === 'backend' ||
+                        error.type === 'network' ||
+                        error.type === 'unknown'
+                    ) {
                         message = error.message;
                     }
 
@@ -625,7 +630,10 @@
 
         resetErrorStatusAndMessages();
 
-        if (instructor.value) {
+        if (Object.keys(instructor.value).length === 0) {
+            router.replace('/404');
+            return;
+        } else {
             await queryActivities();
         }
     });

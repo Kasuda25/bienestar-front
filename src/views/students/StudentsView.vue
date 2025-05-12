@@ -1,14 +1,14 @@
 <template>
     <router-view
-        v-model:instructorData="instructorData"
+        v-model:studentData="studentData"
         v-model:validationErrorStatus="validationErrorStatus"
         v-model:validationErrorMessage="validationErrorMessage"
-        :instructors="instructors"
+        :students="students"
         :external-loading="isLoading"
         :list-error="listError"
         :key="viewKey"
-        @sendInstructorData="validateInstructorData"
-        @deleteInstructor="deleteInstructor"
+        @sendStudentData="validateStudentData"
+        @deleteStudent="deleteStudent"
     />
 </template>
 
@@ -17,7 +17,7 @@
     import { useRouter } from 'vue-router';
     import { useSnackbar } from 'vue3-snackbar';
 
-    import InstructorsService from '@/services/useInstructors';
+    import StudentService from '@/services/useStudents.js';
 
     const router = useRouter();
     const snackbar = useSnackbar();
@@ -26,24 +26,26 @@
     const listError = ref(false);
     const viewKey = ref(0);
 
-    const instructors = ref();
-    const instructorData = ref({
+    const students = ref();
+    const studentData = ref({
         name: '',
         lastName: '',
+        uid: null,
         email: '',
         password: '',
-        speciality: '',
+        program: '',
+        semester: null,
         id: null,
     });
 
-    const queryInstructors = async () => {
+    const queryStudents = async () => {
         try {
-            instructors.value = await InstructorsService.getInstructors();
+            students.value = await StudentService.getStudents();
         } catch (error) {
-            if (error) {
+            if (error.response) {
                 listError.value = true;
                 let message =
-                    'Ha ocurrido un error al obtener la lista de instructores. Por favor intenta de nuevo más tarde.';
+                    'Ha ocurrido un error al obtener la lista de estudiantes. Por favor intenta de nuevo más tarde.';
 
                 if (
                     error.type === 'backend' ||
@@ -62,27 +64,31 @@
     };
 
     onMounted(async () => {
-        await queryInstructors();
+        await queryStudents();
     });
 
     const validationErrorStatus = ref({
         name: false,
         lastName: false,
+        uid: false,
         email: false,
         password: false,
-        speciality: false,
+        program: false,
+        semester: false,
     });
 
     const validationErrorMessage = ref({
         name: '',
         lastName: '',
+        uid: '',
         email: '',
         password: '',
-        speciality: '',
+        program: '',
+        semester: '',
     });
 
-    const validateInstructorData = async (operation) => {
-        if (instructorData.value.name === '' || !instructorData.value.name) {
+    const validateStudentData = async (operation) => {
+        if (studentData.value.name === '' || !studentData.value.name) {
             validationErrorStatus.value.name = true;
             validationErrorMessage.value.name = 'El nombre es obligatorio';
         } else {
@@ -90,10 +96,7 @@
             validationErrorMessage.value.name = '';
         }
 
-        if (
-            instructorData.value.lastName === '' ||
-            !instructorData.value.lastName
-        ) {
+        if (studentData.value.lastName === '' || !studentData.value.lastName) {
             validationErrorStatus.value.lastName = true;
             validationErrorMessage.value.lastName =
                 'El apellido es obligatorio';
@@ -102,7 +105,16 @@
             validationErrorMessage.value.lastName = '';
         }
 
-        if (instructorData.value.email === '' || !instructorData.value.email) {
+        if (studentData.value.uid === null || !studentData.value.uid) {
+            validationErrorStatus.value.uid = true;
+            validationErrorMessage.value.uid =
+                'El código estudiantil es obligatorio';
+        } else {
+            validationErrorStatus.value.uid = false;
+            validationErrorMessage.value.uid = '';
+        }
+
+        if (studentData.value.email === '' || !studentData.value.email) {
             validationErrorStatus.value.email = true;
             validationErrorMessage.value.email = 'El correo es obligatorio';
         } else {
@@ -110,8 +122,8 @@
             validationErrorMessage.value.email = '';
         }
 
-        if (instructorData.value.password != '' && operation === 'update') {
-            if (instructorData.value.password.length < 8) {
+        if (studentData.value.password != '' && operation === 'update') {
+            if (studentData.value.password.length < 8) {
                 validationErrorStatus.value.password = true;
                 validationErrorMessage.value.password =
                     'La contraseña debe tener al menos 8 caracteres';
@@ -120,13 +132,13 @@
                 validationErrorMessage.value.password = '';
             }
         } else if (
-            instructorData.value.password === '' ||
-            (!instructorData.value.password && operation === 'create')
+            studentData.value.password === '' ||
+            (!studentData.value.password && operation === 'create')
         ) {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña es obligatoria';
-        } else if (instructorData.value.password.length < 8) {
+        } else if (studentData.value.password.length < 8) {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña debe tener al menos 8 caracteres';
@@ -135,71 +147,94 @@
             validationErrorMessage.value.password = '';
         }
 
-        if (
-            instructorData.value.speciality === '' ||
-            !instructorData.value.speciality
-        ) {
-            validationErrorStatus.value.speciality = true;
-            validationErrorMessage.value.speciality =
-                'La especialidad es obligatoria';
+        if (studentData.value.program === null || !studentData.value.program) {
+            validationErrorStatus.value.program = true;
+            validationErrorMessage.value.program =
+                'El programa académico es obligatorio';
         } else {
-            validationErrorStatus.value.speciality = false;
-            validationErrorMessage.value.speciality = '';
+            validationErrorStatus.value.program = false;
+            validationErrorMessage.value.program = '';
+        }
+
+        if (
+            studentData.value.semester === null ||
+            !studentData.value.semester
+        ) {
+            validationErrorStatus.value.semester = true;
+            validationErrorMessage.value.semester =
+                'El semestre es obligatorio';
+        } else if (studentData.value.semester < 1) {
+            validationErrorStatus.value.semester = true;
+            validationErrorMessage.value.semester =
+                'El semestre no puede ser 0';
+        } else if (studentData.value.semester > 10) {
+            validationErrorStatus.value.semester = true;
+            validationErrorMessage.value.semester =
+                'El semestre no puede ser mayor a 10';
+        } else {
+            validationErrorStatus.value.semester = false;
+            validationErrorMessage.value.semester = '';
         }
 
         if (
             !validationErrorStatus.value.name &&
             !validationErrorStatus.value.lastName &&
+            !validationErrorStatus.value.uid &&
             !validationErrorStatus.value.email &&
             !validationErrorStatus.value.password &&
-            !validationErrorStatus.value.speciality
+            !validationErrorStatus.value.program &&
+            !validationErrorStatus.value.semester
         ) {
-            sendinstructorData(operation);
+            sendStudentData(operation);
         }
     };
 
-    const sendinstructorData = async (operation) => {
+    const sendStudentData = async (operation) => {
         try {
             isLoading.value = true;
             let response;
 
             if (operation === 'create') {
-                response = await InstructorsService.createInstructor({
-                    nombre: instructorData.value.name,
-                    apellido: instructorData.value.lastName,
-                    email: instructorData.value.email,
-                    password: instructorData.value.password,
-                    especialidad: instructorData.value.speciality,
+                response = await StudentService.createStudent({
+                    nombre: studentData.value.name,
+                    apellido: studentData.value.lastName,
+                    codigoEstudiantil: studentData.value.uid,
+                    email: studentData.value.email,
+                    password: studentData.value.password,
+                    programaAcademico: studentData.value.program,
+                    semestre: studentData.value.semester,
                 });
             }
 
             if (operation === 'update') {
-                response = await InstructorsService.putInstructor(
-                    instructorData.value.id,
+                response = await StudentService.putInstructor(
+                    studentData.value.id,
                     {
-                        nombre: instructorData.value.name,
-                        apellido: instructorData.value.lastName,
-                        correo: instructorData.value.email,
-                        contrasena: instructorData.value.password,
-                        especialidad: instructorData.value.speciality,
+                        nombre: studentData.value.name,
+                        apellido: studentData.value.lastName,
+                        codigoEstudiantil: studentData.value.uid,
+                        email: studentData.value.email,
+                        password: studentData.value.password,
+                        programaAcademico: studentData.value.program,
+                        semestre: studentData.value.semester,
                     }
                 );
             }
 
             if (response) {
-                await queryInstructors();
+                await queryStudents();
                 isLoading.value = false;
 
                 if (operation === 'create') {
                     snackbar.add({
                         type: 'success',
-                        text: 'Instructor creado exitosamente',
+                        text: 'Estudiante creado exitosamente',
                     });
 
                     resetValues();
 
                     router.push({
-                        name: 'instructors-detail',
+                        name: 'students-detail',
                         params: { id: response.id },
                     });
                 }
@@ -207,7 +242,7 @@
                 if (operation === 'update') {
                     snackbar.add({
                         type: 'success',
-                        text: 'Instructor actualizado exitosamente',
+                        text: 'Estudiante actualizado exitosamente',
                     });
 
                     viewKey.value++;
@@ -225,26 +260,28 @@
     };
 
     const resetValues = () => {
-        instructorData.value = {
+        studentData.value = {
             name: '',
             lastName: '',
+            uid: '',
             email: '',
             password: '',
-            speciality: '',
+            program: '',
+            semester: '',
         };
     };
 
-    const deleteInstructor = async (id) => {
+    const deleteStudent = async (id) => {
         try {
             isLoading.value = true;
-            const response = await InstructorsService.deleteInstructor(id);
+            const response = await StudentService.deleteStudent(id);
 
             if (response) {
-                await queryInstructors();
+                await queryStudents();
                 isLoading.value = false;
                 snackbar.add({
                     type: 'success',
-                    text: 'Se ha eliminado al instructor',
+                    text: 'Se ha eliminado al estudiante',
                 });
 
                 router.go(-1);
@@ -252,13 +289,13 @@
         } catch (error) {
             isLoading.value = false;
             let message =
-                'Ha ocurrido un error al tratar de eliminar al instructor. Por favor intenta de nuevo más tarde.';
+                'Ha ocurrido un error al tratar de eliminar al estudiante. Por favor intenta de nuevo más tarde.';
 
-            if (error.type === 'backend') {
-                message = error.message;
-            } else if (error.type === 'network') {
-                message = error.message;
-            } else if (error.type === 'unknown') {
+            if (
+                error.type === 'backend' ||
+                error.type === 'network' ||
+                error.type === 'unknown'
+            ) {
                 message = error.message;
             }
 

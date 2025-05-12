@@ -1,12 +1,9 @@
 import axios from './useAxios';
 
-class InstructorsService {
-    async createInstructor(instructor) {
+class StudentsService {
+    async createStudent(student) {
         try {
-            const response = await axios.post(
-                '/admin/agregar-instructor',
-                instructor
-            );
+            const response = await axios.post('/estudiantes', student);
             if (response.status === 201) {
                 return response.data.data;
             }
@@ -35,9 +32,9 @@ class InstructorsService {
         }
     }
 
-    async getInstructors() {
+    async getStudents() {
         try {
-            const response = await axios.get('/admin/instructores-activos');
+            const response = await axios.get('/estudiantes');
             if (response.status === 200) {
                 return response.data.data;
             }
@@ -66,9 +63,9 @@ class InstructorsService {
         }
     }
 
-    async getInstructor(id) {
+    async getStudent(id) {
         try {
-            const response = await axios.get(`/admin/${id}`);
+            const response = await axios.get(`/estudiantes/${id}/perfil`);
             if (response.status === 200) {
                 return response.data.data;
             }
@@ -97,9 +94,9 @@ class InstructorsService {
         }
     }
 
-    async putInstructor(id, instructor) {
+    async putStudent(id, student) {
         try {
-            const response = await axios.put(`/admin/${id}`, instructor);
+            const response = await axios.put(`/estudiantes/${id}`, student);
             if (response.status === 200) {
                 return response.data.data;
             }
@@ -128,9 +125,9 @@ class InstructorsService {
         }
     }
 
-    async deleteInstructor(id) {
+    async deleteStudent(id) {
         try {
-            const response = await axios.delete(`/admin/${id}`);
+            const response = await axios.delete(`/estudiantes/${id}`);
             if (response.status === 200) {
                 return response.data;
             }
@@ -158,6 +155,7 @@ class InstructorsService {
             }
         }
     }
+    
 }
 
-export default new InstructorsService();
+export default new StudentsService();

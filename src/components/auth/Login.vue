@@ -162,7 +162,7 @@
 <script setup>
     import { ref, watch } from 'vue';
 
-    const emit = defineEmits(['login']);
+    const emit = defineEmits(['login', 'update:loginData']);
     const props = defineProps({
         loginData: Object,
         validationErrorStatus: Object,

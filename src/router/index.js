@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import activitiesRoutes from './activities.routes.js';
 import instructorsRoutes from './instructors.routes.js';
+import studentsRoutes from './students.routes.js';
 
 const routes = [
     {
@@ -34,7 +35,7 @@ const routes = [
                 name: 'activities',
                 component: () =>
                     import('@/views/activities/ActivitiesView.vue'),
-                meta: { requiresAuth: true, role: 'ADMIN' },
+                meta: { requiresAuth: true },
                 children: activitiesRoutes,
             },
             {
@@ -42,37 +43,18 @@ const routes = [
                 name: 'instructors',
                 component: () =>
                     import('@/views/instructors/InstructorsView.vue'),
-                meta: { requiresAuth: true, role: 'ADMIN' },
+                meta: { requiresAuth: true },
                 children: instructorsRoutes,
+            },
+            {
+                path: 'students',
+                name: 'students',
+                component: () => import('@/views/students/StudentsView.vue'),
+                meta: { requiresAuth: true },
+                children: studentsRoutes,
             },
         ],
     },
-    // {
-    //     path: '/dashboard',
-    //     name: 'dashboard',
-    //     component: () => import('@/views/dashboard/DashboardView.vue'),
-    //     meta: { requiresAuth: true },
-    // },
-    // {
-    //     path: '/profile',
-    //     name: 'profile',
-    //     component: () => import('@/views/profile/ProfileView.vue'),
-    //     meta: { requiresAuth: true },
-    // },
-    // {
-    //     path: '/activities',
-    //     name: 'activities',
-    //     component: () => import('@/views/activities/ActivitiesView.vue'),
-    //     meta: { requiresAuth: true, role: 'ADMIN' },
-    //     children: activitiesRoutes,
-    // },
-    // {
-    //     path: '/instructors',
-    //     name: 'instructors',
-    //     component: () => import('@/views/instructors/InstructorsView.vue'),
-    //     meta: { requiresAuth: true, role: 'ADMIN' },
-    //     children: instructorsRoutes,
-    // },
     {
         path: '/:pathMatch(.*)*',
         name: 'not-found',
@@ -101,11 +83,19 @@ router.beforeEach(async (to, from, next) => {
         return next('/login');
     }
 
-    if (to.path === '/activities' && authStore.user.rol !== to.meta.role) {
+    if (to.path === '/activities' && authStore.user.rol !== 'ADMIN') {
         return next('/dashboard');
     }
 
-    if (to.path === '/instructors' && authStore.user.rol !== to.meta.role) {
+    if (to.path === '/instructors' && authStore.user.rol !== 'ADMIN') {
+        return next('/dashboard');
+    }
+
+    if (to.path === '/students/create' && authStore.user.rol !== 'ADMIN') {
+        return next('/dashboard');
+    }
+
+    if (to.path === '/students' && authStore.user.rol == 'STUDENT') {
         return next('/dashboard');
     }
 

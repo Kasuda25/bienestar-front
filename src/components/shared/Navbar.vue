@@ -136,6 +136,10 @@
                 pageName.value = 'Instructores';
                 break;
 
+            case 'students':
+                pageName.value = 'Estudiantes';
+                break;
+
             case 'profile':
                 pageName.value = 'Perfil';
                 break;
@@ -169,6 +173,18 @@
                 break;
 
             case 'instructors-detail':
+                pageSubname.value = 'Detalle';
+                break;
+
+            case 'students-list':
+                pageSubname.value = 'Listar';
+                break;
+
+            case 'students-create':
+                pageSubname.value = 'Crear';
+                break;
+
+            case 'students-detail':
                 pageSubname.value = 'Detalle';
                 break;
 

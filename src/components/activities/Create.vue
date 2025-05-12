@@ -252,7 +252,6 @@
                                         <select
                                             class="form-control form-select"
                                             id="instructorInput"
-                                            type="select"
                                             v-model="
                                                 localActivityData.instructor
                                             "
@@ -366,7 +365,12 @@
 
     const snackbar = useSnackbar();
 
-    const emit = defineEmits(['sendActivityData']);
+    const emit = defineEmits([
+        'sendActivityData',
+        'update:activityData',
+        'update:validationErrorStatus',
+        'update:validationErrorMessage',
+    ]);
     const props = defineProps({
         activityData: Object,
         validationErrorStatus: Object,

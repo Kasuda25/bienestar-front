@@ -99,7 +99,7 @@
                                     v-if="
                                         activities &&
                                         !activities[0] &&
-                                        !listError
+                                        !activityListError
                                     "
                                 >
                                     <div class="d-flex justify-content-center">
@@ -112,7 +112,7 @@
                                     v-if="
                                         activities &&
                                         activities[0] &&
-                                        !listError
+                                        !activityListError
                                     "
                                 >
                                     <tr

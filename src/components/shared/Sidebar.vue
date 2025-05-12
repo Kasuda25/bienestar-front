@@ -114,7 +114,34 @@
                             </a>
                         </RouterLink>
                     </li>
-
+                    <li v-if="authStore.user.rol === 'ADMIN' || authStore.user.rol === 'INSTRUCTOR'" class="nav-item">
+                        <RouterLink
+                            to="/students"
+                            v-slot="{ isActive, navigate }"
+                            custom
+                        >
+                            <a
+                                :href="`/students`"
+                                :class="[
+                                    'nav-link cursor-pointer',
+                                    isActive
+                                        ? 'active bg-dark text-white'
+                                        : 'text-dark',
+                                ]"
+                                @click="
+                                    toggleAside();
+                                    navigate();
+                                "
+                            >
+                                <i class="material-symbols-rounded opacity-5"
+                                    >person</i
+                                >
+                                <span class="nav-link-text ms-1"
+                                    >Estudiantes</span
+                                >
+                            </a>
+                        </RouterLink>
+                    </li>
                     <li class="nav-item mt-3">
                         <h6
                             class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5"

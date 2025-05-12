@@ -9,11 +9,11 @@
                         <div
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
-                            <h6 class="text-white ps-3 my-auto">Actividad</h6>
+                            <h6 class="text-white ps-3 my-auto">Estudiante</h6>
                         </div>
                     </div>
                     <div class="card-body pb-2">
-                        <div v-if="isLoading && !activityError">
+                        <div v-if="isStudentLoading && !studentError">
                             <div class="d-flex justify-content-center">
                                 <div class="spinner-border" role="status">
                                     <span class="visually-hidden"
@@ -22,19 +22,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="activityError">
+                        <div v-if="studentError">
                             <div class="d-flex justify-content-center">
                                 <h4 class="my-auto">
-                                    Ha ocurrido un error al obtener la lista de
-                                    actividades
+                                    Ha ocurrido un error al obtener la
+                                    información del estudiante
                                 </h4>
                             </div>
                         </div>
-                        <div v-else-if="!isLoading && !activityError">
+                        <div v-else-if="!isStudentLoading && !studentError">
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="nameInput"
-                                        ><strong>Nombre</strong></label
+                                        >Nombre</label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
@@ -51,7 +51,7 @@
                                             class="form-control"
                                             id="nameInput"
                                             type="text"
-                                            :value="activity.nombre"
+                                            :value="student.nombre"
                                             tabindex="-1"
                                             :style="{
                                                 pointerEvents: 'none',
@@ -65,7 +65,7 @@
                                             class="form-control"
                                             id="nameInput"
                                             type="text"
-                                            v-model="localActivityData.name"
+                                            v-model="localStudentData.name"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
@@ -77,220 +77,8 @@
                                 <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
-                                        for="startDateInput"
-                                        ><strong>Fecha de inicio</strong></label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="[
-                                            {
-                                                'transparent-placeholder':
-                                                    !localActivityData.startDate,
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .startDate,
-                                            },
-                                        ]"
-                                    >
-                                        <input
-                                            v-if="isReadOnly"
-                                            class="form-control"
-                                            id="startDateInput"
-                                            type="text"
-                                            :value="formatStartDate"
-                                            tabindex="-1"
-                                            :style="{
-                                                pointerEvents: 'none',
-                                                backgroundColor: '#fff',
-                                                cursor: 'default',
-                                            }"
-                                            readonly
-                                        />
-                                        <input
-                                            v-else
-                                            class="form-control"
-                                            id="startDateInput"
-                                            type="date"
-                                            v-model="
-                                                localActivityData.startDate
-                                            "
-                                            onfocus="this.showPicker()"
-                                            onkeydown="return false;"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .startDate
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="endDateInput"
-                                        ><strong>Fecha de fin</strong></label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="[
-                                            {
-                                                'transparent-placeholder':
-                                                    !localActivityData.endDate,
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .endDate,
-                                            },
-                                        ]"
-                                    >
-                                        <input
-                                            v-if="isReadOnly"
-                                            class="form-control"
-                                            id="endDateInput"
-                                            type="text"
-                                            :value="formatEndDate"
-                                            tabindex="-1"
-                                            :style="{
-                                                pointerEvents: 'none',
-                                                backgroundColor: '#fff',
-                                                cursor: 'default',
-                                            }"
-                                            readonly
-                                        />
-                                        <input
-                                            v-else
-                                            class="form-control"
-                                            id="endDateInput"
-                                            type="date"
-                                            v-model="localActivityData.endDate"
-                                            onfocus="this.showPicker()"
-                                            onkeydown="return false;"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage.endDate
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="startHourInput"
-                                        ><strong>Hora de inicio</strong></label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="[
-                                            {
-                                                'transparent-placeholder':
-                                                    !localActivityData.startHour,
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .startHour,
-                                            },
-                                        ]"
-                                    >
-                                        <input
-                                            v-if="isReadOnly"
-                                            class="form-control"
-                                            id="startHourInput"
-                                            type="text"
-                                            :value="formatStartHour"
-                                            tabindex="-1"
-                                            :style="{
-                                                pointerEvents: 'none',
-                                                backgroundColor: '#fff',
-                                                cursor: 'default',
-                                            }"
-                                            readonly
-                                        />
-                                        <input
-                                            v-else
-                                            class="form-control"
-                                            id="startHourInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.startHour
-                                            "
-                                            onfocus="this.showPicker()"
-                                            onkeydown="return false;"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .startHour
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="endHourInput"
-                                        ><strong>Hora de fin</strong></label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="[
-                                            {
-                                                'transparent-placeholder':
-                                                    !localActivityData.endHour,
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .endHour,
-                                            },
-                                        ]"
-                                    >
-                                        <input
-                                            v-if="isReadOnly"
-                                            class="form-control"
-                                            id="endHourInput"
-                                            type="text"
-                                            :value="formatEndHour"
-                                            tabindex="-1"
-                                            :style="{
-                                                pointerEvents: 'none',
-                                                backgroundColor: '#fff',
-                                                cursor: 'default',
-                                            }"
-                                            readonly
-                                        />
-                                        <input
-                                            v-else
-                                            class="form-control"
-                                            id="endHourInput"
-                                            type="time"
-                                            v-model="localActivityData.endHour"
-                                            onfocus="this.showPicker()"
-                                            onkeydown="return false;"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage.endHour
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="maxStudentsInput"
-                                        ><strong
-                                            >Máximo de estudiantes</strong
-                                        ></label
+                                        for="lastNameInput"
+                                        >Apellido</label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
@@ -299,15 +87,15 @@
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
-                                                    .maxStudents,
+                                                    .lastName,
                                         }"
                                     >
                                         <input
                                             v-if="isReadOnly"
                                             class="form-control"
-                                            id="maxStudentsInput"
+                                            id="lastNameInput"
                                             type="text"
-                                            :value="activity.maxEstudiantes"
+                                            :value="student.apellido"
                                             tabindex="-1"
                                             :style="{
                                                 pointerEvents: 'none',
@@ -319,26 +107,65 @@
                                         <input
                                             v-else
                                             class="form-control"
-                                            id="maxStudentsInput"
+                                            id="lastNameInput"
+                                            type="text"
+                                            v-model="localStudentData.lastName"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .lastName
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="uidInput"
+                                        >Código estudiantil</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus.uid,
+                                        }"
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="uidInput"
                                             type="number"
-                                            v-model="
-                                                localActivityData.maxStudents
-                                            "
-                                            @input="filterNumberInput"
+                                            :value="student.codigoEstudiantil"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="uidInput"
+                                            type="number"
+                                            v-model="localStudentData.uid"
+                                            @input="filterUidInput"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .maxStudents
-                                        }}
+                                        {{ props.validationErrorMessage.uid }}
                                     </div>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
-                                    <label class="form-label"
-                                        ><strong>Instructor</strong></label
+                                    <label class="form-label" for="emailInput"
+                                        >Correo</label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
@@ -347,18 +174,125 @@
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
-                                                    .instructor,
+                                                    .email,
                                         }"
                                     >
                                         <input
                                             v-if="isReadOnly"
                                             class="form-control"
-                                            id="instructorInput"
+                                            id="emailInput"
+                                            type="email"
+                                            :value="student.email"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="emailInput"
+                                            type="email"
+                                            v-model="localStudentData.email"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{ props.validationErrorMessage.email }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
+                                        for="passwordInput"
+                                        >Contraseña</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .password,
+                                        }"
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="passwordInput"
+                                            type="password"
+                                            value=""
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="passwordInput"
+                                            :type="passwordType"
+                                            v-model="localStudentData.password"
+                                        />
+                                        <span
+                                            v-if="!showPassword"
+                                            class="my-auto ms-2 pt-2"
+                                            :style="{ cursor: 'pointer' }"
+                                            @click="toggleShowPassword"
+                                            ><i
+                                                class="material-symbols-rounded opacity-5"
+                                                >visibility</i
+                                            ></span
+                                        >
+                                        <span
+                                            v-if="showPassword"
+                                            class="my-auto ms-2 pt-2"
+                                            :style="{ cursor: 'pointer' }"
+                                            @click="toggleShowPassword"
+                                            ><span
+                                                class="material-symbols-rounded opacity-5"
+                                            >
+                                                visibility_off
+                                            </span></span
+                                        >
+                                    </div>
+                                    <div class="invalid-feedback d-block">
+                                        {{
+                                            props.validationErrorMessage
+                                                .password
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="programInput"
+                                        >Programa académico</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .program,
+                                        }"
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="programInput"
                                             type="text"
-                                            :value="
-                                                activity.instructor?.nombre
-                                                    ?.nombreCompleto
-                                            "
+                                            :value="student.programaAcademico"
                                             tabindex="-1"
                                             :style="{
                                                 pointerEvents: 'none',
@@ -370,47 +304,75 @@
                                         <select
                                             v-else
                                             class="form-control form-select"
-                                            for="instructorInput"
-                                            id="instructorInput"
-                                            :v-model="
-                                                localActivityData.instructor
-                                            "
+                                            for="programInput"
+                                            id="programInput"
+                                            :v-model="localStudentData.program"
                                         >
                                             <option
-                                                v-if="instructorError"
-                                                value=""
-                                                selected
-                                                disabled
-                                            >
-                                                No se pudo obtener la lista de
-                                                instructores
-                                            </option>
-                                            <option
-                                                v-else
-                                                :value="activity.instructor?.id"
+                                                :value="localStudentData.program"
                                                 selected
                                             >
                                                 {{
-                                                    activity.instructor?.nombre
-                                                        ?.nombreCompleto
+                                                    localStudentData.program
                                                 }}
                                             </option>
                                             <option
-                                                v-for="instructor in instructores"
-                                                :key="instructor"
-                                                :value="instructor.id"
+                                                value="Tecnología En Sistemas De Gestión De Calidad"
                                             >
-                                                {{ instructor.usuario.nombre }}
-                                                {{
-                                                    instructor.usuario.apellido
-                                                }}
+                                                Tecnología En Sistemas De
+                                                Gestión De Calidad
+                                            </option>
+                                            <option
+                                                value="Tecnología En Desarrollo De Sistemas De Información Y De Software"
+                                            >
+                                                Tecnología En Desarrollo De
+                                                Sistemas De Información Y De
+                                                Software
+                                            </option>
+                                            <option
+                                                value="Tecnología En Gestión De Servicios Turísticos Y Hoteleros"
+                                            >
+                                                Tecnología En Gestión De
+                                                Servicios Turísticos Y Hoteleros
+                                            </option>
+                                            <option
+                                                value="Licenciatura en Bilingüismo con énfasis en Inglés"
+                                            >
+                                                Licenciatura en Bilingüismo con
+                                                énfasis en Inglés
+                                            </option>
+                                            <option value="Contaduría Pública">
+                                                Contaduría Pública
+                                            </option>
+                                            <option
+                                                value="Administración de Empresas"
+                                            >
+                                                Administración de Empresas
+                                            </option>
+                                            <option value="Derecho">
+                                                Derecho
+                                            </option>
+                                            <option
+                                                value="Ingeniería Industrial"
+                                            >
+                                                Ingeniería Industrial
+                                            </option>
+                                            <option
+                                                value="Ingeniería de Sistemas"
+                                            >
+                                                Ingeniería de Sistemas
+                                            </option>
+                                            <option
+                                                value="Administración de empresas turísticas y hoteleras"
+                                            >
+                                                Administración de empresas
+                                                turísticas y hoteleras
                                             </option>
                                         </select>
                                     </div>
                                     <div class="invalid-feedback">
                                         {{
-                                            props.validationErrorMessage
-                                                .instructor
+                                            props.validationErrorMessage.program
                                         }}
                                     </div>
                                 </div>
@@ -419,8 +381,8 @@
                                 <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
-                                        for="lacationInput"
-                                        ><strong>Ubicación</strong></label
+                                        for="semesterInput"
+                                        >Semestre</label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
@@ -429,15 +391,15 @@
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
-                                                    .location,
+                                                    .semester,
                                         }"
                                     >
                                         <input
                                             v-if="isReadOnly"
                                             class="form-control"
-                                            id="lacationInput"
-                                            type="text"
-                                            :value="activity.ubicacion"
+                                            id="semesterInput"
+                                            type="number"
+                                            :value="student.semestre"
                                             tabindex="-1"
                                             :style="{
                                                 pointerEvents: 'none',
@@ -449,15 +411,16 @@
                                         <input
                                             v-else
                                             class="form-control"
-                                            id="lacationInput"
+                                            id="semesterInput"
                                             type="text"
-                                            v-model="localActivityData.location"
+                                            v-model="localStudentData.semester"
+                                            @input="filterSemesterInput"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
-                                                .location
+                                                .semester
                                         }}
                                     </div>
                                 </div>
@@ -472,10 +435,10 @@
                                         Editar
                                     </div>
                                     <div
-                                        v-if="!externalLoading"
+                                        v-if="!props.externalLoading"
                                         role="button"
                                         class="btn bg-danger mt-3"
-                                        @click="deleteActivity"
+                                        @click="deleteStudent"
                                         :style="{
                                             color: 'white',
                                         }"
@@ -483,7 +446,7 @@
                                         Eliminar
                                     </div>
                                     <div
-                                        v-if="externalLoading"
+                                        v-if="props.externalLoading"
                                         role="button"
                                         class="btn bg-danger mt-3 px-4"
                                         :style="{
@@ -509,15 +472,15 @@
                                         Cancelar
                                     </div>
                                     <div
-                                        v-if="!externalLoading"
+                                        v-if="!props.isLoading"
                                         role="button"
                                         class="btn bg-gradient-dark mt-3 me-2"
-                                        @click="updateActivity"
+                                        @click="updateStudent"
                                     >
                                         Guardar
                                     </div>
                                     <div
-                                        v-if="externalLoading"
+                                        v-if="props.isLoading"
                                         role="button"
                                         class="btn bg-gradient-dark mt-3 me-2 px-4"
                                     >
@@ -546,52 +509,50 @@
     import { useSnackbar } from 'vue3-snackbar';
     import Swal from 'sweetalert2';
 
-    import ActivitiesService from '@/services/useActivities';
-    import InstructorsService from '@/services/useInstructors';
+    import StudentService from '@/services/useStudents';
 
     const router = useRouter();
     const snackbar = useSnackbar();
 
     const emit = defineEmits([
-        'sendActivityData',
-        'update:activityData',
+        'sendStudentData',
+        'update:studentData',
         'update:validationErrorStatus',
         'update:validationErrorMessage',
     ]);
     const props = defineProps({
-        activityData: Object,
+        studentData: Object,
         validationErrorStatus: Object,
         validationErrorMessage: Object,
         externalLoading: Boolean,
     });
-    const activityId = router.currentRoute.value.params.id;
-    const isLoading = ref(false);
+    const studentId = router.currentRoute.value.params.id;
+    const isStudentLoading = ref(false);
     const isReadOnly = ref(true);
-    const activityError = ref(false);
-    const instructorError = ref(false);
+    const studentError = ref(false);
+    const showPassword = ref(false);
 
-    const activity = ref({});
-    const instructores = ref([]);
+    const student = ref({});
 
-    const localActivityData = ref({ ...props.activityData });
+    const localStudentData = ref({ ...props.studentData });
 
     watch(
-        localActivityData,
+        localStudentData,
         (newVal) => {
-            emit('update:activityData', newVal);
+            emit('update:studentData', newVal);
         },
         { deep: true }
     );
 
-    const queryActivity = async () => {
-        await ActivitiesService.getActivity(activityId)
+    const queryStudent = async () => {
+        await StudentService.getStudent(studentId)
             .then((response) => {
-                activity.value = response;
+                student.value = response;
             })
             .catch((error) => {
                 if (error) {
                     let message =
-                        'Ha ocurrido un error al obtener la información de la actividad. Por favor intenta de nuevo más tarde.';
+                        'Ha ocurrido un error al obtener la información de estudiante. Por favor intenta de nuevo más tarde.';
 
                     if (
                         error.type === 'backend' ||
@@ -608,97 +569,92 @@
                 }
             })
             .finally(() => {
-                isLoading.value = false;
+                isStudentLoading.value = false;
             });
     };
 
     onMounted(async () => {
-        isLoading.value = true;
+        isStudentLoading.value = true;
 
-        const id = parseInt(activityId);
+        const id = parseInt(studentId);
         if (isNaN(id)) {
             router.replace('/404');
             return;
         }
 
-        await queryActivity();
+        await queryStudent();
 
-        if (Object.keys(activity.value).length === 0) {
+        resetErrorStatusAndMessages();
+
+        if (Object.keys(student.value).length === 0) {
             router.replace('/404');
             return;
         }
+    });
 
-        resetErrorStatusAndMessages();
+    const toggleShowPassword = () => {
+        showPassword.value = !showPassword.value;
+    };
+
+    const passwordType = computed(() => {
+        if (showPassword.value) {
+            return 'text';
+        }
+        return 'password';
     });
 
     const setEditFields = () => {
-        localActivityData.value.name = activity.value.nombre;
-        localActivityData.value.startDate = activity.value.fechaInicio;
-        localActivityData.value.endDate = activity.value.fechaFin;
-        localActivityData.value.startHour = activity.value.horaInicio;
-        localActivityData.value.endHour = activity.value.horaFin;
-        localActivityData.value.maxStudents = activity.value.maxEstudiantes;
-        localActivityData.value.instructor = activity.value.instructor.id;
-        localActivityData.value.location = activity.value.ubicacion;
-        localActivityData.value.id = activity.value.id;
+        localStudentData.value.name = student.value.nombre;
+        localStudentData.value.lastName = student.value.apellido;
+        localStudentData.value.uid = student.value.codigoEstudiantil;
+        localStudentData.value.email = student.value.email;
+        localStudentData.value.password = student.value.password;
+        localStudentData.value.program = student.value.programaAcademico;
+        localStudentData.value.semester = student.value.semestre;
+        localStudentData.value.id = student.value.id;
     };
 
     const resetErrorStatusAndMessages = () => {
         emit('update:validationErrorStatus', {
             name: false,
-            startDate: false,
-            endDate: false,
-            startHour: false,
-            endHour: false,
-            maxStudents: false,
-            instructor: false,
-            location: false,
+            lastName: false,
+            uid: false,
+            email: false,
+            password: false,
+            program: false,
+            semester: false,
         });
 
         emit('update:validationErrorMessage', {
             name: '',
-            startDate: '',
-            endDate: '',
-            startHour: '',
-            endHour: '',
-            maxStudents: '',
-            instructor: '',
-            location: '',
+            lastName: '',
+            uid: '',
+            email: '',
+            password: '',
+            program: '',
+            semester: '',
         });
     };
 
     const startEdit = async () => {
-        isLoading.value = true;
         setEditFields();
         isReadOnly.value = false;
-        try {
-            instructores.value = await InstructorsService.getInstructors();
-        } catch (error) {
-            if (error) {
-                instructorError.value = true;
-                snackbar.add({
-                    type: 'error',
-                    text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
-                });
-            }
-        }
-        isLoading.value = false;
     };
 
     const cancelEdit = () => {
         resetErrorStatusAndMessages();
-        instructorError.value = false;
+        studentError.value = false;
         isReadOnly.value = true;
     };
 
-    const updateActivity = () => {
-        emit('sendActivityData', 'update');
+    const updateStudent = () => {
+        emit('sendStudentData', 'update');
     };
 
-    const deleteActivity = () => {
+    const deleteStudent = () => {
         Swal.fire({
-            title: 'Eliminar actividad',
-            text: `Se eliminará la actividad ${activity.value.nombre}. Esta acción no se puede revertir.`,
+            title: 'Eliminar estudiante',
+            text: `Se eliminará al estudiante ${student.value.nombreCompleto}. Esta acción no se puede revertir.`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#212529',
@@ -710,45 +666,20 @@
             },
         }).then(async (result) => {
             if (result.isConfirmed) {
-                emit('deleteActivity', activity.value.id);
+                emit('deleteStudent', student.value.id);
             }
         });
     };
 
-    const formatStartDate = computed(() => {
-        const date = activity.value.fechaInicio;
-        if (!date) return '';
-        const [year, month, day] = date.split('-');
-        return `${day}-${month}-${year}`;
-    });
-
-    const formatEndDate = computed(() => {
-        const date = activity.value.fechaFin;
-        if (!date) return '';
-        const [year, month, day] = date.split('-');
-        return `${day}-${month}-${year}`;
-    });
-
-    const formatTimeTo12Hour = (time) => {
-        if (!time || !time.includes(':')) return '';
-        const [hour, minute] = time.split(':');
-        let formattedHour = parseInt(hour, 10);
-        const ampm = formattedHour >= 12 ? 'PM' : 'AM';
-        formattedHour = formattedHour % 12;
-        formattedHour = formattedHour ? formattedHour : 12;
-        return `${formattedHour}:${minute} ${ampm}`;
-    };
-
-    const formatStartHour = computed(() =>
-        formatTimeTo12Hour(activity.value.horaInicio)
-    );
-    const formatEndHour = computed(() =>
-        formatTimeTo12Hour(activity.value.horaFin)
-    );
-
-    const filterNumberInput = (e) => {
+    const filterUidInput = (e) => {
         const cleanedValue = e.target.value.replace(/[^\d]/g, '');
         e.target.value = cleanedValue;
-        localActivityData.value.maxStudents = cleanedValue;
+        localStudentData.value.uid = cleanedValue;
+    };
+
+    const filterSemesterInput = (e) => {
+        const cleanedValue = e.target.value.replace(/[^\d]/g, '');
+        e.target.value = cleanedValue;
+        localStudentData.value.semester = cleanedValue;
     };
 </script>

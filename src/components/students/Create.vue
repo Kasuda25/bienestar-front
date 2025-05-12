@@ -10,7 +10,7 @@
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
                             <h6 class="text-white ps-3 my-auto">
-                                Agregar Instrcutor
+                                Agregar Estudiante
                             </h6>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                                             class="form-control"
                                             id="nameInput"
                                             type="text"
-                                            v-model="localInstructorData.name"
+                                            v-model="localStudentData.name"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
@@ -73,9 +73,7 @@
                                             class="form-control"
                                             id="lastNameInput"
                                             type="text"
-                                            v-model="
-                                                localInstructorData.lastName
-                                            "
+                                            v-model="localStudentData.lastName"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
@@ -83,6 +81,33 @@
                                             props.validationErrorMessage
                                                 .lastName
                                         }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="uidInput"
+                                        >Código estudiantil</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus.uid,
+                                        }"
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="uidInput"
+                                            type="number"
+                                            v-model="localStudentData.uid"
+                                            @input="filterNumberInput"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{ props.validationErrorMessage.uid }}
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +130,7 @@
                                             class="form-control"
                                             id="emailInput"
                                             type="email"
-                                            v-model="localInstructorData.email"
+                                            v-model="localStudentData.email"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
@@ -134,9 +159,7 @@
                                             class="form-control"
                                             id="passwordInput"
                                             :type="passwordType"
-                                            v-model="
-                                                localInstructorData.password
-                                            "
+                                            v-model="localStudentData.password"
                                         />
                                         <span
                                             v-if="!showPassword"
@@ -170,10 +193,97 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
+                                    <label class="form-label" for="programInput"
+                                        >Programa académico</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        for="instructorInput"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .program,
+                                        }"
+                                    >
+                                        <select
+                                            class="form-control form-select"
+                                            id="programInput"
+                                            v-model="localStudentData.program"
+                                        >
+                                            <option
+                                                selectd
+                                                hidden
+                                                disabled
+                                            ></option>
+                                            <option
+                                                value="Tecnología En Sistemas De Gestión De Calidad"
+                                            >
+                                                Tecnología En Sistemas De
+                                                Gestión De Calidad
+                                            </option>
+                                            <option
+                                                value="Tecnología En Desarrollo De Sistemas De Información Y De Software"
+                                            >
+                                                Tecnología En Desarrollo De
+                                                Sistemas De Información Y De
+                                                Software
+                                            </option>
+                                            <option
+                                                value="Tecnología En Gestión De Servicios Turísticos Y Hoteleros"
+                                            >
+                                                Tecnología En Gestión De
+                                                Servicios Turísticos Y Hoteleros
+                                            </option>
+                                            <option
+                                                value="Licenciatura en Bilingüismo con énfasis en Inglés"
+                                            >
+                                                Licenciatura en Bilingüismo con
+                                                énfasis en Inglés
+                                            </option>
+                                            <option value="Contaduría Pública">
+                                                Contaduría Pública
+                                            </option>
+                                            <option
+                                                value="Administración de Empresas"
+                                            >
+                                                Administración de Empresas
+                                            </option>
+                                            <option value="Derecho">
+                                                Derecho
+                                            </option>
+                                            <option
+                                                value="Ingeniería Industrial"
+                                            >
+                                                Ingeniería Industrial
+                                            </option>
+                                            <option
+                                                value="Ingeniería de Sistemas"
+                                            >
+                                                Ingeniería de Sistemas
+                                            </option>
+                                            <option
+                                                value="Administración de empresas turísticas y hoteleras"
+                                            >
+                                                Administración de empresas
+                                                turísticas y hoteleras
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage.program
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
-                                        for="specialityInput"
-                                        >Especialidad</label
+                                        for="semesterInput"
+                                        >Semestre</label
                                     >
                                 </div>
                                 <div class="col-12 col-md-8">
@@ -182,22 +292,21 @@
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
-                                                    .speciality,
+                                                    .semester,
                                         }"
                                     >
                                         <input
                                             class="form-control"
-                                            id="specialityInput"
-                                            type="text"
-                                            v-model="
-                                                localInstructorData.speciality
-                                            "
+                                            id="semesterInput"
+                                            type="number"
+                                            v-model="localStudentData.semester"
+                                            @input="filterNumberInput"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
                                         {{
                                             props.validationErrorMessage
-                                                .speciality
+                                                .semester
                                         }}
                                     </div>
                                 </div>
@@ -207,7 +316,7 @@
                                     v-if="!props.externalLoading"
                                     role="button"
                                     class="btn bg-gradient-dark mt-3"
-                                    @click="createIntructor"
+                                    @click="createStudent"
                                 >
                                     Crear
                                 </div>
@@ -238,13 +347,13 @@
     import { ref, watch, computed, onMounted } from 'vue';
 
     const emit = defineEmits([
-        'sendInstructorData',
-        'update:instructorData',
+        'sendStudentData',
+        'update:studentData',
         'update:validationErrorStatus',
         'update:validationErrorMessage',
     ]);
     const props = defineProps({
-        instructorData: Object,
+        studentData: Object,
         validationErrorStatus: Object,
         validationErrorMessage: Object,
         externalLoading: Boolean,
@@ -252,23 +361,25 @@
     const isLoading = ref(false);
     const showPassword = ref(false);
 
-    const localInstructorData = ref({ ...props.instructorData });
+    const localStudentData = ref({ ...props.studentData });
 
     watch(
-        localInstructorData,
+        localStudentData,
         (newValue) => {
-            emit('update:instructorData', newValue);
+            emit('update:studentData', newValue);
         },
         { deep: true }
     );
 
     const resetValues = () => {
-        emit('update:instructorData', {
+        emit('update:studentData', {
             name: '',
             lastName: '',
+            uid: null,
             email: '',
             password: '',
-            speciality: '',
+            program: '',
+            semester: null,
         });
     };
 
@@ -276,17 +387,21 @@
         emit('update:validationErrorStatus', {
             name: false,
             lastName: false,
+            uid: false,
             email: false,
             password: false,
-            speciality: false,
+            program: false,
+            semester: false,
         });
 
         emit('update:validationErrorMessage', {
             name: '',
             lastName: '',
+            uid: '',
             email: '',
             password: '',
-            speciality: '',
+            program: '',
+            semester: '',
         });
     };
 
@@ -306,8 +421,14 @@
         return 'password';
     });
 
-    const createIntructor = () => {
-        emit('sendInstructorData', 'create');
+    const createStudent = () => {
+        emit('sendStudentData', 'create');
+    };
+
+    const filterNumberInput = (e) => {
+        const cleanedValue = e.target.value.replace(/[^\d]/g, '');
+        e.target.value = cleanedValue;
+        localStudentData.value.maxStudents = cleanedValue;
     };
 </script>
 
