@@ -283,6 +283,74 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="dayInput"
+                                        ><strong>Día</strong></label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus.day,
+                                        }"
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="dayInput"
+                                            type="text"
+                                            :value="activity.dia"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <select
+                                            v-else
+                                            class="form-control form-select"
+                                            id="dayInput"
+                                            :v-model="localActivityData.day"
+                                        >
+                                            <option selected hidden disabled>
+                                                Selecciona
+                                            </option>
+                                            <!-- <option value="LUNES">Lunes</option>
+                                            <option value="MARTES">
+                                                Martes
+                                            </option>
+                                            <option value="MIERCOLES">
+                                                Miércoles
+                                            </option>
+                                            <option value="JUEVES">
+                                                Jueves
+                                            </option>
+                                            <option value="VIERNES">
+                                                Viernes
+                                            </option>
+                                            <option value="SABADO">
+                                                Sábado
+                                            </option>
+                                            <option value="DOMINGO">
+                                                Domingo
+                                            </option> -->
+                                        </select>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .instructor
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label
@@ -337,7 +405,7 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
-                                    <label class="form-label"
+                                    <label class="form-label" for="instructorInput"
                                         ><strong>Instructor</strong></label
                                     >
                                 </div>
@@ -396,7 +464,7 @@
                                                 }}
                                             </option>
                                             <option
-                                                v-for="instructor in instructores"
+                                                v-for="instructor in instructors"
                                                 :key="instructor"
                                                 :value="instructor.id"
                                             >
@@ -437,7 +505,7 @@
                                             class="form-control"
                                             id="lacationInput"
                                             type="text"
-                                            :value="activity.ubicacion"
+                                            :value="activity.ubicacion?.nombre"
                                             tabindex="-1"
                                             :style="{
                                                 pointerEvents: 'none',
@@ -446,13 +514,39 @@
                                             }"
                                             readonly
                                         />
-                                        <input
+                                        <select
                                             v-else
-                                            class="form-control"
-                                            id="lacationInput"
-                                            type="text"
-                                            v-model="localActivityData.location"
-                                        />
+                                            class="form-control form-select"
+                                            for="locationInput"
+                                            id="locationInput"
+                                            :v-model="
+                                                localActivityData.location
+                                            "
+                                        >
+                                            <option
+                                                v-if="locationError"
+                                                value=""
+                                                selected
+                                                disabled
+                                            >
+                                                No se pudo obtener la lista de
+                                                ubicaciones
+                                            </option>
+                                            <option
+                                                v-else
+                                                :value="activity.ubicacion?.id"
+                                                selected
+                                            >
+                                                {{ activity.ubicacion?.nombre }}
+                                            </option>
+                                            <option
+                                                v-for="location in locations"
+                                                :key="location"
+                                                :value="location.id"
+                                            >
+                                                {{ location.nombre }}
+                                            </option>
+                                        </select>
                                     </div>
                                     <div class="invalid-feedback">
                                         {{
@@ -548,6 +642,7 @@
 
     import ActivitiesService from '@/services/useActivities';
     import InstructorsService from '@/services/useInstructors';
+    import LocationsService from '@/services/useLocations';
 
     const router = useRouter();
     const snackbar = useSnackbar();
@@ -569,9 +664,11 @@
     const isReadOnly = ref(true);
     const activityError = ref(false);
     const instructorError = ref(false);
+    const locationError = ref(false);
 
     const activity = ref({});
-    const instructores = ref([]);
+    const instructors = ref([]);
+    const locations = ref([]);
 
     const localActivityData = ref({ ...props.activityData });
 
@@ -590,6 +687,7 @@
             })
             .catch((error) => {
                 if (error) {
+                    activityError.value = true;
                     let message =
                         'Ha ocurrido un error al obtener la información de la actividad. Por favor intenta de nuevo más tarde.';
 
@@ -609,6 +707,60 @@
             })
             .finally(() => {
                 isLoading.value = false;
+            });
+    };
+
+    const queryInstructors = async () => {
+        await InstructorsService.getInstructors()
+            .then((response) => {
+                instructors.value = response;
+            })
+            .catch((error) => {
+                if (error) {
+                    instructorError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de instructores. Por favor intenta de nuevo más tarde.';
+
+                    if (
+                        error.type === 'backend' ||
+                        error.type === 'network' ||
+                        error.type === 'unknown'
+                    ) {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
+                }
+            });
+    };
+
+    const queryLocations = async () => {
+        await LocationsService.getLocations()
+            .then((response) => {
+                locations.value = response;
+            })
+            .catch((error) => {
+                if (error) {
+                    locationError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de ubicaciones. Por favor intenta de nuevo más tarde.';
+
+                    if (
+                        error.type === 'backend' ||
+                        error.type === 'network' ||
+                        error.type === 'unknown'
+                    ) {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
+                }
             });
     };
 
@@ -637,9 +789,10 @@
         localActivityData.value.endDate = activity.value.fechaFin;
         localActivityData.value.startHour = activity.value.horaInicio;
         localActivityData.value.endHour = activity.value.horaFin;
+        localActivityData.value.day = 'MIERCOLES';
         localActivityData.value.maxStudents = activity.value.maxEstudiantes;
         localActivityData.value.instructor = activity.value.instructor.id;
-        localActivityData.value.location = activity.value.ubicacion;
+        localActivityData.value.location = activity.value.ubicacion.id;
         localActivityData.value.id = activity.value.id;
     };
 
@@ -671,17 +824,8 @@
         isLoading.value = true;
         setEditFields();
         isReadOnly.value = false;
-        try {
-            instructores.value = await InstructorsService.getInstructors();
-        } catch (error) {
-            if (error) {
-                instructorError.value = true;
-                snackbar.add({
-                    type: 'error',
-                    text: 'Ha ocurrido un error. Por favor intenta de nuevo más tarde',
-                });
-            }
-        }
+        await queryInstructors();
+        await queryLocations();
         isLoading.value = false;
     };
 

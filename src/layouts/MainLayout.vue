@@ -65,7 +65,6 @@
 
     onMounted(() => {
         isLogin.value = true;
-        LocalStorage.restoreSession();
 
         document.addEventListener('click', handleClickOutside);
         checkScreenSize();

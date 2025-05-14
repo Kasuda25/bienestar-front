@@ -190,7 +190,7 @@
                                                 <span
                                                     class="text-xs font-weight-bolder opacity-6"
                                                     >{{
-                                                        activity.ubicacion
+                                                        activity.ubicacion.nombre
                                                     }}</span
                                                 >
                                             </a>

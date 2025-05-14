@@ -142,6 +142,34 @@
                             </a>
                         </RouterLink>
                     </li>
+                    <li v-if="authStore.user.rol === 'ADMIN'" class="nav-item">
+                        <RouterLink
+                            to="/locations"
+                            v-slot="{ isActive, navigate }"
+                            custom
+                        >
+                            <a
+                                :href="`/locations`"
+                                :class="[
+                                    'nav-link cursor-pointer',
+                                    isActive
+                                        ? 'active bg-dark text-white'
+                                        : 'text-dark',
+                                ]"
+                                @click="
+                                    toggleAside();
+                                    navigate();
+                                "
+                            >
+                                <i class="material-symbols-rounded opacity-5"
+                                    >location_on</i
+                                >
+                                <span class="nav-link-text ms-1"
+                                    >Ubicaciones</span
+                                >
+                            </a>
+                        </RouterLink>
+                    </li>
                     <li class="nav-item mt-3">
                         <h6
                             class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5"

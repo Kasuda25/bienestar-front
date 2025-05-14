@@ -33,9 +33,10 @@
         endDate: '',
         startHour: '',
         endHour: '',
+        day: '',
         maxStudents: null,
         instructor: null,
-        location: '',
+        location: null,
         id: null,
     });
 
@@ -74,6 +75,7 @@
         endDate: false,
         startHour: false,
         endHour: false,
+        day: false,
         maxStudents: false,
         instructor: false,
         location: false,
@@ -85,6 +87,7 @@
         endDate: '',
         startHour: '',
         endHour: '',
+        day: '',
         maxStudents: '',
         instructor: '',
         location: '',
@@ -184,9 +187,10 @@
                     fechaFin: activityData.value.endDate,
                     horaInicio: activityData.value.startHour,
                     horaFin: activityData.value.endHour,
+                    dia: activityData.value.day,
                     maxEstudiantes: activityData.value.maxStudents,
                     instructorId: activityData.value.instructor,
-                    ubicacion: activityData.value.location,
+                    ubicacionId: activityData.value.location,
                 });
             }
 
@@ -199,9 +203,10 @@
                         fechaFin: activityData.value.endDate,
                         horaInicio: activityData.value.startHour,
                         horaFin: activityData.value.endHour,
+                        dia: activityData.value.day,
                         maxEstudiantes: activityData.value.maxStudents,
                         instructorId: activityData.value.instructor,
-                        ubicacion: activityData.value.location,
+                        ubicacionId: activityData.value.location,
                     }
                 );
             }
@@ -262,9 +267,10 @@
             endDate: '',
             startHour: '',
             endHour: '',
+            day: '',
             maxStudents: null,
             instructor: null,
-            location: '',
+            location: null,
             id: null,
         };
     };

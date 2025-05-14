@@ -10,23 +10,23 @@
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
                             <h6 class="text-white ps-3 my-auto">
-                                Lista de actividades
+                                Lista de ubicaciones
                             </h6>
                             <div class="pe-3">
                                 <RouterLink
-                                    to="/activities/create"
+                                    to="/locations/create"
                                     v-slot="{ navigate }"
                                     custom
                                 >
                                     <a
-                                        :href="`/activities/create`"
+                                        :href="`/locations/create`"
                                         class="btn btn-light mb-0"
                                         @click="navigate"
                                     >
                                         <i
                                             class="material-symbols-rounded text-sm"
                                             >add</i
-                                        >&nbsp;&nbsp;Crear
+                                        >&nbsp;&nbsp;Agregar
                                     </a>
                                 </RouterLink>
                             </div>
@@ -35,7 +35,7 @@
                     <div class="card-body px-0 pb-3">
                         <div class="table-responsive p-0 no-scroll">
                             <table class="table align-activitys-center mb-0">
-                                <div v-if="!activities && !listError">
+                                <div v-if="!locations && !listError">
                                     <div class="d-flex justify-content-center">
                                         <div
                                             class="spinner-border"
@@ -49,9 +49,7 @@
                                 </div>
                                 <thead
                                     v-if="
-                                        activities &&
-                                        activities[0] &&
-                                        !listError
+                                        locations && locations[0] && !listError
                                     "
                                 >
                                     <tr>
@@ -63,22 +61,12 @@
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
-                                            Fecha
+                                            Capacidad
                                         </th>
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
-                                            Horario
-                                        </th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                        >
-                                            Ubicación
-                                        </th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                        >
-                                            Instructor
+                                            Dias disponibles
                                         </th>
                                     </tr>
                                 </thead>
@@ -89,7 +77,7 @@
                                         >
                                             <h4 class="my-auto">
                                                 Ha ocurrido un error al obtener
-                                                la lista de actividades
+                                                la lista de ubicaciones
                                             </h4>
                                         </div>
                                     </div>
@@ -97,8 +85,8 @@
                                 <tbody>
                                     <div
                                         v-if="
-                                            activities &&
-                                            !activities[0] &&
+                                            locations &&
+                                            !locations[0] &&
                                             !listError
                                         "
                                     >
@@ -106,112 +94,57 @@
                                             class="d-flex justify-content-center"
                                         >
                                             <h4 class="my-auto">
-                                                Aún no hay actividades
+                                                Aún no hay ubicaciones
                                             </h4>
                                         </div>
                                     </div>
                                 </tbody>
                                 <tbody
                                     v-if="
-                                        activities &&
-                                        activities[0] &&
-                                        !listError
+                                        locations && locations[0] && !listError
                                     "
                                 >
                                     <tr
-                                        v-for="activity in activities"
-                                        :key="activity.id"
+                                        v-for="location in locations"
+                                        :key="location.id"
                                     >
                                         <td class="align-middle">
                                             <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                :href="`/locations/${location.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark ps-3"
                                             >
-                                                <h6 class="mb-0 ps-3 text-sm font-weight-bolder opacity-8">
-                                                    {{ activity.nombre }}
-                                                </h6>
+                                                <div
+                                                    class="d-flex flex-column justify-content-center"
+                                                >
+                                                    <h6
+                                                        class="mb-0 text-sm font-weight-bolder opacity-8"
+                                                    >
+                                                        {{ location.nombre }}
+                                                    </h6>
+                                                </div>
                                             </a>
                                         </td>
                                         <td class="align-middle">
                                             <a
-                                                :href="`/activities/${activity.id}`"
+                                                :href="`/locations/${location.id}`"
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
                                                 <span
                                                     class="text-xs font-weight-bolder opacity-6"
                                                 >
-                                                    {{
-                                                        new Date(
-                                                            activity.fechaInicio
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}
-                                                    -
-                                                    {{
-                                                        new Date(
-                                                            activity.fechaFin
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}
+                                                    {{ location.capacidad }}
                                                 </span>
                                             </a>
                                         </td>
                                         <td class="align-middle">
                                             <a
-                                                :href="`/activities/${activity.id}`"
+                                                :href="`/locations/${location.id}`"
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                <span class="text-xs font-weight-bolder opacity-6">
-                                                    {{
-                                                        activity.horaInicio.slice(
-                                                            0,
-                                                            5
-                                                        )
-                                                    }}
-                                                    -
-                                                    {{
-                                                        activity.horaFin.slice(
-                                                            0,
-                                                            5
-                                                        )
-                                                    }}
-                                                </span>
-                                            </a>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
-                                            >
-                                                <span class="text-xs font-weight-bolder opacity-6">
-                                                    {{ activity.ubicacion.nombre }}
-                                                </span>
-                                            </a>
-                                        </td>
-                                        <td class="d-flex align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 ñtext-decoration-none text-dark align-items-center"
-                                            >
-                                                <img
-                                                    src=""
-                                                    class="avatar avatar-sm me-2"
-                                                />
                                                 <span
-                                                    class="text-xs font-weight-bolder opacity-6 my-auto"
+                                                    class="text-xs font-weight-bolder opacity-6"
                                                 >
-                                                    {{
-                                                        activity.instructor
-                                                            .nombre.usuario
-                                                            .nombre
-                                                    }}
-                                                    {{
-                                                        activity.instructor
-                                                            .nombre.usuario
-                                                            .apellido
-                                                    }}
+                                                    {{ location.horario }}
                                                 </span>
                                             </a>
                                         </td>
@@ -228,7 +161,7 @@
 
 <script setup>
     defineProps({
-        activities: Array,
+        locations: Array,
         listError: Boolean,
     });
 </script>

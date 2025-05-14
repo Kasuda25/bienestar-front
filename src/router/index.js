@@ -2,12 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import activitiesRoutes from './activities.routes.js';
 import instructorsRoutes from './instructors.routes.js';
 import studentsRoutes from './students.routes.js';
+import locationsRoutes from './locations.routes.js';
 
 const routes = [
-    {
-        path: '/',
-        redirect: '/login',
-    },
+    // {
+    //     path: '/',
+    //     redirect: '/login',
+    // },
     {
         path: '/login',
         name: 'login',
@@ -53,6 +54,13 @@ const routes = [
                 meta: { requiresAuth: true },
                 children: studentsRoutes,
             },
+            {
+                path: 'locations',
+                name: 'locations',
+                component: () => import('@/views/locations/LocationsView.vue'),
+                meta: { requiresAuth: true },
+                children: locationsRoutes,
+            },
         ],
     },
     {
@@ -75,9 +83,9 @@ router.beforeEach(async (to, from, next) => {
         return next(authStore.isAuth ? '/dashboard' : '/login');
     }
 
-    if (to.path === '/login' && authStore.isAuth) {
-        return next('/dashboard');
-    }
+    // if (to.path === '/login' && authStore.isAuth) {
+    //     return next('/dashboard');
+    // }
 
     if (to.meta.requiresAuth && !authStore.isAuth) {
         return next('/login');

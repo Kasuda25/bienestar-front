@@ -202,6 +202,54 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
+                                    <label class="form-label" for="dayInput"
+                                        >Día</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus.day,
+                                        }"
+                                    >
+                                        <select
+                                            class="form-control form-select"
+                                            id="dayInput"
+                                            v-model="localActivityData.day"
+                                        >
+                                            <option selected hidden disabled>
+                                                Selecciona
+                                            </option>
+                                            <option value="LUNES">Lunes</option>
+                                            <option value="MARTES">
+                                                Martes
+                                            </option>
+                                            <option value="MIERCOLES">
+                                                Miércoles
+                                            </option>
+                                            <option value="JUEVES">
+                                                Jueves
+                                            </option>
+                                            <option value="VIERNES">
+                                                Viernes
+                                            </option>
+                                            <option value="SABADO">
+                                                Sábado
+                                            </option>
+                                            <option value="DOMINGO">
+                                                Domingo
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{ props.validationErrorMessage.day }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
                                         for="maxStudentsInput"
@@ -237,12 +285,15 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
-                                    <label class="form-label">Instructor</label>
+                                    <label
+                                        class="form-label"
+                                        for="instructorInput"
+                                        >Instructor</label
+                                    >
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <div
                                         class="input-group input-group-outline"
-                                        for="instructorInput"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
@@ -310,12 +361,36 @@
                                                     .location,
                                         }"
                                     >
-                                        <input
-                                            class="form-control"
-                                            id="lacationInput"
-                                            type="text"
+                                        <select
+                                            class="form-control form-select"
+                                            id="locationInput"
                                             v-model="localActivityData.location"
-                                        />
+                                        >
+                                            <option
+                                                v-if="locationError"
+                                                value=""
+                                                selected
+                                                disabled
+                                            >
+                                                No se pudo obtener la lista de
+                                                ubicaciones
+                                            </option>
+                                            <option
+                                                v-else
+                                                selected
+                                                hidden
+                                                disabled
+                                            >
+                                                Selecciona
+                                            </option>
+                                            <option
+                                                v-for="location in locations"
+                                                :key="location"
+                                                :value="location.id"
+                                            >
+                                                {{ location.nombre }}
+                                            </option>
+                                        </select>
                                     </div>
                                     <div class="invalid-feedback">
                                         {{
@@ -362,6 +437,7 @@
     import { useSnackbar } from 'vue3-snackbar';
 
     import InstructorsService from '@/services/useInstructors';
+    import LocationsService from '@/services/useLocations';
 
     const snackbar = useSnackbar();
 
@@ -379,6 +455,7 @@
     });
     const isLoading = ref(false);
     const instructorError = ref(false);
+    const locationError = ref(false);
 
     const localActivityData = ref({ ...props.activityData });
 
@@ -391,6 +468,7 @@
     );
 
     const instructors = ref([]);
+    const locations = ref([]);
 
     const resetValues = () => {
         emit('update:activityData', {
@@ -399,6 +477,7 @@
             endDate: '',
             startHour: '',
             endHour: '',
+            day: '',
             maxStudents: null,
             instructor: null,
             location: '',
@@ -412,6 +491,7 @@
             endDate: false,
             startHour: false,
             endHour: false,
+            day: false,
             maxStudents: false,
             instructor: false,
             location: false,
@@ -423,6 +503,7 @@
             endDate: '',
             startHour: '',
             endHour: '',
+            day: '',
             maxStudents: '',
             instructor: '',
             location: '',
@@ -436,6 +517,7 @@
             })
             .catch((error) => {
                 if (error) {
+                    instructorError.value = true;
                     let message =
                         'Ha ocurrido un error al obtener la lista de instructores. Por favor intenta de nuevo más tarde.';
 
@@ -452,19 +534,42 @@
                         text: message,
                     });
                 }
+            });
+    };
+
+    const queryLocations = async () => {
+        await LocationsService.getLocations()
+            .then((response) => {
+                locations.value = response;
             })
-            .finally(() => {
-                isLoading.value = false;
+            .catch((error) => {
+                locationError.value = true;
+                if (error) {
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de ubicaciones. Por favor intenta de nuevo más tarde.';
+
+                    if (error.type === 'backend') {
+                        message = error.message;
+                    } else if (error.type === 'network') {
+                        message = error.message;
+                    } else if (error.type === 'unknown') {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
+                }
             });
     };
 
     onMounted(async () => {
         isLoading.value = true;
-
         await queryInstructors();
+        await queryLocations();
         resetValues();
         resetErrorStatusAndMessages();
-
         isLoading.value = false;
     });
 

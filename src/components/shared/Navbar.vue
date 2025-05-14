@@ -140,6 +140,10 @@
                 pageName.value = 'Estudiantes';
                 break;
 
+            case 'locations':
+                pageName.value = 'Ubicaciones';
+                break;
+
             case 'profile':
                 pageName.value = 'Perfil';
                 break;
@@ -185,6 +189,18 @@
                 break;
 
             case 'students-detail':
+                pageSubname.value = 'Detalle';
+                break;
+
+            case 'locations-list':
+                pageSubname.value = 'Listar';
+                break;
+
+            case 'locations-create':
+                pageSubname.value = 'Crear';
+                break;
+
+            case 'locations-detail':
                 pageSubname.value = 'Detalle';
                 break;
 
