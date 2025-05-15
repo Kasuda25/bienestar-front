@@ -16,10 +16,47 @@ import 'vue3-snackbar/styles';
 import App from '@/App.vue';
 import router from '@/router';
 import { setupInterceptors } from '@/services/useAxios';
+import AuthService from '@/services/useAuth';
+import LocalStorage from '@/services/useLocalStorage';
 
-const rtoken = localStorage.getItem('rtoken');
+// async function initLogin() {
+//     const rtoken = localStorage.getItem('rtoken');
 
-const autoLogin = async (rtoken) => {
+// if (rtoken) {
+//     await AuthService.autoLogin(rtoken)
+//         .then((response) => {
+//             if (response) {
+//                 LocalStorage.createSession();
+//             }
+//         })
+//         .catch((error) => {
+//             if (error) {
+//                 LocalStorage.endSession();
+//             }
+//         });
+// }
+// }
+
+// const app = createApp(App);
+
+// setupInterceptors(router);
+
+// app.use(createPinia());
+// app.use(SnackbarService);
+// app.use(router);
+
+// initLogin();
+
+// app.mount('#app');
+
+async function initApp() {
+    const app = createApp(App);
+
+    app.use(createPinia());
+    app.use(SnackbarService);
+
+    const rtoken = localStorage.getItem('rtoken');
+
     if (rtoken) {
         await AuthService.autoLogin(rtoken)
             .then((response) => {
@@ -33,20 +70,11 @@ const autoLogin = async (rtoken) => {
                 }
             });
     }
-};
 
-const app = createApp(App);
+    setupInterceptors(router);
+    app.use(router);
 
-setupInterceptors(router);
+    app.mount('#app');
+}
 
-app.use(createPinia());
-app.use(SnackbarService);
-
-import AuthService from '@/services/useAuth';
-import LocalStorage from '@/services/useLocalStorage';
-
-autoLogin(rtoken);
-
-app.use(router);
-
-app.mount('#app');
+initApp();

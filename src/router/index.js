@@ -4,11 +4,14 @@ import instructorsRoutes from './instructors.routes.js';
 import studentsRoutes from './students.routes.js';
 import locationsRoutes from './locations.routes.js';
 
+import AuthService from '@/services/useAuth';
+import LocalStorage from '@/services/useLocalStorage';
+
 const routes = [
-    // {
-    //     path: '/',
-    //     redirect: '/login',
-    // },
+    {
+        path: '/',
+        redirect: '/login',
+    },
     {
         path: '/login',
         name: 'login',
@@ -75,18 +78,39 @@ const router = createRouter({
     routes,
 });
 
+let isRefreshing = false;
+
 router.beforeEach(async (to, from, next) => {
     const { useAuthStore } = await import('../stores/auth');
     const authStore = useAuthStore();
+
+    // Si ya estamos autenticados, sigue normalmente
+    if (authStore.isAuth) {
+        return next();
+    }
+
+    // Si hay refresh token, intenta auto login
+    if (!authStore.isAuth && localStorage.getItem('rtoken') && !isRefreshing) {
+        isRefreshing = true;
+        try {
+            await AuthService.autoLogin(localStorage.getItem('rtoken'));
+            LocalStorage.createSession();
+            return next(); // ahora sí, continúa la navegación
+        } catch (error) {
+            if (error) {
+                LocalStorage.endSession();
+                return next('/login');
+            }
+        } finally {
+            isRefreshing = false;
+        }
+    }
 
     if (to.path === '/') {
         return next(authStore.isAuth ? '/dashboard' : '/login');
     }
 
-    // if (to.path === '/login' && authStore.isAuth) {
-    //     return next('/dashboard');
-    // }
-
+    // Rutas que requieren autenticación
     if (to.meta.requiresAuth && !authStore.isAuth) {
         return next('/login');
     }
