@@ -30,7 +30,7 @@
     const locationData = ref({
         name: '',
         capacity: '',
-        schedule: '',
+        schedule: [],
         id: null,
     });
 
@@ -96,12 +96,14 @@
             validationErrorMessage.value.capacity = '';
         }
 
-        if (!locationData.value.schedule[0] || !locationData.value.schedule) {
+        if (!locationData.value.schedule || !locationData.value.schedule[0]) {
             validationErrorStatus.value.schedule = true;
-            validationErrorMessage.value.schedule = 'El horario es obligatorio';
+            snackbar.add({
+                type: 'error',
+                text: 'El horario es obligatorio',
+            });
         } else {
             validationErrorStatus.value.schedule = false;
-            validationErrorMessage.value.schedule = '';
         }
 
         if (
@@ -121,8 +123,8 @@
             if (operation === 'create') {
                 response = await LocationService.createLocation({
                     nombre: locationData.value.name,
-                    apellido: locationData.value.capacity,
-                    schedule: locationData.value.schedule,
+                    capacidad: locationData.value.capacity,
+                    horarios: locationData.value.schedule,
                 });
             }
 
@@ -131,8 +133,8 @@
                     locationData.value.id,
                     {
                         nombre: locationData.value.name,
-                        apellido: locationData.value.capacity,
-                        correo: locationData.value.schedule,
+                        capacidad: locationData.value.capacity,
+                        horarios: locationData.value.schedule,
                     }
                 );
             }

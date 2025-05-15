@@ -135,7 +135,6 @@
                                         }"
                                     >
                                         <input
-                                            v-if="isReadOnly"
                                             class="form-control"
                                             id="uidInput"
                                             type="number"
@@ -147,14 +146,6 @@
                                                 cursor: 'default',
                                             }"
                                             readonly
-                                        />
-                                        <input
-                                            v-else
-                                            class="form-control"
-                                            id="uidInput"
-                                            type="number"
-                                            v-model="localStudentData.uid"
-                                            @input="filterUidInput"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
@@ -669,12 +660,6 @@
                 emit('deleteStudent', student.value.id);
             }
         });
-    };
-
-    const filterUidInput = (e) => {
-        const cleanedValue = e.target.value.replace(/[^\d]/g, '');
-        e.target.value = cleanedValue;
-        localStudentData.value.uid = cleanedValue;
     };
 
     const filterSemesterInput = (e) => {

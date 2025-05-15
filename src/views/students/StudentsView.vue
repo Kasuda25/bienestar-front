@@ -122,7 +122,7 @@
             validationErrorMessage.value.email = '';
         }
 
-        if (studentData.value.password != '' && operation === 'update') {
+        if (studentData.value.password && operation === 'update') {
             if (studentData.value.password.length < 8) {
                 validationErrorStatus.value.password = true;
                 validationErrorMessage.value.password =
@@ -132,13 +132,12 @@
                 validationErrorMessage.value.password = '';
             }
         } else if (
-            studentData.value.password === '' ||
-            (!studentData.value.password && operation === 'create')
+            (studentData.value.password === '' || !studentData.value.password) && operation === 'create'
         ) {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña es obligatoria';
-        } else if (studentData.value.password.length < 8) {
+        } else if (studentData.value.password && studentData.value.password.length < 8) {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña debe tener al menos 8 caracteres';

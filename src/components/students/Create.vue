@@ -426,9 +426,10 @@
     };
 
     const filterNumberInput = (e) => {
-        const cleanedValue = e.target.value.replace(/[^\d]/g, '');
+        let cleanedValue = e.target.value.replace(/[^\d]/g, '');
+        cleanedValue = cleanedValue.slice(0, 10);
         e.target.value = cleanedValue;
-        localStudentData.value.maxStudents = cleanedValue;
+        localStudentData.value.uid = cleanedValue;
     };
 </script>
 
