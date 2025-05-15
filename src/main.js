@@ -19,6 +19,22 @@ import { setupInterceptors } from '@/services/useAxios';
 
 const rtoken = localStorage.getItem('rtoken');
 
+const autoLogin = async (rtoken) => {
+    if (rtoken) {
+        await AuthService.autoLogin(rtoken)
+            .then((response) => {
+                if (response) {
+                    LocalStorage.createSession();
+                }
+            })
+            .catch((error) => {
+                if (error) {
+                    LocalStorage.endSession();
+                }
+            });
+    }
+};
+
 const app = createApp(App);
 
 setupInterceptors(router);
@@ -29,19 +45,7 @@ app.use(SnackbarService);
 import AuthService from '@/services/useAuth';
 import LocalStorage from '@/services/useLocalStorage';
 
-if (rtoken) {
-    await AuthService.autoLogin(rtoken)
-        .then((response) => {
-            if (response) {
-                LocalStorage.createSession();
-            }
-        })
-        .catch((error) => {
-            if (error) {
-                LocalStorage.endSession();
-            }
-        });
-}
+autoLogin(rtoken);
 
 app.use(router);
 
