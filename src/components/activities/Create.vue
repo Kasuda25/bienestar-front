@@ -578,8 +578,9 @@
     };
 
     const filterNumberInput = (e) => {
-        const cleanedValue = e.target.value.replace(/[^\d]/g, '');
+        let cleanedValue = e.target.value.replace(/[^\d]/g, '');
         e.target.value = cleanedValue;
+        cleanedValue = cleanedValue.slice(0, 3);
         localActivityData.value.maxStudents = cleanedValue;
     };
 </script>

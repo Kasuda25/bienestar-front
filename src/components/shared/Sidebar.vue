@@ -13,10 +13,7 @@
                 >
                     <i class="fas fa-times"></i>
                 </button>
-                <a
-                    class="navbar-brand text-center px-4 py-3 m-0"
-                    :href="`/`"
-                >
+                <a class="navbar-brand text-center px-4 py-3 m-0" :href="`/`">
                     <img
                         src="../../assets/img/logo-ct-dark.png"
                         class="navbar-brand-img"
@@ -33,18 +30,18 @@
                     <li class="nav-item">
                         <RouterLink
                             to="/dashboard"
-                            v-slot="{ isActive, navigate }"
+                            v-slot="{ navigate, href, isActive }"
                             custom
                         >
                             <a
-                                :href="`/dashboard`"
+                                :href="href"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="
+                                @click.prevent="
                                     toggleAside();
                                     navigate();
                                 "
@@ -61,18 +58,18 @@
                     <li v-if="authStore.user.rol === 'ADMIN'" class="nav-item">
                         <RouterLink
                             to="/activities"
-                            v-slot="{ isActive, navigate }"
+                            v-slot="{ navigate, href, isActive }"
                             custom
                         >
                             <a
-                                :href="`/activities`"
+                                :href="href"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="
+                                @click.prevent="
                                     toggleAside();
                                     navigate();
                                 "
@@ -89,24 +86,24 @@
                     <li v-if="authStore.user.rol === 'ADMIN'" class="nav-item">
                         <RouterLink
                             to="/instructors"
-                            v-slot="{ isActive, navigate }"
+                            v-slot="{ navigate, href, isActive }"
                             custom
                         >
                             <a
-                                :href="`/instructors`"
+                                :href="href"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="
+                                @click.prevent="
                                     toggleAside();
                                     navigate();
                                 "
                             >
                                 <i class="material-symbols-rounded opacity-5"
-                                    >person</i
+                                    >group</i
                                 >
                                 <span class="nav-link-text ms-1"
                                     >Instructores</span
@@ -114,27 +111,33 @@
                             </a>
                         </RouterLink>
                     </li>
-                    <li v-if="authStore.user.rol === 'ADMIN' || authStore.user.rol === 'INSTRUCTOR'" class="nav-item">
+                    <li
+                        v-if="
+                            authStore.user.rol === 'ADMIN' ||
+                            authStore.user.rol === 'INSTRUCTOR'
+                        "
+                        class="nav-item"
+                    >
                         <RouterLink
                             to="/students"
-                            v-slot="{ isActive, navigate }"
                             custom
+                            v-slot="{ navigate, href, isActive }"
                         >
                             <a
-                                :href="`/students`"
+                                :href="href"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="
+                                @click.prevent="
                                     toggleAside();
                                     navigate();
                                 "
                             >
                                 <i class="material-symbols-rounded opacity-5"
-                                    >person</i
+                                    >groups</i
                                 >
                                 <span class="nav-link-text ms-1"
                                     >Estudiantes</span
@@ -145,18 +148,18 @@
                     <li v-if="authStore.user.rol === 'ADMIN'" class="nav-item">
                         <RouterLink
                             to="/locations"
-                            v-slot="{ isActive, navigate }"
                             custom
+                            v-slot="{ navigate, href, isActive }"
                         >
                             <a
-                                :href="`/locations`"
+                                :href="href"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="
+                                @click.prevent="
                                     toggleAside();
                                     navigate();
                                 "
@@ -180,18 +183,18 @@
                     <li class="nav-item">
                         <RouterLink
                             to="/profile"
-                            v-slot="{ isActive, navigate }"
+                            v-slot="{ navigate, href, isActive }"
                             custom
                         >
-                            <a  
-                                :href="`/profile`"
+                            <a
+                                :href="href"
                                 :class="[
                                     'nav-link cursor-pointer',
                                     isActive
                                         ? 'active bg-dark text-white'
                                         : 'text-dark',
                                 ]"
-                                @click="
+                                @click.prevent="
                                     toggleAside();
                                     navigate();
                                 "

@@ -165,14 +165,14 @@
                                             >
                                                 <span class="text-xs font-weight-bolder opacity-6">
                                                     {{
-                                                        activity.horaInicio.slice(
+                                                        activity.horaInicio?.slice(
                                                             0,
                                                             5
                                                         )
                                                     }}
                                                     -
                                                     {{
-                                                        activity.horaFin.slice(
+                                                        activity.horaFin?.slice(
                                                             0,
                                                             5
                                                         )
@@ -186,7 +186,7 @@
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
                                                 <span class="text-xs font-weight-bolder opacity-6">
-                                                    {{ activity.ubicacion.nombre }}
+                                                    {{ activity.ubicacion?.nombre }}
                                                 </span>
                                             </a>
                                         </td>
@@ -203,13 +203,11 @@
                                                     class="text-xs font-weight-bolder opacity-6 my-auto"
                                                 >
                                                     {{
-                                                        activity.instructor
-                                                            .nombre.usuario
+                                                        activity.instructor.usuario
                                                             .nombre
                                                     }}
                                                     {{
-                                                        activity.instructor
-                                                            .nombre.usuario
+                                                        activity.instructor.usuario
                                                             .apellido
                                                     }}
                                                 </span>

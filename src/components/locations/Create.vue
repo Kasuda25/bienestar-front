@@ -74,6 +74,7 @@
                                             id="capacityInput"
                                             type="number"
                                             v-model="localLocationData.capacity"
+                                            @input="filterNumberInput"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
@@ -841,7 +842,7 @@
         saturdayEnd: '',
         sundayStart: '',
         sundayEnd: '',
-        schedule: horarios
+        schedule: horarios,
     });
 
     watch(
@@ -878,6 +879,13 @@
 
     const createLocation = () => {
         emit('sendLocationData', 'create');
+    };
+
+    const filterNumberInput = (e) => {
+        let cleanedValue = e.target.value.replace(/[^\d]/g, '');
+        cleanedValue = cleanedValue.slice(0, 3);
+        e.target.value = cleanedValue;
+        localLocationData.value.maxStudents = cleanedValue;
     };
 </script>
 
