@@ -190,7 +190,8 @@
                                                 <span
                                                     class="text-xs font-weight-bolder opacity-6"
                                                     >{{
-                                                        activity.ubicacion?.nombre
+                                                        activity.ubicacion
+                                                            ?.nombre
                                                     }}</span
                                                 >
                                             </a>
@@ -203,12 +204,12 @@
                                                 <span
                                                     class="text-xs font-weight-bolder opacity-6"
                                                     >{{
-                                                        activity.instructor.usuario
-                                                            .nombre
+                                                        activity.instructor
+                                                            .usuario.nombre
                                                     }}
                                                     {{
-                                                        activity.instructor.usuario
-                                                            .apellido
+                                                        activity.instructor
+                                                            .usuario.apellido
                                                     }}</span
                                                 >
                                             </a>
@@ -386,136 +387,35 @@
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
-                <div class="card h-100">
+                <div class="card">
                     <div class="card-header pb-0">
-                        <h6>Orders overview</h6>
-                        <p class="text-sm">
-                            <i
-                                class="fa fa-arrow-up text-success"
-                                aria-hidden="true"
-                            ></i>
-                            <span class="font-weight-bold">24%</span> this month
-                        </p>
+                        <h6>Últimos cambios</h6>
                     </div>
                     <div class="card-body p-3">
                         <div class="timeline timeline-one-side">
-                            <div class="timeline-block mb-3">
-                                <span class="timeline-step">
-                                    <i
-                                        class="material-symbols-rounded text-success text-gradient"
-                                        >notifications</i
-                                    >
-                                </span>
-                                <div class="timeline-content">
-                                    <h6
-                                        class="text-dark text-sm font-weight-bold mb-0"
-                                    >
-                                        $2400, Design changes
-                                    </h6>
-                                    <p
-                                        class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                                    >
-                                        22 DEC 7:20 PM
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="timeline-block mb-3">
-                                <span class="timeline-step">
-                                    <i
-                                        class="material-symbols-rounded text-danger text-gradient"
-                                        >code</i
-                                    >
-                                </span>
-                                <div class="timeline-content">
-                                    <h6
-                                        class="text-dark text-sm font-weight-bold mb-0"
-                                    >
-                                        New order #1832412
-                                    </h6>
-                                    <p
-                                        class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                                    >
-                                        21 DEC 11 PM
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="timeline-block mb-3">
+                            <div
+                                v-for="audit in audits"
+                                :key="audit"
+                                class="timeline-block mb-3"
+                            >
                                 <span class="timeline-step">
                                     <i
                                         class="material-symbols-rounded text-info text-gradient"
-                                        >shopping_cart</i
+                                        >radio_button_unchecked</i
                                     >
                                 </span>
                                 <div class="timeline-content">
                                     <h6
                                         class="text-dark text-sm font-weight-bold mb-0"
                                     >
-                                        Server payments for April
+                                        {{ audit.detalles }}
                                     </h6>
                                     <p
                                         class="text-secondary font-weight-bold text-xs mt-1 mb-0"
                                     >
-                                        21 DEC 9:34 PM
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="timeline-block mb-3">
-                                <span class="timeline-step">
-                                    <i
-                                        class="material-symbols-rounded text-warning text-gradient"
-                                        >credit_card</i
-                                    >
-                                </span>
-                                <div class="timeline-content">
-                                    <h6
-                                        class="text-dark text-sm font-weight-bold mb-0"
-                                    >
-                                        New card added for order #4395133
-                                    </h6>
-                                    <p
-                                        class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                                    >
-                                        20 DEC 2:20 AM
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="timeline-block mb-3">
-                                <span class="timeline-step">
-                                    <i
-                                        class="material-symbols-rounded text-primary text-gradient"
-                                        >key</i
-                                    >
-                                </span>
-                                <div class="timeline-content">
-                                    <h6
-                                        class="text-dark text-sm font-weight-bold mb-0"
-                                    >
-                                        Unlock packages for development
-                                    </h6>
-                                    <p
-                                        class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                                    >
-                                        18 DEC 4:54 AM
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="timeline-block">
-                                <span class="timeline-step">
-                                    <i
-                                        class="material-symbols-rounded text-dark text-gradient"
-                                        >payments</i
-                                    >
-                                </span>
-                                <div class="timeline-content">
-                                    <h6
-                                        class="text-dark text-sm font-weight-bold mb-0"
-                                    >
-                                        New order #9583120
-                                    </h6>
-                                    <p
-                                        class="text-secondary font-weight-bold text-xs mt-1 mb-0"
-                                    >
-                                        17 DEC
+                                        Por {{ audit.usuario.nombre }}
+                                        {{ audit.usuario.apellido }} -
+                                        {{ formatDate(audit.fecha) }}
                                     </p>
                                 </div>
                             </div>
@@ -528,10 +428,64 @@
 </template>
 
 <script setup>
+    import { ref, onMounted } from 'vue';
+    import { useSnackbar } from 'vue3-snackbar';
+
+    import AuthService from '@/services/useAuth';
+
     defineProps({
         activities: Array,
         instructors: Array,
         activityListError: Boolean,
         instructorListError: Boolean,
     });
+
+    const snackbar = useSnackbar();
+
+    const auditError = ref(false);
+    const audits = ref({});
+
+    const queryAudit = async () => {
+        await AuthService.audit()
+            .then((response) => {
+                if (response) {
+                    audits.value = response.data;
+                }
+            })
+            .catch((error) => {
+                if (error) {
+                    auditError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la información de la actividad. Por favor intenta de nuevo más tarde.';
+
+                    if (
+                        error.type === 'backend' ||
+                        error.type === 'network' ||
+                        error.type === 'unknown'
+                    ) {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
+                }
+            });
+    };
+
+    onMounted(async () => {
+        await queryAudit();
+    });
+
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+        const yyyy = date.getFullYear();
+        const hh = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+
+        return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+    };
 </script>

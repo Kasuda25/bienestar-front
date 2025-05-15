@@ -75,6 +75,37 @@ class AuthService {
             }
         }
     }
+
+    async audit() {
+        try {
+            const response = await axios.get('/auditoria/ultimas');
+            if (response.status === 200) {
+                return response.data;
+            }
+        } catch (error) {
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.error ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
+        }
+    }
 }
 
 export default new AuthService();

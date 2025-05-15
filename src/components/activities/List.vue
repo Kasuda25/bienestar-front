@@ -15,11 +15,11 @@
                             <div class="pe-3">
                                 <RouterLink
                                     to="/activities/create"
-                                    v-slot="{ navigate }"
+                                    v-slot="{ navigate, href }"
                                     custom
                                 >
                                     <a
-                                        :href="`/activities/create`"
+                                        :href="href"
                                         class="btn btn-light mb-0"
                                         @click="navigate"
                                     >

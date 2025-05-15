@@ -31,9 +31,7 @@
         name: '',
         startDate: '',
         endDate: '',
-        startHour: '',
-        endHour: '',
-        day: '',
+        schedule: [],
         maxStudents: null,
         instructor: null,
         location: null,
@@ -73,9 +71,7 @@
         name: false,
         startDate: false,
         endDate: false,
-        startHour: false,
-        endHour: false,
-        day: false,
+        schedule: false,
         maxStudents: false,
         instructor: false,
         location: false,
@@ -85,9 +81,7 @@
         name: '',
         startDate: '',
         endDate: '',
-        startHour: '',
-        endHour: '',
-        day: '',
+        schedule: '',
         maxStudents: '',
         instructor: '',
         location: '',
@@ -119,21 +113,14 @@
             validationErrorMessage.value.endDate = '';
         }
 
-        if (activityData.value.startHour === '') {
-            validationErrorStatus.value.startHour = true;
-            validationErrorMessage.value.startHour =
-                'La hora de inicio es obligatoria';
+        if (!activityData.value.schedule || !activityData.value.schedule[0]) {
+            validationErrorStatus.value.schedule = true;
+            snackbar.add({
+                type: 'error',
+                text: 'El horario es obligatorio',
+            });
         } else {
-            validationErrorStatus.value.startHour = false;
-            validationErrorMessage.value.startHour = '';
-        }
-
-        if (activityData.value.endHour === '') {
-            validationErrorStatus.value.endHour = true;
-            validationErrorMessage.value.endHour = 'La hora de fin es obligatoria';
-        } else {
-            validationErrorStatus.value.endHour = false;
-            validationErrorMessage.value.endHour = '';
+            validationErrorStatus.value.schedule = true;
         }
 
         if (activityData.value.maxStudents === null) {
@@ -153,7 +140,7 @@
             validationErrorMessage.value.instructor = '';
         }
 
-        if (activityData.value.location === '') {
+        if (activityData.value.location === null) {
             validationErrorStatus.value.location = true;
             validationErrorMessage.value.location = 'La ubicación es obligatoria';
         } else {
@@ -185,9 +172,7 @@
                     nombre: activityData.value.name,
                     fechaInicio: activityData.value.startDate,
                     fechaFin: activityData.value.endDate,
-                    horaInicio: activityData.value.startHour,
-                    horaFin: activityData.value.endHour,
-                    dia: activityData.value.day,
+                    horarios: activityData.value.schedule,
                     maxEstudiantes: activityData.value.maxStudents,
                     instructorId: activityData.value.instructor,
                     ubicacionId: activityData.value.location,
@@ -201,9 +186,7 @@
                         nombre: activityData.value.name,
                         fechaInicio: activityData.value.startDate,
                         fechaFin: activityData.value.endDate,
-                        horaInicio: activityData.value.startHour,
-                        horaFin: activityData.value.endHour,
-                        dia: activityData.value.day,
+                        horarios: activityData.value.schedule,
                         maxEstudiantes: activityData.value.maxStudents,
                         instructorId: activityData.value.instructor,
                         ubicacionId: activityData.value.location,
