@@ -7,5 +7,12 @@ export const useAuthStore = defineStore('auth', () => {
     const rtoken = ref('');
     const isAuth = ref(false);
 
-    return { user, token, rtoken, isAuth };
+    const logout = () => {
+        user.value = {};
+        token.value = '';
+        rtoken.value = '';
+        isAuth.value = false;
+    }
+
+    return { user, token, rtoken, isAuth, logout };
 });

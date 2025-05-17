@@ -148,6 +148,83 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
+                                        for="startDateInput"
+                                        >Fecha de inicio</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="[
+                                            {
+                                                'transparent-placeholder':
+                                                    !localActivityData.startDate,
+                                                'is-invalid':
+                                                    props.validationErrorStatus
+                                                        .startDate,
+                                            },
+                                        ]"
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="startDateInput"
+                                            type="date"
+                                            v-model="
+                                                localActivityData.startDate
+                                            "
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .startDate
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="endDateInput"
+                                        >Fecha de fin</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="[
+                                            {
+                                                'transparent-placeholder':
+                                                    !localActivityData.endDate,
+                                                'is-invalid':
+                                                    props.validationErrorStatus
+                                                        .endDate,
+                                            },
+                                        ]"
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="endDateInput"
+                                            type="date"
+                                            v-model="localActivityData.endDate"
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage.endDate
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label
@@ -190,7 +267,7 @@
                                             <option
                                                 v-for="location in locations"
                                                 :key="location"
-                                                :value="location.id"
+                                                :value="location"
                                             >
                                                 {{ location.nombre }}
                                             </option>
@@ -204,744 +281,237 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="startDateInput"
-                                        >Fecha de inicio</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="[
-                                            {
-                                                'transparent-placeholder':
-                                                    !localActivityData.startDate,
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .startDate,
-                                            },
-                                        ]"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="startDateInput"
-                                            type="date"
-                                            v-model="
-                                                localActivityData.startDate
-                                            "
-                                            onfocus="this.showPicker()"
-                                            onkeydown="return false;"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .startDate
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="endDateInput"
-                                        >Fecha de fin</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="[
-                                            {
-                                                'transparent-placeholder':
-                                                    !localActivityData.endDate,
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .endDate,
-                                            },
-                                        ]"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="endDateInput"
-                                            type="date"
-                                            v-model="localActivityData.endDate"
-                                            onfocus="this.showPicker()"
-                                            onkeydown="return false;"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage.endDate
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="capacityInput"
-                                        >Días</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-2"
-                                    >
-                                        <div class="col">
-                                            <div class="form-check ps-0">
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    id="checkMonday"
-                                                    v-model="
-                                                        selectedDays.monday
-                                                    "
-                                                />
-                                                <label
-                                                    class="form-check-label"
-                                                    for="checkMonday"
-                                                    >Lunes</label
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-check ps-0">
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    id="checkTuesday"
-                                                    v-model="
-                                                        selectedDays.tuesday
-                                                    "
-                                                />
-                                                <label
-                                                    class="form-check-label"
-                                                    for="checkTuesday"
-                                                    >Martes</label
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-check ps-0">
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    id="checkWednesday"
-                                                    v-model="
-                                                        selectedDays.wednesday
-                                                    "
-                                                />
-                                                <label
-                                                    class="form-check-label"
-                                                    for="checkWednesday"
-                                                    >Miércoles</label
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-check ps-0">
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    id="checkThursday"
-                                                    v-model="
-                                                        selectedDays.thursday
-                                                    "
-                                                />
-                                                <label
-                                                    class="form-check-label"
-                                                    for="checkThursday"
-                                                    >Jueves</label
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-check ps-0">
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    id="checkFriday"
-                                                    v-model="
-                                                        selectedDays.friday
-                                                    "
-                                                />
-                                                <label
-                                                    class="form-check-label"
-                                                    for="checkFriday"
-                                                    >Viernes</label
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-check ps-0">
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    id="checkSaturday"
-                                                    v-model="
-                                                        selectedDays.saturday
-                                                    "
-                                                />
-                                                <label
-                                                    class="form-check-label"
-                                                    for="checkSaturday"
-                                                    >Sábado</label
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-check ps-0">
-                                                <input
-                                                    class="form-check-input"
-                                                    type="checkbox"
-                                                    id="checkSunday"
-                                                    v-model="
-                                                        selectedDays.sunday
-                                                    "
-                                                />
-                                                <label
-                                                    class="form-check-label"
-                                                    for="checkSunday"
-                                                    >Domingo</label
-                                                >
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <label v-if="selectedDays.monday">Lunes</label>
-                            <div class="row mb-3" v-if="selectedDays.monday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="mondayStartInput"
-                                        >Hora de inicio</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.mondayStart,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .mondayStart,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="mondayStartInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.mondayStart
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .mondayStart
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3" v-if="selectedDays.monday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="mondayEndInput"
-                                        >Hora de fin</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.mondayEnd,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .mondayEnd,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="mondayEndInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.mondayEnd
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .mondayEnd
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <label v-if="selectedDays.tuesday">Martes</label>
-                            <div class="row mb-3" v-if="selectedDays.tuesday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="tuesdayStartInput"
-                                        >Hora de inicio</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.tuesdayStart,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .tuesdayStart,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="tuesdayStartInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.tuesdayStart
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .tuesdayStart
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3" v-if="selectedDays.tuesday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="tuesdayEndInput"
-                                        >Hora de fin</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.tuesdayStart,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .tuesdayEnd,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="tuesdayEndInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.tuesdayEnd
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .tuesdayEnd
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <label v-if="selectedDays.wednesday"
-                                >Miércoles</label
+                            <div
+                                v-if="localActivityData.location != null"
+                                class="row mb-3"
                             >
-                            <div class="row mb-3" v-if="selectedDays.wednesday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="wednesdayStartInput"
-                                        >Hora de inicio</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.wednesdayStart,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .wednesdayStart,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="tuesdayStartInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.wednesdayStart
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .wednesdayStart
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3" v-if="selectedDays.wednesday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="wednesdayEndInput"
-                                        >Hora de fin</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.wednesdayEnd,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .wednesdayEnd,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="wednesdayEndInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.wednesdayEnd
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .wednesdayEnd
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <label v-if="selectedDays.thursday">Jueves</label>
-                            <div class="row mb-3" v-if="selectedDays.thursday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="thursdayStartInput"
-                                        >Hora de inicio</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.thursdayStart,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .thursdayStart,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="tuesdayStartInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.thursdayStart
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .thursdayStart
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3" v-if="selectedDays.thursday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="thursdayEndInput"
-                                        >Hora de fin</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.thursdayEnd,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .thursdayEnd,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="thursdayEndInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.thursdayEnd
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .thursdayEnd
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <label v-if="selectedDays.friday">Viernes</label>
-                            <div class="row mb-3" v-if="selectedDays.friday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="fridayStartInput"
-                                        >Hora de inicio</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.fridayStart,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .fridayStart,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="tuesdayStartInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.fridayStart
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .fridayStart
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3" v-if="selectedDays.friday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="fridayEndInput"
-                                        >Hora de fin</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.fridayEnd,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .fridayEnd,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="wednesdayEndInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.fridayEnd
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .fridayEnd
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <label v-if="selectedDays.saturday">Sábado</label>
-                            <div class="row mb-3" v-if="selectedDays.saturday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="saturdayStartInput"
-                                        >Hora de inicio</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.saturdayStart,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .saturdayStart,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="tuesdayStartInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.saturdayStart
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .saturdayStart
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3" v-if="selectedDays.saturday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="saturdayEndInput"
-                                        >Hora de fin</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.saturdayEnd,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .saturdayEnd,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="wednesdayEndInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.saturdayEnd
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .saturdayEnd
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <label v-if="selectedDays.sunday">Domingo</label>
-                            <div class="row mb-3" v-if="selectedDays.sunday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="sundayStartInput"
-                                        >Hora de inicio</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.sundayStart,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .sundayStart,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="tuesdayStartInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.sundayStart
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .sundayStart
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3" v-if="selectedDays.sunday">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="sundayEndInput"
-                                        >Hora de fin</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'transparent-placeholder':
-                                                !localActivityData.sundayEnd,
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .sundayEnd,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="wednesdayEndInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.sundayEnd
-                                            "
-                                            onfocus="this.showPicker()"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .sundayEnd
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
+                                <div class="col-12">
+                                    <label class="form-label">Horario</label>
 
+                                    <div class="card">
+                                        <div class="card-body px-0 pt-0 pb-2">
+                                            <div class="table-responsive p-2">
+                                                <table
+                                                    class="table align-items-center mb-0"
+                                                >
+                                                    <thead>
+                                                        <tr>
+                                                            <th
+                                                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7"
+                                                            >
+                                                                Día
+                                                            </th>
+                                                            <th
+                                                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                            >
+                                                                Hora de inicio
+                                                            </th>
+                                                            <th
+                                                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                            >
+                                                                Hora de fin
+                                                            </th>
+                                                            <th
+                                                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                            >
+                                                                Acciones
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                        <tr
+                                                            v-for="(
+                                                                item, index
+                                                            ) in localActivityData.schedule"
+                                                            :key="
+                                                                item.id || index
+                                                            "
+                                                        >
+                                                            <!-- Día -->
+                                                            <td
+                                                                class="text-sm font-weight-normal"
+                                                            >
+                                                                <div
+                                                                    class="input-group input-group-outline"
+                                                                >
+                                                                    <select
+                                                                        class="form-control form-select"
+                                                                        v-model="
+                                                                            item.dia
+                                                                        "
+                                                                        :class="{
+                                                                            'is-invalid':
+                                                                                validationErrorStatus
+                                                                                    .schedule?.[
+                                                                                    index
+                                                                                ]
+                                                                                    ?.dia,
+                                                                        }"
+                                                                    >
+                                                                        <option
+                                                                            v-for="dia in availableDays"
+                                                                            :key="
+                                                                                dia.value
+                                                                            "
+                                                                            :value="
+                                                                                dia.value
+                                                                            "
+                                                                        >
+                                                                            {{
+                                                                                dia.label
+                                                                            }}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <div
+                                                                    class="text-danger text-xs mt-1"
+                                                                    v-if="
+                                                                        validationErrorMessage
+                                                                            .schedule?.[
+                                                                            index
+                                                                        ]?.dia
+                                                                    "
+                                                                >
+                                                                    {{
+                                                                        validationErrorMessage
+                                                                            .schedule[
+                                                                            index
+                                                                        ].dia
+                                                                    }}
+                                                                </div>
+                                                            </td>
+
+                                                            <!-- Hora inicio -->
+                                                            <td
+                                                                class="text-sm font-weight-normal"
+                                                            >
+                                                                <div>
+                                                                    <div
+                                                                        class="input-group input-group-outline"
+                                                                    >
+                                                                        <input
+                                                                            type="time"
+                                                                            class="form-control"
+                                                                            :class="{
+                                                                                'is-invalid':
+                                                                                    validationErrorStatus
+                                                                                        .schedule?.[
+                                                                                        index
+                                                                                    ]
+                                                                                        ?.horaInicio,
+                                                                            }"
+                                                                            v-model="
+                                                                                item.horaInicio
+                                                                            "
+                                                                            onfocus="this.showPicker()"
+                                                                        />
+                                                                    </div>
+                                                                    <div
+                                                                        class="text-danger text-xs mt-1"
+                                                                        v-if="
+                                                                            validationErrorMessage
+                                                                                .schedule?.[
+                                                                                index
+                                                                            ]
+                                                                                ?.horaInicio
+                                                                        "
+                                                                    >
+                                                                        {{
+                                                                            validationErrorMessage
+                                                                                .schedule[
+                                                                                index
+                                                                            ]
+                                                                                .horaInicio
+                                                                        }}
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <!-- Hora fin -->
+                                                            <td
+                                                                class="text-sm font-weight-normal"
+                                                            >
+                                                                <div>
+                                                                    <div
+                                                                        class="input-group input-group-outline"
+                                                                    >
+                                                                        <input
+                                                                            type="time"
+                                                                            class="form-control"
+                                                                            :class="{
+                                                                                'is-invalid':
+                                                                                    validationErrorStatus
+                                                                                        .schedule?.[
+                                                                                        index
+                                                                                    ]
+                                                                                        ?.horaFin,
+                                                                            }"
+                                                                            v-model="
+                                                                                item.horaFin
+                                                                            "
+                                                                            onfocus="this.showPicker()"
+                                                                        />
+                                                                    </div>
+                                                                    <div
+                                                                        class="text-danger text-xs mt-1"
+                                                                        v-if="
+                                                                            validationErrorMessage
+                                                                                .schedule?.[
+                                                                                index
+                                                                            ]
+                                                                                ?.horaFin
+                                                                        "
+                                                                    >
+                                                                        {{
+                                                                            validationErrorMessage
+                                                                                .schedule[
+                                                                                index
+                                                                            ]
+                                                                                .horaFin
+                                                                        }}
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <!-- Botón eliminar -->
+                                                            <td>
+                                                                <button
+                                                                    class="btn btn-danger my-auto"
+                                                                    @click="
+                                                                        removeSchedule(
+                                                                            index
+                                                                        )
+                                                                    "
+                                                                >
+                                                                    <i
+                                                                        class="material-symbols-rounded"
+                                                                        >close</i
+                                                                    >
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <!-- Botón agregar -->
+                                                <div class="mt-3">
+                                                    <button
+                                                        class="btn bg-gradient-dark my-auto ms-2"
+                                                        @click="addSchedule"
+                                                    >
+                                                        <i
+                                                            class="material-symbols-rounded"
+                                                            >add</i
+                                                        >
+                                                        Agregar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="w-100 text-end">
                                 <div
                                     v-if="!props.externalLoading"
@@ -969,6 +539,90 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="localActivityData.location != null" class="card">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h6 class="mb-0">
+                                            Horarios de
+                                            {{
+                                                localActivityData.location
+                                                    .nombre
+                                            }}
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body px-0 pt-0 pb-2">
+                                <div class="table-responsive p-2">
+                                    <table
+                                        class="table align-items-center mb-0"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7"
+                                                >
+                                                    Día
+                                                </th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                >
+                                                    Hora de inicio
+                                                </th>
+                                                <th
+                                                    class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                >
+                                                    Hora de fin
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="(
+                                                    item, index
+                                                ) in localActivityData.location
+                                                    ?.horarios"
+                                                :key="item.id || index"
+                                            >
+                                                <!-- Día -->
+                                                <td
+                                                    class="text-sm font-weight-normal"
+                                                >
+                                                    <span>{{
+                                                        formatDay(item.dia)
+                                                    }}</span>
+                                                </td>
+
+                                                <!-- Hora inicio -->
+                                                <td
+                                                    class="text-sm font-weight-normal"
+                                                >
+                                                    <span>{{
+                                                        formatHour(
+                                                            item.horaInicio
+                                                        )
+                                                    }}</span>
+                                                </td>
+
+                                                <!-- Hora fin -->
+                                                <td
+                                                    class="text-sm font-weight-normal"
+                                                >
+                                                    <span>{{
+                                                        formatHour(item.horaFin)
+                                                    }}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -988,6 +642,7 @@
         'update:activityData',
         'update:validationErrorStatus',
         'update:validationErrorMessage',
+        'removeScheduleError',
     ]);
     const props = defineProps({
         activityData: Object,
@@ -999,56 +654,8 @@
     const instructorError = ref(false);
     const locationError = ref(false);
 
-    const selectedDays = ref({
-        monday: false,
-        tuesday: false,
-        wednesday: false,
-        thursday: false,
-        friday: false,
-        saturday: false,
-        sunday: false,
-    });
-
-    const days = [
-        { key: 'monday', label: 'LUNES' },
-        { key: 'tuesday', label: 'MARTES' },
-        { key: 'wednesday', label: 'MIERCOLES' },
-        { key: 'thursday', label: 'JUEVES' },
-        { key: 'friday', label: 'VIERNES' },
-        { key: 'saturday', label: 'SABADO' },
-        { key: 'sunday', label: 'DOMINGO' },
-    ];
-
-    const horarios = computed(() => {
-        return days
-            .filter((d) => selectedDays.value[d.key])
-            .map((d) => ({
-                dia: d.label,
-                horaInicio:
-                    localActivityData.value[`${d.key}Start`] || '00:00:00',
-                horaFin: localActivityData.value[`${d.key}End`] || '00:00:00',
-                fechaInicio: localActivityData.value.startDate,
-                fechaFin: localActivityData.value.endDate
-            }));
-    });
-
     const localActivityData = ref({
         ...props.activityData,
-        mondayStart: '',
-        mondayEnd: '',
-        tuesdayStart: '',
-        tuesdayEnd: '',
-        wednesdayStart: '',
-        wednesdayEnd: '',
-        thursdayStart: '',
-        thursdayEnd: '',
-        fridayStart: '',
-        fridayEnd: '',
-        saturdayStart: '',
-        saturdayEnd: '',
-        sundayStart: '',
-        sundayEnd: '',
-        schedule: horarios,
     });
 
     watch(
@@ -1067,12 +674,11 @@
             name: '',
             startDate: '',
             endDate: '',
-            startHour: '',
-            endHour: '',
-            day: '',
+            schedule: [],
             maxStudents: null,
             instructor: null,
-            location: '',
+            location: null,
+            id: null,
         });
     };
 
@@ -1081,9 +687,7 @@
             name: false,
             startDate: false,
             endDate: false,
-            startHour: false,
-            endHour: false,
-            day: false,
+            schedule: [],
             maxStudents: false,
             instructor: false,
             location: false,
@@ -1093,9 +697,7 @@
             name: '',
             startDate: '',
             endDate: '',
-            startHour: '',
-            endHour: '',
-            day: '',
+            schedule: [],
             maxStudents: '',
             instructor: '',
             location: '',
@@ -1165,9 +767,65 @@
         isLoading.value = false;
     });
 
+    const addSchedule = () => {
+        localActivityData.value.schedule.push({
+            horarioUbicacionId: '',
+            dia: '',
+            horaInicio: '',
+            horaFin: '',
+        });
+    };
+
+    const days = {
+        LUNES: 'Lunes',
+        MARTES: 'Martes',
+        MIERCOLES: 'Miércoles',
+        JUEVES: 'Jueves',
+        VIERNES: 'Viernes',
+        SABADO: 'Sábado',
+        DOMINGO: 'Domingo',
+    };
+
+    const availableDays = computed(() => {
+        const uniques = [
+            ...new Set(
+                localActivityData.value.location.horarios.map((h) => h.dia)
+            ),
+        ];
+        return uniques.map((d) => ({ value: d, label: days[d] || d }));
+    });
+
+    const removeSchedule = (index) => {
+        localActivityData.value.schedule.splice(index, 1);
+        emit('update:activityData', localActivityData.value);
+        emit('removeScheduleError', index);
+    };
+
     const createActivity = () => {
+        console.log(localActivityData.value);
         emit('sendActivityData', 'create');
     };
+
+    const formatDay = (dia) => {
+        const diasMap = {
+            LUNES: 'Lunes',
+            MARTES: 'Martes',
+            MIÉRCOLES: 'Miércoles',
+            MIERCOLES: 'Miércoles',
+            JUEVES: 'Jueves',
+            VIERNES: 'Viernes',
+            SÁBADO: 'Sábado',
+            SABADO: 'Sábado',
+            DOMINGO: 'Domingo',
+        };
+
+        return (
+            diasMap[dia.toUpperCase()] ||
+            dia.charAt(0).toUpperCase() + dia.slice(1).toLowerCase()
+        );
+    };
+
+    const formatHour = (hora) => hora.slice(0, 5);
 
     const filterNumberInput = (e) => {
         let cleanedValue = e.target.value.replace(/[^\d]/g, '');
@@ -1175,6 +833,25 @@
         cleanedValue = cleanedValue.slice(0, 3);
         localActivityData.value.maxStudents = cleanedValue;
     };
+
+    watch(
+        () => localActivityData.value.schedule,
+        (newSchedule) => {
+            newSchedule.forEach((item) => {
+                if (item.dia && localActivityData.value.location?.horarios) {
+                    const horario =
+                        localActivityData.value.location.horarios.find(
+                            (h) => h.dia === item.dia
+                        );
+
+                    if (horario) {
+                        item.horarioUbicacionId = horario.id;
+                    }
+                }
+            });
+        },
+        { deep: true }
+    );
 </script>
 
 <style scoped>

@@ -108,6 +108,8 @@
     const logout = () => {
         LocalStorage.endSession();
 
+        authStore.logout();
+
         router.push({ name: 'login' });
     };
 </script>
