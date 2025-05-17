@@ -68,11 +68,6 @@
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
-                                            Horario
-                                        </th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                        >
                                             Ubicación
                                         </th>
                                         <th
@@ -153,28 +148,6 @@
                                                             activity.fechaFin
                                                         ).toLocaleDateString(
                                                             'es-ES'
-                                                        )
-                                                    }}
-                                                </span>
-                                            </a>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
-                                            >
-                                                <span class="text-xs font-weight-bolder opacity-6">
-                                                    {{
-                                                        activity.horaInicio?.slice(
-                                                            0,
-                                                            5
-                                                        )
-                                                    }}
-                                                    -
-                                                    {{
-                                                        activity.horaFin?.slice(
-                                                            0,
-                                                            5
                                                         )
                                                     }}
                                                 </span>

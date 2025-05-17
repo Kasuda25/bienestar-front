@@ -590,13 +590,10 @@
         const diasMap = {
             LUNES: 'Lunes',
             MARTES: 'Martes',
-            MIÉRCOLES: 'Miércoles',
             MIERCOLES: 'Miércoles',
             JUEVES: 'Jueves',
             VIERNES: 'Viernes',
-            SÁBADO: 'Sábado',
             SABADO: 'Sábado',
-            DOMINGO: 'Domingo',
         };
 
         return (

@@ -77,6 +77,139 @@
                                 <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
+                                        for="maxStudentsInput"
+                                        ><strong
+                                            >Máximo de estudiantes</strong
+                                        ></label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .maxStudents,
+                                        }"
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="maxStudentsInput"
+                                            type="text"
+                                            :value="activity.maxEstudiantes"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="maxStudentsInput"
+                                            type="number"
+                                            v-model="
+                                                localActivityData.maxStudents
+                                            "
+                                            @input="filterNumberInput"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .maxStudents
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
+                                        for="instructorInput"
+                                        ><strong>Instructor</strong></label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .instructor,
+                                        }"
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="instructorInput"
+                                            type="text"
+                                            :value="`${activity.instructor?.nombre} ${activity.instructor?.apellido}`"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <select
+                                            v-else
+                                            class="form-control form-select"
+                                            for="instructorInput"
+                                            id="instructorInput"
+                                            :v-model="
+                                                localActivityData.instructor
+                                            "
+                                        >
+                                            <option
+                                                v-if="instructorError"
+                                                value=""
+                                                selected
+                                                disabled
+                                            >
+                                                No se pudo obtener la lista de
+                                                instructores
+                                            </option>
+                                            <option
+                                                v-else
+                                                :value="activity.instructor.id"
+                                                selected
+                                            >
+                                                {{
+                                                    activity.instructor.nombre
+                                                }} 
+                                                {{
+                                                    activity.instructor.apellido
+                                                }}
+                                            </option>
+                                            <option
+                                                v-for="instructor in instructors"
+                                                :key="instructor"
+                                                :value="instructor.id"
+                                            >
+                                                {{ instructor.usuario.nombre }}
+                                                {{
+                                                    instructor.usuario.apellido
+                                                }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .instructor
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
                                         for="startDateInput"
                                         ><strong>Fecha de inicio</strong></label
                                     >
@@ -178,311 +311,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="startHourInput"
-                                        ><strong>Hora de inicio</strong></label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="[
-                                            {
-                                                'transparent-placeholder':
-                                                    !localActivityData.startHour,
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .startHour,
-                                            },
-                                        ]"
-                                    >
-                                        <input
-                                            v-if="isReadOnly"
-                                            class="form-control"
-                                            id="startHourInput"
-                                            type="text"
-                                            :value="formatStartHour"
-                                            tabindex="-1"
-                                            :style="{
-                                                pointerEvents: 'none',
-                                                backgroundColor: '#fff',
-                                                cursor: 'default',
-                                            }"
-                                            readonly
-                                        />
-                                        <input
-                                            v-else
-                                            class="form-control"
-                                            id="startHourInput"
-                                            type="time"
-                                            v-model="
-                                                localActivityData.startHour
-                                            "
-                                            onfocus="this.showPicker()"
-                                            onkeydown="return false;"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .startHour
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="endHourInput"
-                                        ><strong>Hora de fin</strong></label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="[
-                                            {
-                                                'transparent-placeholder':
-                                                    !localActivityData.endHour,
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .endHour,
-                                            },
-                                        ]"
-                                    >
-                                        <input
-                                            v-if="isReadOnly"
-                                            class="form-control"
-                                            id="endHourInput"
-                                            type="text"
-                                            :value="formatEndHour"
-                                            tabindex="-1"
-                                            :style="{
-                                                pointerEvents: 'none',
-                                                backgroundColor: '#fff',
-                                                cursor: 'default',
-                                            }"
-                                            readonly
-                                        />
-                                        <input
-                                            v-else
-                                            class="form-control"
-                                            id="endHourInput"
-                                            type="time"
-                                            v-model="localActivityData.endHour"
-                                            onfocus="this.showPicker()"
-                                            onkeydown="return false;"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage.endHour
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="dayInput"
-                                        ><strong>Día</strong></label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'is-invalid':
-                                                props.validationErrorStatus.day,
-                                        }"
-                                    >
-                                        <input
-                                            v-if="isReadOnly"
-                                            class="form-control"
-                                            id="dayInput"
-                                            type="text"
-                                            :value="activity.dia"
-                                            tabindex="-1"
-                                            :style="{
-                                                pointerEvents: 'none',
-                                                backgroundColor: '#fff',
-                                                cursor: 'default',
-                                            }"
-                                            readonly
-                                        />
-                                        <select
-                                            v-else
-                                            class="form-control form-select"
-                                            id="dayInput"
-                                            :v-model="localActivityData.day"
-                                        >
-                                            <option selected hidden disabled>
-                                                Selecciona
-                                            </option>
-                                            <!-- <option value="LUNES">Lunes</option>
-                                            <option value="MARTES">
-                                                Martes
-                                            </option>
-                                            <option value="MIERCOLES">
-                                                Miércoles
-                                            </option>
-                                            <option value="JUEVES">
-                                                Jueves
-                                            </option>
-                                            <option value="VIERNES">
-                                                Viernes
-                                            </option>
-                                            <option value="SABADO">
-                                                Sábado
-                                            </option>
-                                            <option value="DOMINGO">
-                                                Domingo
-                                            </option> -->
-                                        </select>
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .instructor
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="maxStudentsInput"
-                                        ><strong
-                                            >Máximo de estudiantes</strong
-                                        ></label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .maxStudents,
-                                        }"
-                                    >
-                                        <input
-                                            v-if="isReadOnly"
-                                            class="form-control"
-                                            id="maxStudentsInput"
-                                            type="text"
-                                            :value="activity.maxEstudiantes"
-                                            tabindex="-1"
-                                            :style="{
-                                                pointerEvents: 'none',
-                                                backgroundColor: '#fff',
-                                                cursor: 'default',
-                                            }"
-                                            readonly
-                                        />
-                                        <input
-                                            v-else
-                                            class="form-control"
-                                            id="maxStudentsInput"
-                                            type="number"
-                                            v-model="
-                                                localActivityData.maxStudents
-                                            "
-                                            @input="filterNumberInput"
-                                        />
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .maxStudents
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
-                                    <label class="form-label" for="instructorInput"
-                                        ><strong>Instructor</strong></label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .instructor,
-                                        }"
-                                    >
-                                        <input
-                                            v-if="isReadOnly"
-                                            class="form-control"
-                                            id="instructorInput"
-                                            type="text"
-                                            :value="
-                                                activity.instructor?.nombre
-                                                    ?.nombreCompleto
-                                            "
-                                            tabindex="-1"
-                                            :style="{
-                                                pointerEvents: 'none',
-                                                backgroundColor: '#fff',
-                                                cursor: 'default',
-                                            }"
-                                            readonly
-                                        />
-                                        <select
-                                            v-else
-                                            class="form-control form-select"
-                                            for="instructorInput"
-                                            id="instructorInput"
-                                            :v-model="
-                                                localActivityData.instructor
-                                            "
-                                        >
-                                            <option
-                                                v-if="instructorError"
-                                                value=""
-                                                selected
-                                                disabled
-                                            >
-                                                No se pudo obtener la lista de
-                                                instructores
-                                            </option>
-                                            <option
-                                                v-else
-                                                :value="activity.instructor?.id"
-                                                selected
-                                            >
-                                                {{
-                                                    activity.instructor?.nombre
-                                                        ?.nombreCompleto
-                                                }}
-                                            </option>
-                                            <option
-                                                v-for="instructor in instructors"
-                                                :key="instructor"
-                                                :value="instructor.id"
-                                            >
-                                                {{ instructor.usuario.nombre }}
-                                                {{
-                                                    instructor.usuario.apellido
-                                                }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .instructor
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label
@@ -553,6 +382,234 @@
                                             props.validationErrorMessage
                                                 .location
                                         }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tabla editable con agregar/eliminar -->
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label class="form-label"
+                                        ><strong>Horario</strong></label
+                                    >
+
+                                    <div class="card">
+                                        <div class="card-body px-0 pt-0 pb-2">
+                                            <div class="table-responsive p-2">
+                                                <table
+                                                    class="table align-items-center mb-0"
+                                                >
+                                                    <thead>
+                                                        <tr>
+                                                            <th
+                                                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7"
+                                                            >
+                                                                Día
+                                                            </th>
+                                                            <th
+                                                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                            >
+                                                                Hora de inicio
+                                                            </th>
+                                                            <th
+                                                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                            >
+                                                                Hora de fin
+                                                            </th>
+                                                            <th
+                                                                v-if="
+                                                                    !isReadOnly
+                                                                "
+                                                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                            >
+                                                                Acciones
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody v-if="isReadOnly">
+                                                        <tr
+                                                            v-for="(
+                                                                item, index
+                                                            ) in activity.horarios"
+                                                            :key="
+                                                                item.id || index
+                                                            "
+                                                        >
+                                                            <!-- Día -->
+                                                            <td
+                                                                class="text-sm font-weight-normal"
+                                                            >
+                                                                <span>{{
+                                                                    formatDay(
+                                                                        item.dia
+                                                                    )
+                                                                }}</span>
+                                                            </td>
+
+                                                            <!-- Hora inicio -->
+                                                            <td
+                                                                class="text-sm font-weight-normal"
+                                                            >
+                                                                <span>{{
+                                                                    formatHour(
+                                                                        item.horaInicio
+                                                                    )
+                                                                }}</span>
+                                                            </td>
+
+                                                            <!-- Hora fin -->
+                                                            <td
+                                                                class="text-sm font-weight-normal"
+                                                            >
+                                                                <span>{{
+                                                                    formatHour(
+                                                                        item.horaFin
+                                                                    )
+                                                                }}</span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+
+                                                    <tbody v-else>
+                                                        <tr
+                                                            v-for="(
+                                                                item, index
+                                                            ) in localActivityData.schedule"
+                                                            :key="
+                                                                item.id || index
+                                                            "
+                                                        >
+                                                            <!-- Día -->
+                                                            <td
+                                                                class="text-sm font-weight-normal"
+                                                            >
+                                                                <div>
+                                                                    <div
+                                                                        class="input-group input-group-outline"
+                                                                    >
+                                                                        <select
+                                                                            class="form-control form-select"
+                                                                            v-model="
+                                                                                item.dia
+                                                                            "
+                                                                        >
+                                                                            <option
+                                                                                value="LUNES"
+                                                                            >
+                                                                                Lunes
+                                                                            </option>
+                                                                            <option
+                                                                                value="MARTES"
+                                                                            >
+                                                                                Martes
+                                                                            </option>
+                                                                            <option
+                                                                                value="MIERCOLES"
+                                                                            >
+                                                                                Miércoles
+                                                                            </option>
+                                                                            <option
+                                                                                value="JUEVES"
+                                                                            >
+                                                                                Jueves
+                                                                            </option>
+                                                                            <option
+                                                                                value="VIERNES"
+                                                                            >
+                                                                                Viernes
+                                                                            </option>
+                                                                            <option
+                                                                                value="SABADO"
+                                                                            >
+                                                                                Sábado
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <!-- Hora inicio -->
+                                                            <td
+                                                                class="text-sm font-weight-normal"
+                                                            >
+                                                                <div>
+                                                                    <div
+                                                                        class="input-group input-group-outline"
+                                                                    >
+                                                                        <input
+                                                                            type="time"
+                                                                            class="form-control"
+                                                                            v-model="
+                                                                                item.horaInicio
+                                                                            "
+                                                                            onfocus="this.showPicker()"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <!-- Hora fin -->
+                                                            <td
+                                                                class="text-sm font-weight-normal"
+                                                            >
+                                                                <div>
+                                                                    <div
+                                                                        class="input-group input-group-outline"
+                                                                    >
+                                                                        <input
+                                                                            type="time"
+                                                                            class="form-control"
+                                                                            v-model="
+                                                                                item.horaFin
+                                                                            "
+                                                                            onfocus="this.showPicker()"
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+
+                                                            <!-- Botón eliminar -->
+                                                            <td
+                                                                v-if="
+                                                                    !isReadOnly
+                                                                "
+                                                            >
+                                                                <button
+                                                                    class="btn btn-danger my-auto"
+                                                                    @click="
+                                                                        removeHorario(
+                                                                            index
+                                                                        )
+                                                                    "
+                                                                >
+                                                                    <i
+                                                                        class="material-symbols-rounded"
+                                                                        >close</i
+                                                                    >
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                                <!-- Botón agregar -->
+                                                <div
+                                                    v-if="!isReadOnly"
+                                                    class="mt-3"
+                                                >
+                                                    <button
+                                                        class="btn bg-gradient-dark my-auto ms-2"
+                                                        @click="addHorario"
+                                                    >
+                                                        <i
+                                                            class="material-symbols-rounded"
+                                                            >add</i
+                                                        >
+                                                        Agregar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -787,12 +844,10 @@
         localActivityData.value.name = activity.value.nombre;
         localActivityData.value.startDate = activity.value.fechaInicio;
         localActivityData.value.endDate = activity.value.fechaFin;
-        localActivityData.value.startHour = activity.value.horaInicio;
-        localActivityData.value.endHour = activity.value.horaFin;
-        localActivityData.value.day = 'MIERCOLES';
         localActivityData.value.maxStudents = activity.value.maxEstudiantes;
         localActivityData.value.instructor = activity.value.instructor.id;
         localActivityData.value.location = activity.value.ubicacion.id;
+        localActivityData.value.schedule = activity.value.horarios;
         localActivityData.value.id = activity.value.id;
     };
 
@@ -832,6 +887,7 @@
     const cancelEdit = () => {
         resetErrorStatusAndMessages();
         instructorError.value = false;
+        locationError.value = false;
         isReadOnly.value = true;
     };
 
@@ -859,6 +915,36 @@
         });
     };
 
+    const addHorario = () => {
+        localActivityData.value.schedule.push({
+            dia: '',
+            horaInicio: '',
+            horaFin: '',
+        });
+    };
+
+    const removeHorario = (index) => {
+        localActivityData.value.schedule.splice(index, 1);
+    };
+
+    const formatDay = (dia) => {
+        const diasMap = {
+            LUNES: 'Lunes',
+            MARTES: 'Martes',
+            MIERCOLES: 'Miércoles',
+            JUEVES: 'Jueves',
+            VIERNES: 'Viernes',
+            SABADO: 'Sábado',
+        };
+
+        return (
+            diasMap[dia.toUpperCase()] ||
+            dia.charAt(0).toUpperCase() + dia.slice(1).toLowerCase()
+        );
+    };
+
+    const formatHour = (hora) => hora.slice(0, 5);
+
     const formatStartDate = computed(() => {
         const date = activity.value.fechaInicio;
         if (!date) return '';
@@ -872,23 +958,6 @@
         const [year, month, day] = date.split('-');
         return `${day}-${month}-${year}`;
     });
-
-    const formatTimeTo12Hour = (time) => {
-        if (!time || !time.includes(':')) return '';
-        const [hour, minute] = time.split(':');
-        let formattedHour = parseInt(hour, 10);
-        const ampm = formattedHour >= 12 ? 'PM' : 'AM';
-        formattedHour = formattedHour % 12;
-        formattedHour = formattedHour ? formattedHour : 12;
-        return `${formattedHour}:${minute} ${ampm}`;
-    };
-
-    const formatStartHour = computed(() =>
-        formatTimeTo12Hour(activity.value.horaInicio)
-    );
-    const formatEndHour = computed(() =>
-        formatTimeTo12Hour(activity.value.horaFin)
-    );
 
     const filterNumberInput = (e) => {
         const cleanedValue = e.target.value.replace(/[^\d]/g, '');
