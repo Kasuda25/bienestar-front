@@ -459,7 +459,7 @@
     const formatDate = (dateStr) => {
         const date = new Date(dateStr);
         const dd = String(date.getDate()).padStart(2, '0');
-        const mm = String(date.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
         const yyyy = date.getFullYear();
         const hh = String(date.getHours()).padStart(2, '0');
         const min = String(date.getMinutes()).padStart(2, '0');

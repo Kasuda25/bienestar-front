@@ -168,7 +168,6 @@
         listError: Boolean,
     });
 
-    // Diccionario para mapear los días originales a la forma con tilde
     const diasConTilde = {
         lunes: 'Lunes',
         martes: 'Martes',

@@ -7,6 +7,7 @@ class AuthService {
             const response = await axios.post('/auth/login', data);
             if (response.status === 200) {
                 const authStore = useAuthStore();
+                authStore.id = response.data.instructorId || response.data.estudianteId;
                 authStore.user = response.data.usuario;
                 authStore.token = response.data.token;
                 authStore.rtoken = response.data.refreshToken;
@@ -45,6 +46,7 @@ class AuthService {
             });
             if (response.status === 200) {
                 const authStore = useAuthStore();
+                authStore.id = response.data.instructorId || response.data.estudianteId || 24;
                 authStore.user = response.data.usuario;
                 authStore.token = response.data.token;
                 authStore.rtoken = response.data.refreshToken;

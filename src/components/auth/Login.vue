@@ -87,7 +87,7 @@
                                             }}
                                         </div>
                                     </div>
-                                    <div
+                                    <!-- <div
                                         class="form-check form-switch d-flex align-items-center mb-3"
                                     >
                                         <input
@@ -101,7 +101,7 @@
                                             for="rememberMe"
                                             >Recordar contraseña</label
                                         >
-                                    </div>
+                                    </div> -->
                                     <div class="text-center">
                                         <button
                                             v-if="!isLoading"

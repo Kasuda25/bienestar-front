@@ -90,8 +90,7 @@
 
         if (authStore.user.rol === 'INSTRUCTOR') {
             try {
-                // const response = await ActivitiesService.getActivitiesByInstructor(authStore.user.id);
-                const response = await ActivitiesService.getActivitiesByInstructor(34);
+                const response = await ActivitiesService.getActivitiesByInstructor(authStore.id);
 
                 activities.value = response.data;
             } catch (error) {

@@ -69,14 +69,6 @@
                                         >
                                         &nbsp; {{ authStore.user.email }}
                                     </li>
-                                    <!-- <li
-                                        class="list-group-item border-0 ps-0 text-sm"
-                                    >
-                                        <strong class="text-dark"
-                                            >Correo:</strong
-                                        >
-                                        &nbsp; {{ authStore.user.especialidad }}
-                                    </li> -->
                                 </ul>
                             </div>
                         </div>

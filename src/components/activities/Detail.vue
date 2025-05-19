@@ -385,8 +385,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Tabla editable con agregar/eliminar -->
                             <div class="row mb-3">
                                 <div class="col-12">
                                     <label class="form-label"
@@ -427,7 +425,6 @@
                                                                 item.id || index
                                                             "
                                                         >
-                                                            <!-- Día -->
                                                             <td
                                                                 class="text-sm font-weight-normal"
                                                             >
@@ -437,8 +434,6 @@
                                                                     )
                                                                 }}</span>
                                                             </td>
-
-                                                            <!-- Hora inicio -->
                                                             <td
                                                                 class="text-sm font-weight-normal"
                                                             >
@@ -448,8 +443,6 @@
                                                                     )
                                                                 }}</span>
                                                             </td>
-
-                                                            <!-- Hora fin -->
                                                             <td
                                                                 class="text-sm font-weight-normal"
                                                             >

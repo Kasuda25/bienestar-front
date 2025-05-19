@@ -19,36 +19,6 @@ import { setupInterceptors } from '@/services/useAxios';
 import AuthService from '@/services/useAuth';
 import LocalStorage from '@/services/useLocalStorage';
 
-// async function initLogin() {
-//     const rtoken = localStorage.getItem('rtoken');
-
-// if (rtoken) {
-//     await AuthService.autoLogin(rtoken)
-//         .then((response) => {
-//             if (response) {
-//                 LocalStorage.createSession();
-//             }
-//         })
-//         .catch((error) => {
-//             if (error) {
-//                 LocalStorage.endSession();
-//             }
-//         });
-// }
-// }
-
-// const app = createApp(App);
-
-// setupInterceptors(router);
-
-// app.use(createPinia());
-// app.use(SnackbarService);
-// app.use(router);
-
-// initLogin();
-
-// app.mount('#app');
-
 async function initApp() {
     const app = createApp(App);
 

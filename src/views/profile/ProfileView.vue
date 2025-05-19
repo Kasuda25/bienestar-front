@@ -2,7 +2,7 @@
     <div>
         <AdminView v-if="authStore.user.rol === 'ADMIN'" />
         <InstructorView v-else-if="authStore.user.rol === 'INSTRUCTOR'" />
-        <StudentView v-else-if="authStore.user.rol === 'STUDENT'" />
+        <StudentView v-else-if="authStore.user.rol === 'ESTUDIANTE'" />
     </div>
 </template>
 

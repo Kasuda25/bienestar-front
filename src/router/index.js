@@ -84,18 +84,16 @@ router.beforeEach(async (to, from, next) => {
     const { useAuthStore } = await import('../stores/auth');
     const authStore = useAuthStore();
 
-    // Si ya estamos autenticados, sigue normalmente
     if (authStore.isAuth) {
         return next();
     }
 
-    // Si hay refresh token, intenta auto login
     if (!authStore.isAuth && localStorage.getItem('rtoken') && !isRefreshing) {
         isRefreshing = true;
         try {
             await AuthService.autoLogin(localStorage.getItem('rtoken'));
             LocalStorage.createSession();
-            return next(); // ahora sí, continúa la navegación
+            return next();
         } catch (error) {
             if (error) {
                 LocalStorage.endSession();
@@ -110,7 +108,6 @@ router.beforeEach(async (to, from, next) => {
         return next(authStore.isAuth ? '/dashboard' : '/login');
     }
 
-    // Rutas que requieren autenticación
     if (to.meta.requiresAuth && !authStore.isAuth) {
         return next('/login');
     }

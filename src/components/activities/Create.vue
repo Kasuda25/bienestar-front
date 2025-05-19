@@ -328,7 +328,6 @@
                                                                 item.id || index
                                                             "
                                                         >
-                                                            <!-- Día -->
                                                             <td
                                                                 class="text-sm font-weight-normal"
                                                             >
@@ -381,8 +380,6 @@
                                                                     }}
                                                                 </div>
                                                             </td>
-
-                                                            <!-- Hora inicio -->
                                                             <td
                                                                 class="text-sm font-weight-normal"
                                                             >
@@ -427,8 +424,6 @@
                                                                     </div>
                                                                 </div>
                                                             </td>
-
-                                                            <!-- Hora fin -->
                                                             <td
                                                                 class="text-sm font-weight-normal"
                                                             >
@@ -473,8 +468,6 @@
                                                                     </div>
                                                                 </div>
                                                             </td>
-
-                                                            <!-- Botón eliminar -->
                                                             <td>
                                                                 <button
                                                                     class="btn btn-danger my-auto"
@@ -493,8 +486,6 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-
-                                                <!-- Botón agregar -->
                                                 <div class="mt-3">
                                                     <button
                                                         class="btn bg-gradient-dark my-auto ms-2"
@@ -587,7 +578,6 @@
                                                     ?.horarios"
                                                 :key="item.id || index"
                                             >
-                                                <!-- Día -->
                                                 <td
                                                     class="text-sm font-weight-normal"
                                                 >
@@ -595,8 +585,6 @@
                                                         formatDay(item.dia)
                                                     }}</span>
                                                 </td>
-
-                                                <!-- Hora inicio -->
                                                 <td
                                                     class="text-sm font-weight-normal"
                                                 >
@@ -606,8 +594,6 @@
                                                         )
                                                     }}</span>
                                                 </td>
-
-                                                <!-- Hora fin -->
                                                 <td
                                                     class="text-sm font-weight-normal"
                                                 >
