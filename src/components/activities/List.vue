@@ -19,6 +19,7 @@
                                     custom
                                 >
                                     <a
+                                        v-if="authStore.user.rol === 'ADMIN'"
                                         :href="href"
                                         class="btn btn-light mb-0"
                                         @click="navigate"
@@ -95,7 +96,7 @@
                                         !activities[0] &&
                                         !listError
                                     "
-                                    class="no-activities"
+                                    class="no-items"
                                 >
                                     <div>
                                         <div
@@ -206,14 +207,18 @@
 </template>
 
 <script setup>
+    import { useAuthStore } from '@/stores/auth';
+
     defineProps({
         activities: Array,
         listError: Boolean,
     });
+
+    const authStore = useAuthStore();
 </script>
 
 <style scoped>
-.no-activities {
+.no-items {
     border-top: none;
 }
 </style>

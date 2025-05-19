@@ -6,7 +6,11 @@
         :activity-list-error="activityListError"
         :instructor-list-error="instructorListError"
     />
-    <InstructorDashboard v-if="authStore.user.rol === 'INSTRUCTOR'" />
+    <InstructorDashboard
+        v-if="authStore.user.rol === 'INSTRUCTOR'"
+        :activities="activities"
+        :activity-list-error="activityListError"
+    />
 </template>
 
 <script setup>
@@ -34,7 +38,9 @@
     onMounted(async () => {
         if (authStore.user.rol === 'ADMIN') {
             try {
-                activities.value = await ActivitiesService.getActivities();
+                const response = await ActivitiesService.getActivities();
+
+                activities.value = response.data;
             } catch (error) {
                 if (error) {
                     activityListError.value = true;
@@ -82,8 +88,10 @@
 
         if (authStore.user.rol === 'INSTRUCTOR') {
             try {
-                activities.value = await ActivitiesService.getActivitiesByInstructor(authStore.user.id);
-                console.log(activities.value);
+                const response =
+                    await ActivitiesService.getActivitiesByInstructor(34);
+
+                activities.value = response.data;
             } catch (error) {
                 if (error) {
                     activityListError.value = true;

@@ -568,7 +568,7 @@
     const queryActivities = async () => {
         await ActivitiesService.getActivitiesByInstructor(instructor.value.id)
             .then((response) => {
-                activities.value = response;
+                activities.value = response.data;
             })
             .catch((error) => {
                 if (error) {

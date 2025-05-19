@@ -594,7 +594,7 @@
     const queryActivity = async () => {
         await ActivitiesService.getActivity(activityId)
             .then((response) => {
-                activity.value = response;
+                activity.value = response.data;
             })
             .catch((error) => {
                 if (error) {

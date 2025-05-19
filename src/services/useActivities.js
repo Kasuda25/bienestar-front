@@ -36,7 +36,7 @@ class ActivitiesService {
         try {
             const response = await axios.get('/actividades/creadas');
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -67,7 +67,7 @@ class ActivitiesService {
         try {
             const response = await axios.get(`/actividades/${id}`);
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -98,7 +98,7 @@ class ActivitiesService {
         try {
             const response = await axios.get(`/actividades/instructor/${id}`);
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -129,7 +129,7 @@ class ActivitiesService {
         try {
             const response = await axios.put(`/actividades/${id}`, activity);
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -160,7 +160,7 @@ class ActivitiesService {
         try {
             const response = await axios.delete(`/actividades/eliminar/${id}`);
             if (response.status === 200) {
-                return response.data;
+                return response;
             }
         } catch (error) {
             if (error.response) {

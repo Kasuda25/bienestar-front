@@ -46,7 +46,9 @@
 
     const queryActivities = async () => {
         try {
-            activities.value = await ActivitiesService.getActivities();
+            const response = await ActivitiesService.getActivities();
+
+            activities.value = response.data;
         } catch (error) {
             if (error) {
                 listError.value = true;
@@ -71,7 +73,9 @@
 
     const queryActivitiesByInstructor = async (id) => {
         try {
-            activities.value = await ActivitiesService.getActivitiesByInstructor(id);
+            const response = await ActivitiesService.getActivitiesByInstructor(id);
+
+            activities.value = response.data;
         } catch (error) {
             if (error) {
                 listError.value = true;

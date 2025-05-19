@@ -92,7 +92,7 @@
                                     v-if="
                                         students && !students[0] && !listError
                                     "
-                                    class="no-activities"
+                                    class="no-items"
                                 >
                                     <div>
                                         <div
@@ -186,7 +186,7 @@
 </script>
 
 <style scoped>
-.no-activities {
+.no-items {
     border-top: none;
 }
 </style>

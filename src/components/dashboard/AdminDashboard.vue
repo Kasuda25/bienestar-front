@@ -78,31 +78,32 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <div v-if="activityListError">
-                                        <div
-                                            class="d-flex justify-content-center"
-                                        >
-                                            <h4 class="my-auto">
-                                                Ha ocurrido un error al obtener
-                                                la lista de actividades
-                                            </h4>
-                                        </div>
+                                <tbody v-if="activityListError">
+                                    <div class="d-flex justify-content-center">
+                                        <h4 class="my-auto">
+                                            Ha ocurrido un error al obtener la
+                                            lista de actividades
+                                        </h4>
                                     </div>
                                 </tbody>
-                                <div
+                                <tbody
                                     v-if="
                                         activities &&
                                         !activities[0] &&
                                         !activityListError
                                     "
+                                    class="no-items"
                                 >
-                                    <div class="d-flex justify-content-center">
-                                        <h4 class="my-auto">
-                                            No hay activities para mostrar
-                                        </h4>
+                                    <div>
+                                        <div
+                                            class="d-flex justify-content-center"
+                                        >
+                                            <h4 class="my-auto">
+                                                No hay activities para mostrar
+                                            </h4>
+                                        </div>
                                     </div>
-                                </div>
+                                </tbody>
                                 <tbody
                                     v-if="
                                         activities &&
@@ -272,19 +273,24 @@
                                         </div>
                                     </div>
                                 </tbody>
-                                <div
+                                <tbody
                                     v-if="
                                         instructors &&
                                         !instructors[0] &&
                                         !instructorListError
                                     "
+                                    class="no-items"
                                 >
-                                    <div class="d-flex justify-content-center">
-                                        <h4 class="my-auto">
-                                            No hay instructores para mostrar
-                                        </h4>
+                                    <div>
+                                        <div
+                                            class="d-flex justify-content-center"
+                                        >
+                                            <h4 class="my-auto">
+                                                No hay instructores para mostrar
+                                            </h4>
+                                        </div>
                                     </div>
-                                </div>
+                                </tbody>
                                 <tbody
                                     v-if="
                                         instructors &&
@@ -428,7 +434,7 @@
                 if (error) {
                     auditError.value = true;
                     let message =
-                        'Ha ocurrido un error al obtener la información de la actividad. Por favor intenta de nuevo más tarde.';
+                        'Ha ocurrido un error al obtener los registros de actividad. Por favor intenta de nuevo más tarde.';
 
                     if (
                         error.type === 'backend' ||
@@ -461,3 +467,9 @@
         return `${dd}/${mm}/${yyyy} ${hh}:${min}`;
     };
 </script>
+
+<style scoped>
+    .no-items {
+        border-top: none;
+    }
+</style>

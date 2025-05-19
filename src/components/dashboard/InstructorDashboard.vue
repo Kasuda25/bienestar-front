@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
+            <div class="col-12 mb-md-0 mb-4">
                 <div class="card mb-4">
                     <div class="card-header">
                         <div class="row">
@@ -85,19 +85,24 @@
                                         </div>
                                     </div>
                                 </tbody>
-                                <div
+                                <tbody
                                     v-if="
                                         activities &&
                                         !activities[0] &&
                                         !activityListError
                                     "
+                                    class="no-items"
                                 >
-                                    <div class="d-flex justify-content-center">
-                                        <h4 class="my-auto">
-                                            No hay activities para mostrar
-                                        </h4>
+                                    <div>
+                                        <div
+                                            class="d-flex justify-content-center"
+                                        >
+                                            <h4 class="my-auto">
+                                                No hay activities para mostrar
+                                            </h4>
+                                        </div>
                                     </div>
-                                </div>
+                                </tbody>
                                 <tbody
                                     v-if="
                                         activities &&
@@ -177,8 +182,12 @@
 <script setup>
     defineProps({
         activities: Array,
-        instructors: Array,
         activityListError: Boolean,
-        instructorListError: Boolean,
     });
 </script>
+
+<style scoped>
+    .no-items {
+        border-top: none;
+    }
+</style>
