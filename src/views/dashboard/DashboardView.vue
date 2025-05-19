@@ -79,5 +79,31 @@
                 }
             }
         }
+
+        if (authStore.user.rol === 'INSTRUCTOR') {
+            try {
+                activities.value = await ActivitiesService.getActivitiesByInstructor(authStore.user.id);
+                console.log(activities.value);
+            } catch (error) {
+                if (error) {
+                    activityListError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo más tarde.';
+
+                    if (error.type === 'backend') {
+                        message = error.message;
+                    } else if (error.type === 'network') {
+                        message = error.message;
+                    } else if (error.type === 'unknown') {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
+                }
+            }
+        }
     });
 </script>

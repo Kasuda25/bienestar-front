@@ -82,14 +82,13 @@
                                         </div>
                                     </div>
                                 </tbody>
-                                <tbody>
-                                    <div
-                                        v-if="
-                                            locations &&
-                                            !locations[0] &&
-                                            !listError
-                                        "
-                                    >
+                                <tbody
+                                    v-if="
+                                        locations && !locations[0] && !listError
+                                    "
+                                    class="no-activities"
+                                >
+                                    <div>
                                         <div
                                             class="d-flex justify-content-center"
                                         >
@@ -164,44 +163,66 @@
 </template>
 
 <script setup>
-        defineProps({
+    defineProps({
         locations: Array,
         listError: Boolean,
     });
 
+    // Diccionario para mapear los días originales a la forma con tilde
+    const diasConTilde = {
+        lunes: 'Lunes',
+        martes: 'Martes',
+        miercoles: 'Miércoles',
+        jueves: 'Jueves',
+        viernes: 'Viernes',
+        sabado: 'Sábado',
+        domingo: 'Domingo',
+    };
 
-// Diccionario para mapear los días originales a la forma con tilde
-const diasConTilde = {
-  lunes: 'Lunes',
-  martes: 'Martes',
-  miercoles: 'Miércoles',
-  jueves: 'Jueves',
-  viernes: 'Viernes',
-  sabado: 'Sábado',
-  domingo: 'Domingo'
-}
+    const ordenSemana = [
+        'lunes',
+        'martes',
+        'miercoles',
+        'jueves',
+        'viernes',
+        'sabado',
+        'domingo',
+    ];
 
-const ordenSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo']
+    const formatDays = (horarios) => {
+        if (!horarios || !Array.isArray(horarios)) return '';
 
-const formatDays = (horarios) => {
-  if (!horarios || !Array.isArray(horarios)) return ''
+        // Normalizamos a minúscula sin tilde y eliminamos duplicados
+        const diasUnicos = Array.from(
+            new Set(
+                horarios.map((h) =>
+                    h.dia
+                        .toLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                )
+            )
+        );
 
-  // Normalizamos a minúscula sin tilde y eliminamos duplicados
-  const diasUnicos = Array.from(
-    new Set(horarios.map(h => h.dia.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")))
-  )
+        // Ordenamos según el orden de la semana
+        diasUnicos.sort(
+            (a, b) => ordenSemana.indexOf(a) - ordenSemana.indexOf(b)
+        );
 
-  // Ordenamos según el orden de la semana
-  diasUnicos.sort((a, b) => ordenSemana.indexOf(a) - ordenSemana.indexOf(b))
+        // Convertimos a la forma con tilde
+        const diasFinal = diasUnicos.map((dia) => diasConTilde[dia] || dia);
 
-  // Convertimos a la forma con tilde
-  const diasFinal = diasUnicos.map(dia => diasConTilde[dia] || dia)
-
-  // Formateamos con coma y "y"
-  const len = diasFinal.length
-  if (len === 0) return ''
-  if (len === 1) return diasFinal[0]
-  if (len === 2) return diasFinal.join(' y ')
-  return diasFinal.slice(0, -1).join(', ') + ' y ' + diasFinal[len - 1]
-}
+        // Formateamos con coma y "y"
+        const len = diasFinal.length;
+        if (len === 0) return '';
+        if (len === 1) return diasFinal[0];
+        if (len === 2) return diasFinal.join(' y ');
+        return diasFinal.slice(0, -1).join(', ') + ' y ' + diasFinal[len - 1];
+    };
 </script>
+
+<style scoped>
+    .no-activities {
+        border-top: none;
+    }
+</style>

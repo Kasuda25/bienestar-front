@@ -22823,7 +22823,7 @@ fieldset:disabled .btn {
 
 .btn-light,
 .btn.bg-gradient-light {
-    color: #3a416f;
+    color: #000;
 }
 
 .btn-light:hover,

@@ -89,14 +89,15 @@
                                         </div>
                                     </div>
                                 </tbody>
-                                <tbody>
-                                    <div
-                                        v-if="
-                                            activities &&
-                                            !activities[0] &&
-                                            !listError
-                                        "
-                                    >
+                                <tbody
+                                    v-if="
+                                        activities &&
+                                        !activities[0] &&
+                                        !listError
+                                    "
+                                    class="no-activities"
+                                >
+                                    <div>
                                         <div
                                             class="d-flex justify-content-center"
                                         >
@@ -122,7 +123,9 @@
                                                 :href="`/activities/${activity.id}`"
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                <h6 class="mb-0 ps-3 text-sm font-weight-bolder opacity-8">
+                                                <h6
+                                                    class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
+                                                >
                                                     {{ activity.nombre }}
                                                 </h6>
                                             </a>
@@ -158,8 +161,13 @@
                                                 :href="`/activities/${activity.id}`"
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                <span class="text-xs font-weight-bolder opacity-6">
-                                                    {{ activity.ubicacion?.nombre }}
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
+                                                    {{
+                                                        activity.ubicacion
+                                                            ?.nombre
+                                                    }}
                                                 </span>
                                             </a>
                                         </td>
@@ -176,12 +184,12 @@
                                                     class="text-xs font-weight-bolder opacity-6 my-auto"
                                                 >
                                                     {{
-                                                        activity.instructor.usuario
-                                                            .nombre
+                                                        activity.instructor
+                                                            .usuario.nombre
                                                     }}
                                                     {{
-                                                        activity.instructor.usuario
-                                                            .apellido
+                                                        activity.instructor
+                                                            .usuario.apellido
                                                     }}
                                                 </span>
                                             </a>
@@ -203,3 +211,9 @@
         listError: Boolean,
     });
 </script>
+
+<style scoped>
+.no-activities {
+    border-top: none;
+}
+</style>

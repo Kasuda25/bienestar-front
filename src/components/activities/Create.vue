@@ -539,7 +539,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="localActivityData.location != null" class="card">
+                <div v-if="localActivityData.location != null && !isLoading" class="card">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
@@ -680,6 +680,15 @@
             location: null,
             id: null,
         });
+
+        localActivityData.value.name = '';
+        localActivityData.value.startDate = '';
+        localActivityData.value.endDate = '';
+        localActivityData.value.schedule = [];
+        localActivityData.value.maxStudents = null;
+        localActivityData.value.instructor = null;
+        localActivityData.value.location = null;
+        localActivityData.value.id = null;
     };
 
     const resetErrorStatusAndMessages = () => {
@@ -789,7 +798,7 @@
     const availableDays = computed(() => {
         const uniques = [
             ...new Set(
-                localActivityData.value.location.horarios.map((h) => h.dia)
+                localActivityData.value.location?.horarios?.map((h) => h.dia)
             ),
         ];
         return uniques.map((d) => ({ value: d, label: days[d] || d }));
@@ -802,7 +811,6 @@
     };
 
     const createActivity = () => {
-        console.log(localActivityData.value);
         emit('sendActivityData', 'create');
     };
 

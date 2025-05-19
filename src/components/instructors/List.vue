@@ -84,14 +84,15 @@
                                         </div>
                                     </div>
                                 </tbody>
-                                <tbody>
-                                    <div
-                                        v-if="
-                                            instructors &&
-                                            !instructors[0] &&
-                                            !listError
-                                        "
-                                    >
+                                <tbody
+                                    v-if="
+                                        instructors &&
+                                        !instructors[0] &&
+                                        !listError
+                                    "
+                                    class="no-activities"
+                                >
+                                    <div>
                                         <div
                                             class="d-flex justify-content-center"
                                         >
@@ -126,7 +127,9 @@
                                                 <div
                                                     class="d-flex flex-column justify-content-center"
                                                 >
-                                                    <h6 class="mb-0 text-sm font-weight-bolder opacity-8">
+                                                    <h6
+                                                        class="mb-0 text-sm font-weight-bolder opacity-8"
+                                                    >
                                                         {{
                                                             instructor.nombreCompleto
                                                         }}
@@ -139,7 +142,9 @@
                                                 :href="`/instructors/${instructor.id}`"
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                <span class="text-xs font-weight-bolder opacity-6">
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
                                                     {{
                                                         instructor.usuario.email
                                                     }}
@@ -151,7 +156,9 @@
                                                 :href="`/instructors/${instructor.id}`"
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
-                                                <span class="text-xs font-weight-bolder opacity-6">
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
                                                     {{
                                                         instructor.especialidad
                                                     }}
@@ -175,3 +182,9 @@
         listError: Boolean,
     });
 </script>
+
+<style scoped>
+    .no-activities {
+        border-top: none;
+    }
+</style>

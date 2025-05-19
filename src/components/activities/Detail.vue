@@ -416,17 +416,9 @@
                                                             >
                                                                 Hora de fin
                                                             </th>
-                                                            <th
-                                                                v-if="
-                                                                    !isReadOnly
-                                                                "
-                                                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
-                                                            >
-                                                                Acciones
-                                                            </th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody v-if="isReadOnly">
+                                                    <tbody>
                                                         <tr
                                                             v-for="(
                                                                 item, index
@@ -441,7 +433,7 @@
                                                             >
                                                                 <span>{{
                                                                     formatDay(
-                                                                        item.dia
+                                                                        item.horarioBase.dia
                                                                     )
                                                                 }}</span>
                                                             </td>
@@ -469,145 +461,7 @@
                                                             </td>
                                                         </tr>
                                                     </tbody>
-
-                                                    <tbody v-else>
-                                                        <tr
-                                                            v-for="(
-                                                                item, index
-                                                            ) in localActivityData.schedule"
-                                                            :key="
-                                                                item.id || index
-                                                            "
-                                                        >
-                                                            <!-- Día -->
-                                                            <td
-                                                                class="text-sm font-weight-normal"
-                                                            >
-                                                                <div>
-                                                                    <div
-                                                                        class="input-group input-group-outline"
-                                                                    >
-                                                                        <select
-                                                                            class="form-control form-select"
-                                                                            v-model="
-                                                                                item.dia
-                                                                            "
-                                                                        >
-                                                                            <option
-                                                                                value="LUNES"
-                                                                            >
-                                                                                Lunes
-                                                                            </option>
-                                                                            <option
-                                                                                value="MARTES"
-                                                                            >
-                                                                                Martes
-                                                                            </option>
-                                                                            <option
-                                                                                value="MIERCOLES"
-                                                                            >
-                                                                                Miércoles
-                                                                            </option>
-                                                                            <option
-                                                                                value="JUEVES"
-                                                                            >
-                                                                                Jueves
-                                                                            </option>
-                                                                            <option
-                                                                                value="VIERNES"
-                                                                            >
-                                                                                Viernes
-                                                                            </option>
-                                                                            <option
-                                                                                value="SABADO"
-                                                                            >
-                                                                                Sábado
-                                                                            </option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-
-                                                            <!-- Hora inicio -->
-                                                            <td
-                                                                class="text-sm font-weight-normal"
-                                                            >
-                                                                <div>
-                                                                    <div
-                                                                        class="input-group input-group-outline"
-                                                                    >
-                                                                        <input
-                                                                            type="time"
-                                                                            class="form-control"
-                                                                            v-model="
-                                                                                item.horaInicio
-                                                                            "
-                                                                            onfocus="this.showPicker()"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-
-                                                            <!-- Hora fin -->
-                                                            <td
-                                                                class="text-sm font-weight-normal"
-                                                            >
-                                                                <div>
-                                                                    <div
-                                                                        class="input-group input-group-outline"
-                                                                    >
-                                                                        <input
-                                                                            type="time"
-                                                                            class="form-control"
-                                                                            v-model="
-                                                                                item.horaFin
-                                                                            "
-                                                                            onfocus="this.showPicker()"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-
-                                                            <!-- Botón eliminar -->
-                                                            <td
-                                                                v-if="
-                                                                    !isReadOnly
-                                                                "
-                                                            >
-                                                                <button
-                                                                    class="btn btn-danger my-auto"
-                                                                    @click="
-                                                                        removeHorario(
-                                                                            index
-                                                                        )
-                                                                    "
-                                                                >
-                                                                    <i
-                                                                        class="material-symbols-rounded"
-                                                                        >close</i
-                                                                    >
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
                                                 </table>
-
-                                                <!-- Botón agregar -->
-                                                <div
-                                                    v-if="!isReadOnly"
-                                                    class="mt-3"
-                                                >
-                                                    <button
-                                                        class="btn bg-gradient-dark my-auto ms-2"
-                                                        @click="addHorario"
-                                                    >
-                                                        <i
-                                                            class="material-symbols-rounded"
-                                                            >add</i
-                                                        >
-                                                        Agregar
-                                                    </button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -913,18 +767,6 @@
                 emit('deleteActivity', activity.value.id);
             }
         });
-    };
-
-    const addHorario = () => {
-        localActivityData.value.schedule.push({
-            dia: '',
-            horaInicio: '',
-            horaFin: '',
-        });
-    };
-
-    const removeHorario = (index) => {
-        localActivityData.value.schedule.splice(index, 1);
     };
 
     const formatDay = (dia) => {

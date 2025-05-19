@@ -12,7 +12,10 @@
                             <h6 class="text-white ps-3 my-auto">
                                 Lista de estudiantes
                             </h6>
-                            <div v-if="authStore.user.rol === 'ADMIN'" class="pe-3">
+                            <div
+                                v-if="authStore.user.rol === 'ADMIN'"
+                                class="pe-3"
+                            >
                                 <RouterLink
                                     to="/students/create"
                                     v-slot="{ navigate, href }"
@@ -85,14 +88,13 @@
                                         </div>
                                     </div>
                                 </tbody>
-                                <tbody>
-                                    <div
-                                        v-if="
-                                            students &&
-                                            !students[0] &&
-                                            !listError
-                                        "
-                                    >
+                                <tbody
+                                    v-if="
+                                        students && !students[0] && !listError
+                                    "
+                                    class="no-activities"
+                                >
+                                    <div>
                                         <div
                                             class="d-flex justify-content-center"
                                         >
@@ -182,3 +184,9 @@
 
     const authStore = useAuthStore();
 </script>
+
+<style scoped>
+.no-activities {
+    border-top: none;
+}
+</style>

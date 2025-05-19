@@ -19,9 +19,13 @@
     import { useSnackbar } from 'vue3-snackbar';
 
     import ActivitiesService from '@/services/useActivities';
+    
+    import { useAuthStore } from '@/stores/auth';
 
     const router = useRouter();
     const snackbar = useSnackbar();
+
+    const authStore = useAuthStore();
 
     const isLoading = ref(false);
     const listError = ref(false);
@@ -65,8 +69,39 @@
         }
     };
 
+    const queryActivitiesByInstructor = async (id) => {
+        try {
+            activities.value = await ActivitiesService.getActivitiesByInstructor(id);
+        } catch (error) {
+            if (error) {
+                listError.value = true;
+                let message =
+                    'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo más tarde.';
+
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
+                snackbar.add({
+                    type: 'error',
+                    text: message,
+                });
+            }
+        }
+    };
+
     onMounted(async () => {
-        queryActivities();
+        if (authStore.user.rol === 'ADMIN') {
+            await queryActivities();
+        }
+
+        if (authStore.user.rol === 'INSTRUCTOR') {
+            await queryActivitiesByInstructor(authStore.user.id)
+        }
     });
 
     const validationErrorStatus = ref({

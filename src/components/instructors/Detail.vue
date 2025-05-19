@@ -412,11 +412,6 @@
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
-                                            Horario
-                                        </th>
-                                        <th
-                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                        >
                                             Ubicación
                                         </th>
                                     </tr>
@@ -482,23 +477,7 @@
                                         <td class="align-middle text-sm">
                                             <span
                                                 class="text-xs font-weight-bold"
-                                            >
-                                                {{
-                                                    activity.horaInicio.slice(
-                                                        0,
-                                                        5
-                                                    )
-                                                }}
-                                                -
-                                                {{
-                                                    activity.horaFin.slice(0, 5)
-                                                }}
-                                            </span>
-                                        </td>
-                                        <td class="align-middle text-sm">
-                                            <span
-                                                class="text-xs font-weight-bold"
-                                                >{{ activity.ubicacion }}</span
+                                                >{{ activity.ubicacion?.nombre }}</span
                                             >
                                         </td>
                                     </tr>
@@ -589,7 +568,7 @@
     const queryActivities = async () => {
         await ActivitiesService.getActivitiesByInstructor(instructor.value.id)
             .then((response) => {
-                activities.value = response.data;
+                activities.value = response;
             })
             .catch((error) => {
                 if (error) {
