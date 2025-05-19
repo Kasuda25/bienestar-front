@@ -8,7 +8,7 @@ class InstructorsService {
                 instructor
             );
             if (response.status === 201) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -39,7 +39,7 @@ class InstructorsService {
         try {
             const response = await axios.get('/admin/instructores-activos');
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -70,7 +70,7 @@ class InstructorsService {
         try {
             const response = await axios.get(`/admin/${id}`);
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -101,7 +101,7 @@ class InstructorsService {
         try {
             const response = await axios.put(`/admin/${id}`, instructor);
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -132,7 +132,7 @@ class InstructorsService {
         try {
             const response = await axios.delete(`/admin/${id}`);
             if (response.status === 200) {
-                return response.data;
+                return response;
             }
         } catch (error) {
             if (error.response) {

@@ -38,7 +38,9 @@
 
     const queryInstructors = async () => {
         try {
-            instructors.value = await InstructorsService.getInstructors();
+            const response = await InstructorsService.getInstructors();
+
+            instructors.value = response.data;
         } catch (error) {
             if (error) {
                 listError.value = true;

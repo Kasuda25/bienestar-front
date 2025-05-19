@@ -624,7 +624,7 @@
     const queryInstructors = async () => {
         await InstructorsService.getInstructors()
             .then((response) => {
-                instructors.value = response;
+                instructors.value = response.data;
             })
             .catch((error) => {
                 if (error) {

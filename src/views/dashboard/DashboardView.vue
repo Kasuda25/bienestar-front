@@ -63,7 +63,9 @@
             }
 
             try {
-                instructors.value = await InstructorsService.getInstructors();
+                const response = await InstructorsService.getInstructors();
+
+                instructors.value = response.data;
             } catch (error) {
                 if (error) {
                     instructorListError.value = true;
@@ -88,8 +90,8 @@
 
         if (authStore.user.rol === 'INSTRUCTOR') {
             try {
-                const response =
-                    await ActivitiesService.getActivitiesByInstructor(34);
+                // const response = await ActivitiesService.getActivitiesByInstructor(authStore.user.id);
+                const response = await ActivitiesService.getActivitiesByInstructor(34);
 
                 activities.value = response.data;
             } catch (error) {
