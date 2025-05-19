@@ -192,7 +192,6 @@
     const formatDays = (horarios) => {
         if (!horarios || !Array.isArray(horarios)) return '';
 
-        // Normalizamos a minúscula sin tilde y eliminamos duplicados
         const diasUnicos = Array.from(
             new Set(
                 horarios.map((h) =>
@@ -204,15 +203,12 @@
             )
         );
 
-        // Ordenamos según el orden de la semana
         diasUnicos.sort(
             (a, b) => ordenSemana.indexOf(a) - ordenSemana.indexOf(b)
         );
 
-        // Convertimos a la forma con tilde
         const diasFinal = diasUnicos.map((dia) => diasConTilde[dia] || dia);
 
-        // Formateamos con coma y "y"
         const len = diasFinal.length;
         if (len === 0) return '';
         if (len === 1) return diasFinal[0];

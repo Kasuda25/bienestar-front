@@ -743,7 +743,7 @@
     const queryLocations = async () => {
         await LocationsService.getLocations()
             .then((response) => {
-                locations.value = response;
+                locations.value = response.data;
             })
             .catch((error) => {
                 locationError.value = true;

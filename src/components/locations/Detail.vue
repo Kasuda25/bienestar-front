@@ -475,7 +475,7 @@
     const queryLocation = async () => {
         await LocationsService.getLocation(locationId)
             .then((response) => {
-                location.value = response;
+                location.value = response.data;
             })
             .catch((error) => {
                 if (error) {

@@ -36,7 +36,9 @@
 
     const queryLocations = async () => {
         try {
-            locations.value = await LocationService.getLocations();
+            const response = await LocationService.getLocations();
+
+            locations.value = response.data;
         } catch (error) {
             if (error) {
                 listError.value = true;

@@ -5,7 +5,7 @@ class LocationsService {
         try {
             const response = await axios.post('/ubicaciones', location);
             if (response.status === 201) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -36,7 +36,7 @@ class LocationsService {
         try {
             const response = await axios.get('/ubicaciones');
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -67,7 +67,7 @@ class LocationsService {
         try {
             const response = await axios.get(`/ubicaciones/${id}`);
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -98,7 +98,7 @@ class LocationsService {
         try {
             const response = await axios.put(`/ubicaciones/${id}`, location);
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
