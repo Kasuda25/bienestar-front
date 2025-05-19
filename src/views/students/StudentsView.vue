@@ -40,7 +40,9 @@
 
     const queryStudents = async () => {
         try {
-            students.value = await StudentService.getStudents();
+            const response = await StudentService.getStudents();
+
+            students.value = response.data;
         } catch (error) {
             if (error.response) {
                 listError.value = true;

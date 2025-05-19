@@ -5,7 +5,7 @@ class StudentsService {
         try {
             const response = await axios.post('/estudiantes', student);
             if (response.status === 201) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -36,7 +36,7 @@ class StudentsService {
         try {
             const response = await axios.get('/estudiantes');
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -67,7 +67,7 @@ class StudentsService {
         try {
             const response = await axios.get(`/estudiantes/${id}/perfil`);
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {
@@ -98,7 +98,7 @@ class StudentsService {
         try {
             const response = await axios.put(`/estudiantes/${id}`, student);
             if (response.status === 200) {
-                return response.data.data;
+                return response.data;
             }
         } catch (error) {
             if (error.response) {

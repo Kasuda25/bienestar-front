@@ -538,7 +538,7 @@
     const queryStudent = async () => {
         await StudentService.getStudent(studentId)
             .then((response) => {
-                student.value = response;
+                student.value = response.data;
             })
             .catch((error) => {
                 if (error) {
