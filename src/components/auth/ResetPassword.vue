@@ -20,55 +20,28 @@
                                     <h4
                                         class="text-white font-weight-bolder text-center my-4"
                                     >
-                                        Iniciar sesión
+                                        Nueva contraseña
                                     </h4>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <form role="form" class="text-start">
-                                    <div class="form-group my-3">
-                                        <input
-                                            type="email"
-                                            class="form-control"
-                                            id="inputEmail"
-                                            v-model="localLoginData.email"
-                                            placeholder=" "
-                                            :class="{
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .email,
-                                            }"
-                                        />
-                                        <label
-                                            class="form-label"
-                                            for="inputEmail"
-                                            :class="{
-                                                'invalid-feedback-fix':
-                                                    props.validationErrorStatus
-                                                        .email,
-                                            }"
-                                            >Correo</label
-                                        >
-                                        <div class="invalid-feedback">
-                                            {{
-                                                props.validationErrorMessage
-                                                    .email
-                                            }}
-                                        </div>
-                                    </div>
+                                    <p class="my-3 text-sm text-center">
+                                        Ingresa una nueva contraseña para realizar el cambio
+                                    </p>
                                     <div class="form-group mb-3">
                                         <input
                                             type="password"
                                             class="form-control"
                                             id="inputPassword"
-                                            v-model="localLoginData.password"
+                                            v-model="localRecoverData.password"
                                             placeholder=" "
                                             :class="{
                                                 'is-invalid':
                                                     props.validationErrorStatus
                                                         .password,
                                             }"
-                                            @keyup.enter="login"
+                                            @keyup.enter="recover"
                                         />
                                         <label
                                             class="form-label"
@@ -87,29 +60,14 @@
                                             }}
                                         </div>
                                     </div>
-                                    <!-- <div
-                                        class="form-check form-switch d-flex align-items-center mb-3"
-                                    >
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            id="rememberMe"
-                                            checked
-                                        />
-                                        <label
-                                            class="form-check-label mt mb-0 ms-3"
-                                            for="rememberMe"
-                                            >Recordar contraseña</label
-                                        >
-                                    </div> -->
                                     <div class="text-center">
                                         <button
                                             v-if="!isLoading"
                                             type="button"
                                             class="btn bg-gradient-dark w-100 my-4 mb-2"
-                                            @click="login"
+                                            @click="recover"
                                         >
-                                            Iniciar sesión
+                                            Guardar
                                         </button>
                                         <button
                                             v-if="isLoading"
@@ -126,14 +84,6 @@
                                             </div>
                                         </button>
                                     </div>
-                                    <p class="mt-4 text-sm text-center">
-                                        ¿Olvidaste tu contraseña?
-                                        <a
-                                            href="../pages/sign-up.html"
-                                            class="text-info text-gradient font-weight-bold"
-                                            >Haz clic aquí</a
-                                        >
-                                    </p>
                                 </form>
                             </div>
                         </div>
@@ -162,26 +112,26 @@
 <script setup>
     import { ref, watch } from 'vue';
 
-    const emit = defineEmits(['login', 'update:loginData']);
+    const emit = defineEmits(['recover', 'update:recoverData']);
     const props = defineProps({
-        loginData: Object,
+        recoverData: Object,
         validationErrorStatus: Object,
         validationErrorMessage: Object,
         isLoading: Boolean,
     });
 
-    const localLoginData = ref({ ...props.loginData });
+    const localRecoverData = ref({ ...props.recoverData });
 
     watch(
-        localLoginData,
+        localRecoverData,
         (newVal) => {
-            emit('update:loginData', newVal);
+            emit('update:recoverData', newVal);
         },
         { deep: true }
     );
 
-    const login = () => {
-        emit('login');
+    const recover = () => {
+        emit('recover', 'password');
     };
 </script>
 

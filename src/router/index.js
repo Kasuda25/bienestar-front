@@ -29,9 +29,9 @@ const routes = [
                     import('@/components/auth/RequestPassword.vue'),
             },
             {
-                path: 'change-password',
+                path: 'reset-password',
                 name: 'auth-change',
-                component: () => import('@/components/auth/ChangePassword.vue'),
+                component: () => import('@/components/auth/ResetPassword.vue'),
             },
         ],
     },

@@ -15,7 +15,6 @@
     import { useSnackbar } from 'vue3-snackbar';
 
     import AuthService from '../../services/useAuth';
-    import LocalStorage from '../../services/useLocalStorage';
 
     const router = useRouter();
     const snackbar = useSnackbar();
@@ -33,6 +32,7 @@
     const recoverData = ref({
         email: '',
         password: '',
+        token: router.currentRoute.value.query?.token,
     });
 
     const validationErrorStatus = ref({
@@ -45,10 +45,10 @@
         password: '',
     });
 
-    const recoverDataValidation = () => {
+    const recoverDataValidation = (value) => {
         if (recoverData.value.email === '') {
             validationErrorStatus.value.email = true;
-            validationErrorMessage.value.email = 'Ingresa tu correo.';
+            validationErrorMessage.value.email = 'Ingresa un correo.';
         } else {
             validationErrorStatus.value.email = false;
             validationErrorMessage.value.email = '';
@@ -56,34 +56,59 @@
 
         if (recoverData.value.password === '') {
             validationErrorStatus.value.password = true;
-            validationErrorMessage.value.password = 'Ingresa tu contraseña.';
+            validationErrorMessage.value.password = 'Ingresa una contraseña.';
+        } else if (recoverData.value.password.lenght < 8) {
+            validationErrorStatus.value.password = true;
+            validationErrorMessage.value.password = 'La contraseña debe tener por lo menos 8 caracteres';
         } else {
             validationErrorStatus.value.password = false;
             validationErrorMessage.value.password = '';
         }
 
-        if (
-            !validationErrorStatus.value.email &&
-            !validationErrorStatus.value.password
-        ) {
-            doRecover();
+        if (value === 'email') {
+            if (!validationErrorStatus.value.email) {
+                doRecover(value);
+            }
+        }
+
+        if (value === 'password') {
+            if (!validationErrorStatus.value.password) {
+                doRecover(value);
+            }
         }
     };
 
-    const doRecover = async () => {
+    const doRecover = async (value) => {
         try {
             isLoading.value = true;
-            const response = await AuthService.recover(recoverData.value);
-            if (response) {
-                LocalStorage.createSession();
-                isLoading.value = false;
-                router.push({ name: 'dashboard' });
+            if (value === 'email') {
+                const response = await AuthService.forgotPassword(recoverData.value.email);
+                if (response) {
+                    snackbar.add({
+                        type: 'success',
+                        text: response.message,
+                    });
+                    isLoading.value = false;
+                    router.push({ name: 'login' });
+                }
+            }
+
+            if (value === 'password') {
+                const response = await AuthService.resetPassword({ token: recoverData.value.token, password: recoverData.value.password });
+                if (response) {
+                    snackbar.add({
+                        type: 'success',
+                        text: response.message,
+                    });
+                    isLoading.value = false;
+                    router.push({ name: 'login' });
+                }
             }
         } catch (error) {
             if (error) {
                 isLoading.value = false;
                 let message =
-                    'Ha ocurrido un error al iniciar sesión. Por favor intenta de nuevo más tarde.';
+                    'Ha ocurrido un error al enviar la solicitud. Por favor intenta de nuevo más tarde.';
 
                 if (error.type === 'backend') {
                     message = error.message;

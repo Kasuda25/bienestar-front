@@ -7,7 +7,8 @@ class AuthService {
             const response = await axios.post('/auth/login', data);
             if (response.status === 200) {
                 const authStore = useAuthStore();
-                authStore.id = response.data.instructorId || response.data.estudianteId;
+                authStore.id =
+                    response.data.instructorId || response.data.estudianteId;
                 authStore.user = response.data.usuario;
                 authStore.token = response.data.token;
                 authStore.rtoken = response.data.refreshToken;
@@ -46,11 +47,80 @@ class AuthService {
             });
             if (response.status === 200) {
                 const authStore = useAuthStore();
-                authStore.id = response.data.instructorId || response.data.estudianteId || 24;
+                authStore.id =
+                    response.data.instructorId ||
+                    response.data.estudianteId ||
+                    24;
                 authStore.user = response.data.usuario;
                 authStore.token = response.data.token;
                 authStore.rtoken = response.data.refreshToken;
                 authStore.isAuth = true;
+                return response.data;
+            }
+        } catch (error) {
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.error ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
+        }
+    }
+
+    async forgotPassword(email) {
+        try {
+            const response = await axios.post('/auth/forgot-password', {
+                email,
+            });
+            if (response.status === 200) {
+                return response.data;
+            }
+        } catch (error) {
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.error ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
+        }
+    }
+
+    async resetPassword(data) {
+        try {
+            const response = await axios.post('/auth/reset-password', {
+                data,
+            });
+            if (response.status === 200) {
                 return response.data;
             }
         } catch (error) {

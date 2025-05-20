@@ -133,7 +133,7 @@
     );
 
     const recover = () => {
-        emit('recover');
+        emit('recover', 'email');
     };
 </script>
 
