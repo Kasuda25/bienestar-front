@@ -338,7 +338,7 @@
                                                     class="text-xs font-weight-bolder opacity-6"
                                                 >
                                                     {{
-                                                        instructor.usuario.email
+                                                        instructor.email
                                                     }}
                                                 </span>
                                             </a>
