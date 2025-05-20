@@ -250,7 +250,7 @@
 
                     router.push({
                         name: 'students-detail',
-                        params: { id: response.id },
+                        params: { id: response.data.id },
                     });
                 }
 

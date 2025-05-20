@@ -3,7 +3,7 @@ import axios from './useAxios';
 class StudentsService {
     async createStudent(student) {
         try {
-            const response = await axios.post('/estudiantes', student);
+            const response = await axios.post('/estudiantes/registro', student);
             if (response.status === 201) {
                 return response.data;
             }

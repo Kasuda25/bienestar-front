@@ -103,7 +103,7 @@
                                             id="uidInput"
                                             type="number"
                                             v-model="localStudentData.uid"
-                                            @input="filterNumberInput"
+                                            @input="filterUidNumberInput"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
@@ -300,7 +300,7 @@
                                             id="semesterInput"
                                             type="number"
                                             v-model="localStudentData.semester"
-                                            @input="filterNumberInput"
+                                            @input="filterSemesterNumberInput"
                                         />
                                     </div>
                                     <div class="invalid-feedback">
@@ -425,11 +425,18 @@
         emit('sendStudentData', 'create');
     };
 
-    const filterNumberInput = (e) => {
+    const filterUidNumberInput = (e) => {
         let cleanedValue = e.target.value.replace(/[^\d]/g, '');
         cleanedValue = cleanedValue.slice(0, 10);
         e.target.value = cleanedValue;
         localStudentData.value.uid = cleanedValue;
+    };
+
+    const filterSemesterNumberInput = (e) => {
+        let cleanedValue = e.target.value.replace(/[^\d]/g, '');
+        cleanedValue = cleanedValue.slice(0, 10);
+        e.target.value = cleanedValue;
+        localStudentData.value.semester = cleanedValue;
     };
 </script>
 
