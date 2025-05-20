@@ -566,7 +566,7 @@
     };
 
     const queryActivities = async () => {
-        await ActivitiesService.getActivitiesByInstructor(instructor.value.id)
+        await ActivitiesService.getActivitiesByInstructorForAdmin(instructor.value.id)
             .then((response) => {
                 activities.value = response.data;
             })

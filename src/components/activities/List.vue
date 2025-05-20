@@ -74,6 +74,12 @@
                                         <th
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
+                                            Dias
+                                        </th>
+                                        <th
+                                            v-if="activities[0].instructor"
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
                                             Instructor
                                         </th>
                                     </tr>
@@ -172,7 +178,26 @@
                                                 </span>
                                             </a>
                                         </td>
-                                        <td class="d-flex align-middle">
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/activities/${activity.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            >
+                                                <span
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
+                                                    {{
+                                                        formatDays(
+                                                            activity.horariosAsignados
+                                                        )
+                                                    }}
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td
+                                            v-if="activity.instructor"
+                                            class="d-flex align-middle"
+                                        >
                                             <a
                                                 :href="`/activities/${activity.id}`"
                                                 class="d-block w-100 h-100 ñtext-decoration-none text-dark align-items-center"
@@ -215,10 +240,57 @@
     });
 
     const authStore = useAuthStore();
+
+    const diasConTilde = {
+        lunes: 'Lunes',
+        martes: 'Martes',
+        miercoles: 'Miércoles',
+        jueves: 'Jueves',
+        viernes: 'Viernes',
+        sabado: 'Sábado',
+        domingo: 'Domingo',
+    };
+
+    const ordenSemana = [
+        'lunes',
+        'martes',
+        'miercoles',
+        'jueves',
+        'viernes',
+        'sabado',
+        'domingo',
+    ];
+
+    const formatDays = (horarios) => {
+        if (!horarios || !Array.isArray(horarios)) return '';
+
+        const diasUnicos = Array.from(
+            new Set(
+                horarios.map((h) =>
+                    h.dia
+                        .toLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                )
+            )
+        );
+
+        diasUnicos.sort(
+            (a, b) => ordenSemana.indexOf(a) - ordenSemana.indexOf(b)
+        );
+
+        const diasFinal = diasUnicos.map((dia) => diasConTilde[dia] || dia);
+
+        const len = diasFinal.length;
+        if (len === 0) return '';
+        if (len === 1) return diasFinal[0];
+        if (len === 2) return diasFinal.join(' y ');
+        return diasFinal.slice(0, -1).join(', ') + ' y ' + diasFinal[len - 1];
+    };
 </script>
 
 <style scoped>
-.no-items {
-    border-top: none;
-}
+    .no-items {
+        border-top: none;
+    }
 </style>

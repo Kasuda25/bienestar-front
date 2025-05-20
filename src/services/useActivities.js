@@ -94,9 +94,42 @@ class ActivitiesService {
         }
     }
 
-    async getActivitiesByInstructor(id) {
+    async getActivitiesByInstructor() {
         try {
-            const response = await axios.get(`/actividades/instructor/${id}`);
+            const response = await axios.get(`/admin/mis-actividades`);
+            if (response.status === 200) {
+                return response.data;
+            }
+        } catch (error) {
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.message ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
+        }
+    }
+
+    async getActivitiesByInstructorForAdmin(id) {
+        try {
+            const response = await axios.get(
+                `/admin/instructores/${id}/actividades`
+            );
             if (response.status === 200) {
                 return response.data;
             }
