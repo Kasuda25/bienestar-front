@@ -20,18 +20,24 @@
                                     <h4
                                         class="text-white font-weight-bolder text-center my-4"
                                     >
-                                        Iniciar sesión
+                                        Recuperar contraseña
                                     </h4>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <form role="form" class="text-start">
+                                    <p class="my-3 text-sm text-center">
+                                        Escribe tu correo institucional para
+                                        continuar. Si existe, enviaremos
+                                        instrucciones para que cambies tu
+                                        contraseña.
+                                    </p>
                                     <div class="form-group my-3">
                                         <input
                                             type="email"
                                             class="form-control"
                                             id="inputEmail"
-                                            v-model="localLoginData.email"
+                                            v-model="localRecoverData.email"
                                             placeholder=" "
                                             :class="{
                                                 'is-invalid':
@@ -56,45 +62,14 @@
                                             }}
                                         </div>
                                     </div>
-                                    <div class="form-group mb-3">
-                                        <input
-                                            type="password"
-                                            class="form-control"
-                                            id="inputPassword"
-                                            v-model="localLoginData.password"
-                                            placeholder=" "
-                                            :class="{
-                                                'is-invalid':
-                                                    props.validationErrorStatus
-                                                        .password,
-                                            }"
-                                            @keyup.enter="login"
-                                        />
-                                        <label
-                                            class="form-label"
-                                            for="inputPassword"
-                                            :class="{
-                                                'invalid-feedback-fix':
-                                                    props.validationErrorStatus
-                                                        .password,
-                                            }"
-                                            >Contraseña</label
-                                        >
-                                        <div class="invalid-feedback">
-                                            {{
-                                                props.validationErrorMessage
-                                                    .password
-                                            }}
-                                        </div>
-                                    </div>
                                     <div class="text-center">
                                         <button
                                             v-if="!isLoading"
                                             type="button"
                                             class="btn bg-gradient-dark w-100 my-4 mb-2"
-                                            @click="login"
+                                            @click="recover"
                                         >
-                                            Iniciar sesión
+                                            Enviar
                                         </button>
                                         <button
                                             v-if="isLoading"
@@ -111,21 +86,6 @@
                                             </div>
                                         </button>
                                     </div>
-                                    <p class="mt-4 text-sm text-center">
-                                        ¿Olvidaste tu contraseña?
-                                        <RouterLink
-                                            to="/recover/forgot-password"
-                                            v-slot="{ navigate, href }"
-                                            custom
-                                        >
-                                            <a
-                                                :href="href"
-                                                class="text-info text-gradient font-weight-bold"
-                                                @click="navigate"
-                                                >Haz clic aquí</a
-                                            >
-                                        </RouterLink>
-                                    </p>
                                 </form>
                             </div>
                         </div>
@@ -154,26 +114,26 @@
 <script setup>
     import { ref, watch } from 'vue';
 
-    const emit = defineEmits(['login', 'update:loginData']);
+    const emit = defineEmits(['recover', 'update:recoverData']);
     const props = defineProps({
-        loginData: Object,
+        recoverData: Object,
         validationErrorStatus: Object,
         validationErrorMessage: Object,
         isLoading: Boolean,
     });
 
-    const localLoginData = ref({ ...props.loginData });
+    const localRecoverData = ref({ ...props.recoverData });
 
     watch(
-        localLoginData,
+        localRecoverData,
         (newVal) => {
-            emit('update:loginData', newVal);
+            emit('update:recoverData', newVal);
         },
         { deep: true }
     );
 
-    const login = () => {
-        emit('login');
+    const recover = () => {
+        emit('recover');
     };
 </script>
 

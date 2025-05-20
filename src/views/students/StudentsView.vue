@@ -17,10 +17,14 @@
     import { useRouter } from 'vue-router';
     import { useSnackbar } from 'vue3-snackbar';
 
+    import { useAuthStore } from '@/stores/auth';
+
     import StudentService from '@/services/useStudents.js';
 
     const router = useRouter();
     const snackbar = useSnackbar();
+
+    const authStore = useAuthStore();
 
     const isLoading = ref(false);
     const listError = ref(false);
@@ -65,8 +69,17 @@
         }
     };
 
+    // TODO: Lista de estudiantes inscritos
+
     onMounted(async () => {
-        await queryStudents();
+        if (authStore.user.rol === 'ADMIN') {
+            await queryStudents();
+        }
+
+        if (authStore.user.rol === 'INSTRUCTOR') {
+            // TODO: Lista de estudiantes inscritos
+            students.value = [];
+        }
     });
 
     const validationErrorStatus = ref({

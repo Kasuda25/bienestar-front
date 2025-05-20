@@ -18,6 +18,25 @@ const routes = [
         component: () => import('@/views/auth/LoginView.vue'),
     },
     {
+        path: '/recover',
+        name: 'auth-recover',
+        component: () => import('@/views/auth/RecoverView.vue'),
+        children: [
+            {
+                path: 'forgot-password',
+                name: 'auth-forgot',
+                component: () =>
+                    import('@/components/auth/RequestPassword.vue'),
+            },
+            {
+                path: 'change-password',
+                name: 'auth-change',
+                component: () => import('@/components/auth/ChangePassword.vue'),
+            },
+        ],
+    },
+
+    {
         path: '/',
         component: () => import('@/layouts/MainLayout.vue'),
         meta: { requiresAuth: true },
@@ -88,7 +107,12 @@ router.beforeEach(async (to, from, next) => {
         return next();
     }
 
-    if (!authStore.isAuth && localStorage.getItem('rtoken') && !isRefreshing) {
+    if (
+        !authStore.isAuth &&
+        localStorage.getItem('rtoken') &&
+        !isRefreshing &&
+        to.meta.requiresAuth
+    ) {
         isRefreshing = true;
         try {
             await AuthService.autoLogin(localStorage.getItem('rtoken'));

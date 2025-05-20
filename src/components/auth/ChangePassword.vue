@@ -87,6 +87,21 @@
                                             }}
                                         </div>
                                     </div>
+                                    <!-- <div
+                                        class="form-check form-switch d-flex align-items-center mb-3"
+                                    >
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            id="rememberMe"
+                                            checked
+                                        />
+                                        <label
+                                            class="form-check-label mt mb-0 ms-3"
+                                            for="rememberMe"
+                                            >Recordar contraseña</label
+                                        >
+                                    </div> -->
                                     <div class="text-center">
                                         <button
                                             v-if="!isLoading"
@@ -113,18 +128,11 @@
                                     </div>
                                     <p class="mt-4 text-sm text-center">
                                         ¿Olvidaste tu contraseña?
-                                        <RouterLink
-                                            to="/recover/forgot-password"
-                                            v-slot="{ navigate, href }"
-                                            custom
+                                        <a
+                                            href="../pages/sign-up.html"
+                                            class="text-info text-gradient font-weight-bold"
+                                            >Haz clic aquí</a
                                         >
-                                            <a
-                                                :href="href"
-                                                class="text-info text-gradient font-weight-bold"
-                                                @click="navigate"
-                                                >Haz clic aquí</a
-                                            >
-                                        </RouterLink>
                                     </p>
                                 </form>
                             </div>

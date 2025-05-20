@@ -71,6 +71,9 @@
                 </div>
             </div>
         </div>
+        <div>
+            <!-- TODO: Lista de estudiantes inscritos -->
+        </div>
     </div>
 </template>
 

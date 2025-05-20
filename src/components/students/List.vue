@@ -10,7 +10,7 @@
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
                             <h6 class="text-white ps-3 my-auto">
-                                Lista de estudiantes
+                                Lista de estudiantes <span v-if="authStore.user.rol === 'INSTRUCTOR'">inscritos</span>
                             </h6>
                             <div
                                 v-if="authStore.user.rol === 'ADMIN'"

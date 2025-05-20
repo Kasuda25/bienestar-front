@@ -113,6 +113,8 @@
                     });
                 }
             }
+
+            // TODO: Lista de estudiantes inscritos
         }
     });
 </script>
