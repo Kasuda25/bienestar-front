@@ -148,7 +148,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label
@@ -189,7 +188,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="endDateInput"

@@ -30,6 +30,8 @@
     const locationData = ref({
         name: '',
         capacity: '',
+        startDate: '',
+        endDate: '',
         schedule: [],
         id: null,
     });
@@ -61,6 +63,13 @@
         }
     };
 
+    const setDates = (startDate, endDate) => {
+        for (const item of locationData.value.schedule) {
+            item.fechaInicio = startDate;
+            item.fechaFin = endDate;
+        }
+    };
+
     onMounted(async () => {
         await queryLocations();
     });
@@ -68,12 +77,16 @@
     const validationErrorStatus = ref({
         name: false,
         capacity: false,
+        startDate: false,
+        endDate: false,
         schedule: false,
     });
 
     const validationErrorMessage = ref({
         name: '',
         capacity: '',
+        startDate: '',
+        endDate: '',
         schedule: '',
     });
 
@@ -98,6 +111,24 @@
             validationErrorMessage.value.capacity = '';
         }
 
+        if (locationData.value.startDate === '') {
+            validationErrorStatus.value.startDate = true;
+            validationErrorMessage.value.startDate =
+                'La fecha de inicio es obligatoria';
+        } else {
+            validationErrorStatus.value.startDate = false;
+            validationErrorMessage.value.startDate = '';
+        }
+
+        if (locationData.value.endDate === '') {
+            validationErrorStatus.value.endDate = true;
+            validationErrorMessage.value.endDate =
+                'La fecha de fin es obligatoria';
+        } else {
+            validationErrorStatus.value.endDate = false;
+            validationErrorMessage.value.endDate = '';
+        }
+
         if (!locationData.value.schedule || !locationData.value.schedule[0]) {
             validationErrorStatus.value.schedule = true;
             snackbar.add({
@@ -111,8 +142,14 @@
         if (
             !validationErrorStatus.value.name &&
             !validationErrorStatus.value.capacity &&
+            !validationErrorStatus.value.startDate &&
+            !validationErrorStatus.value.endDate &&
             !validationErrorStatus.value.schedule
         ) {
+            setDates(
+                locationData.value.startDate,
+                locationData.value.endDate
+            );
             sendlocationData(operation);
         }
     };
@@ -155,7 +192,7 @@
 
                     router.push({
                         name: 'locations-detail',
-                        params: { id: response.id },
+                        params: { id: response.data.id },
                     });
                 }
 

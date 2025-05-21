@@ -53,7 +53,7 @@
                                             class="form-control"
                                             id="nameInput"
                                             type="text"
-                                            :value="instructor.usuario?.nombre"
+                                            :value="instructor.nombre"
                                             tabindex="-1"
                                             :style="{
                                                 pointerEvents: 'none',
@@ -98,7 +98,7 @@
                                             id="lastNameInput"
                                             type="text"
                                             :value="
-                                                instructor.usuario?.apellido
+                                                instructor.apellido
                                             "
                                             tabindex="-1"
                                             :style="{
@@ -146,7 +146,7 @@
                                             class="form-control"
                                             id="emailInput"
                                             type="email"
-                                            :value="instructor.usuario?.email"
+                                            :value="instructor.email"
                                             tabindex="-1"
                                             :style="{
                                                 pointerEvents: 'none',
@@ -629,9 +629,9 @@
     });
 
     const setEditFields = () => {
-        localIntructorData.value.name = instructor.value.usuario.nombre;
-        localIntructorData.value.lastName = instructor.value.usuario.apellido;
-        localIntructorData.value.email = instructor.value.usuario.email;
+        localIntructorData.value.name = instructor.value.nombre;
+        localIntructorData.value.lastName = instructor.value.apellido;
+        localIntructorData.value.email = instructor.value.email;
         localIntructorData.value.speciality = instructor.value.especialidad;
         localIntructorData.value.id = instructor.value.id;
     };
@@ -672,7 +672,7 @@
     const deleteInstructor = () => {
         Swal.fire({
             title: 'Eliminar instructor',
-            text: `Se eliminará al instructor ${instructor.value.usuario.nombre}. Esta acción no se puede revertir.`,
+            text: `Se eliminará al instructor ${instructor.value.nombre}. Esta acción no se puede revertir.`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#212529',

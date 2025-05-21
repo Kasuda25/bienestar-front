@@ -89,6 +89,81 @@
                                 <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
+                                        for="startDateInput"
+                                        >Fecha de inicio</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="[
+                                            {
+                                                'transparent-placeholder':
+                                                    !localLocationData.startDate,
+                                                'is-invalid':
+                                                    props.validationErrorStatus
+                                                        .startDate,
+                                            },
+                                        ]"
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="startDateInput"
+                                            type="date"
+                                            v-model="
+                                                localLocationData.startDate
+                                            "
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .startDate
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label class="form-label" for="endDateInput"
+                                        >Fecha de fin</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="[
+                                            {
+                                                'transparent-placeholder':
+                                                    !localLocationData.endDate,
+                                                'is-invalid':
+                                                    props.validationErrorStatus
+                                                        .endDate,
+                                            },
+                                        ]"
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="endDateInput"
+                                            type="date"
+                                            v-model="localLocationData.endDate"
+                                            onfocus="this.showPicker()"
+                                            onkeydown="return false;"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage.endDate
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
                                         for="capacityInput"
                                         >Días</label
                                     >

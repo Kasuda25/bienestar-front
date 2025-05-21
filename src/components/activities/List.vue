@@ -184,11 +184,26 @@
                                                 class="d-block w-100 h-100 text-decoration-none text-dark"
                                             >
                                                 <span
+                                                    v-if="activity.horarios"
                                                     class="text-xs font-weight-bolder opacity-6"
                                                 >
                                                     {{
                                                         formatDays(
-                                                            activity.horariosAsignados
+                                                            activity.horarios,
+                                                            'admin'
+                                                        )
+                                                    }}
+                                                </span>
+                                                <span
+                                                    v-if="
+                                                        activity.horariosAsignados
+                                                    "
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                >
+                                                    {{
+                                                        formatDays(
+                                                            activity.horariosAsignados,
+                                                            'instructor'
                                                         )
                                                     }}
                                                 </span>
@@ -261,19 +276,34 @@
         'domingo',
     ];
 
-    const formatDays = (horarios) => {
+    const formatDays = (horarios, rol) => {
         if (!horarios || !Array.isArray(horarios)) return '';
 
-        const diasUnicos = Array.from(
-            new Set(
-                horarios.map((h) =>
-                    h.dia
-                        .toLowerCase()
-                        .normalize('NFD')
-                        .replace(/[\u0300-\u036f]/g, '')
+        let diasUnicos;
+
+        if (rol === 'admin') {
+            diasUnicos = Array.from(
+                new Set(
+                    horarios.map((h) =>
+                        h.horarioBase.dia
+                            .toLowerCase()
+                            .normalize('NFD')
+                            .replace(/[\u0300-\u036f]/g, '')
+                    )
                 )
-            )
-        );
+            );
+        } else if (rol === 'instructor') {
+            diasUnicos = Array.from(
+                new Set(
+                    horarios.map((h) =>
+                        h.dia
+                            .toLowerCase()
+                            .normalize('NFD')
+                            .replace(/[\u0300-\u036f]/g, '')
+                    )
+                )
+            );
+        }
 
         diasUnicos.sort(
             (a, b) => ordenSemana.indexOf(a) - ordenSemana.indexOf(b)
