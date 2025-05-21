@@ -179,9 +179,7 @@
                                                 :value="activity.instructor.id"
                                                 selected
                                             >
-                                                {{
-                                                    activity.instructor.nombre
-                                                }} 
+                                                {{ activity.instructor.nombre }}
                                                 {{
                                                     activity.instructor.apellido
                                                 }}
@@ -191,10 +189,7 @@
                                                 :key="instructor"
                                                 :value="instructor.id"
                                             >
-                                                {{ instructor.usuario.nombre }}
-                                                {{
-                                                    instructor.usuario.apellido
-                                                }}
+                                                {{ instructor.nombreCompleto }}
                                             </option>
                                         </select>
                                     </div>
@@ -430,7 +425,9 @@
                                                             >
                                                                 <span>{{
                                                                     formatDay(
-                                                                        item.horarioBase.dia
+                                                                        item
+                                                                            .horarioBase
+                                                                            .dia
                                                                     )
                                                                 }}</span>
                                                             </td>
@@ -460,74 +457,88 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-flex w-100">
-                                <div v-if="isReadOnly" class="w-100 text-end">
-                                    <div
-                                        role="button"
-                                        class="btn bg-gradient-dark mt-3 me-2"
-                                        @click="startEdit"
-                                    >
-                                        Editar
-                                    </div>
-                                    <div
-                                        v-if="!externalLoading"
-                                        role="button"
-                                        class="btn bg-danger mt-3"
-                                        @click="deleteActivity"
-                                        :style="{
-                                            color: 'white',
-                                        }"
-                                    >
-                                        Eliminar
-                                    </div>
-                                    <div
-                                        v-if="externalLoading"
-                                        role="button"
-                                        class="btn bg-danger mt-3 px-4"
-                                        :style="{
-                                            color: 'white',
-                                        }"
-                                    >
-                                        <div
-                                            class="spinner-border spinner-border-sm mx-2"
-                                            role="status"
+                            <div
+                                v-if="authStore.user.rol === 'ADMIN'"
+                                class="d-flex w-100"
+                            >
+                                <div
+                                    class="d-flex justify-content-end w-100 flex-wrap gap-sm-2 gap-1"
+                                >
+                                    <template v-if="isReadOnly">
+                                        <button
+                                            class="btn bg-gradient-dark mt-3 w-100 w-sm-auto d-flex align-items-center justify-content-center"
+                                            @click="startEdit"
                                         >
-                                            <span class="visually-hidden"
-                                                >Loading...</span
-                                            >
-                                        </div>
-                                    </div>
+                                            Editar
+                                        </button>
+
+                                        <button
+                                            class="btn bg-danger mt-3 w-100 w-sm-auto d-flex align-items-center justify-content-center text-white"
+                                            :disabled="externalLoading"
+                                            @click="deleteActivity"
+                                        >
+                                            <template v-if="externalLoading">
+                                                <div
+                                                    class="spinner-border spinner-border-sm me-2"
+                                                    role="status"
+                                                ></div>
+                                                Eliminando...
+                                            </template>
+                                            <template v-else>
+                                                Eliminar
+                                            </template>
+                                        </button>
+                                    </template>
+
+                                    <template v-else>
+                                        <button
+                                            class="btn bg-gradient-dark mt-3 w-100 w-sm-auto d-flex align-items-center justify-content-center"
+                                            @click="cancelEdit"
+                                        >
+                                            Cancelar
+                                        </button>
+
+                                        <button
+                                            class="btn bg-gradient-dark mt-3 w-100 w-sm-auto d-flex align-items-center justify-content-center"
+                                            :disabled="externalLoading"
+                                            @click="updateActivity"
+                                        >
+                                            <template v-if="externalLoading">
+                                                <div
+                                                    class="spinner-border spinner-border-sm me-2"
+                                                    role="status"
+                                                ></div>
+                                                Guardando...
+                                            </template>
+                                            <template v-else>
+                                                Guardar
+                                            </template>
+                                        </button>
+                                    </template>
                                 </div>
-                                <div v-else class="w-100 text-end">
-                                    <div
-                                        role="button"
-                                        class="btn bg-gradient-dark mt-3 me-2"
-                                        @click="cancelEdit"
+                            </div>
+                            <div
+                                v-if="authStore.user.rol === 'ESTUDIANTE'"
+                                class="d-flex"
+                            >
+                                <div class="d-flex justify-content-end w-100">
+                                    <button
+                                        class="btn bg-gradient-dark mt-3 w-100 w-sm-auto d-flex align-items-center justify-content-center"
+                                        :disabled="externalLoading"
+                                        @click="handleClick"
                                     >
-                                        Cancelar
-                                    </div>
-                                    <div
-                                        v-if="!externalLoading"
-                                        role="button"
-                                        class="btn bg-gradient-dark mt-3 me-2"
-                                        @click="updateActivity"
-                                    >
-                                        Guardar
-                                    </div>
-                                    <div
-                                        v-if="externalLoading"
-                                        role="button"
-                                        class="btn bg-gradient-dark mt-3 me-2 px-4"
-                                    >
-                                        <div
-                                            class="spinner-border spinner-border-sm mx-2"
-                                            role="status"
-                                        >
-                                            <span class="visually-hidden"
-                                                >Loading...</span
-                                            >
-                                        </div>
-                                    </div>
+                                        <template v-if="externalLoading">
+                                            <div
+                                                class="spinner-border spinner-border-sm me-2"
+                                                role="status"
+                                                aria-hidden="true"
+                                            ></div>
+                                            Cargando...
+                                        </template>
+                                        <template v-else>
+                                            Inscribirse
+                                        </template>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -544,12 +555,16 @@
     import { useSnackbar } from 'vue3-snackbar';
     import Swal from 'sweetalert2';
 
+    import { useAuthStore } from '@/stores/auth';
+
     import ActivitiesService from '@/services/useActivities';
     import InstructorsService from '@/services/useInstructors';
     import LocationsService from '@/services/useLocations';
 
     const router = useRouter();
     const snackbar = useSnackbar();
+
+    const authStore = useAuthStore();
 
     const emit = defineEmits([
         'sendActivityData',

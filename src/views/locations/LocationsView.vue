@@ -111,7 +111,7 @@
             validationErrorMessage.value.capacity = '';
         }
 
-        if (locationData.value.startDate === '') {
+        if (locationData.value.startDate === '' && operation === 'create') {
             validationErrorStatus.value.startDate = true;
             validationErrorMessage.value.startDate =
                 'La fecha de inicio es obligatoria';
@@ -120,7 +120,7 @@
             validationErrorMessage.value.startDate = '';
         }
 
-        if (locationData.value.endDate === '') {
+        if (locationData.value.endDate === '' && operation === 'create') {
             validationErrorStatus.value.endDate = true;
             validationErrorMessage.value.endDate =
                 'La fecha de fin es obligatoria';
@@ -138,6 +138,7 @@
         } else {
             validationErrorStatus.value.schedule = false;
         }
+
 
         if (
             !validationErrorStatus.value.name &&

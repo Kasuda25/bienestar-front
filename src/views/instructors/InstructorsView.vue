@@ -122,13 +122,14 @@
                 validationErrorMessage.value.password = '';
             }
         } else if (
-            instructorData.value.password === '' ||
-            (!instructorData.value.password && operation === 'create')
+            (instructorData.value.password === '' ||
+                !instructorData.value.password) &&
+            operation === 'create'
         ) {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña es obligatoria';
-        } else if (instructorData.value.password.length < 8) {
+        } else if (instructorData.value.password.length < 8 && operation === 'create') {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña debe tener al menos 8 caracteres';

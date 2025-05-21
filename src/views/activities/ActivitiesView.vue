@@ -19,7 +19,7 @@
     import { useSnackbar } from 'vue3-snackbar';
 
     import ActivitiesService from '@/services/useActivities';
-    
+
     import { useAuthStore } from '@/stores/auth';
 
     const router = useRouter();
@@ -73,7 +73,8 @@
 
     const queryActivitiesByInstructor = async (id) => {
         try {
-            const response = await ActivitiesService.getActivitiesByInstructor(id);
+            const response =
+                await ActivitiesService.getActivitiesByInstructor(id);
 
             activities.value = response.data;
         } catch (error) {
@@ -99,12 +100,15 @@
     };
 
     onMounted(async () => {
-        if (authStore.user.rol === 'ADMIN') {
+        if (
+            authStore.user.rol === 'ADMIN' ||
+            authStore.user.rol === 'ESTUDIANTE'
+        ) {
             await queryActivities();
         }
 
         if (authStore.user.rol === 'INSTRUCTOR') {
-            await queryActivitiesByInstructor(authStore.user.id)
+            await queryActivitiesByInstructor(authStore.user.id);
         }
     });
 
@@ -293,7 +297,11 @@
             validationErrorMessage.value.location = '';
         }
 
-        const schedule = validateSchedule();
+        let schedule
+
+        if (operation === 'create') {
+            schedule = validateSchedule();
+        }
 
         if (
             !validationErrorStatus.value.name &&

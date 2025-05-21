@@ -55,13 +55,7 @@
                             </a>
                         </RouterLink>
                     </li>
-                    <li
-                        v-if="
-                            authStore.user.rol === 'ADMIN' ||
-                            authStore.user.rol === 'INSTRUCTOR'
-                        "
-                        class="nav-item"
-                    >
+                    <li class="nav-item">
                         <RouterLink
                             to="/activities"
                             v-slot="{ navigate, href, isActive }"
