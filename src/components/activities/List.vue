@@ -9,8 +9,11 @@
                         <div
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
-                            <h6 class="text-white ps-3 my-auto">
+                            <h6 v-if="authStore.user.rol === 'ADMIN'" class="text-white ps-3 my-auto">
                                 Lista de actividades
+                            </h6>
+                            <h6 v-if="authStore.user.rol === 'INSTRUCTOR'" class="text-white ps-3 my-auto">
+                                Mis actividades
                             </h6>
                             <div class="pe-3">
                                 <RouterLink
