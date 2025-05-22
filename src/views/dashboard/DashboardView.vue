@@ -9,7 +9,9 @@
     <InstructorDashboard
         v-if="authStore.user.rol === 'INSTRUCTOR'"
         :activities="activities"
+        :students="students"
         :activity-list-error="activityListError"
+        :student-list-error="studentListError"
     />
 </template>
 
@@ -31,9 +33,11 @@
 
     const activityListError = ref(false);
     const instructorListError = ref(false);
+    const studentListError = ref(false);
 
     const activities = ref();
     const instructors = ref();
+    const students = ref();
 
     onMounted(async () => {
         if (authStore.user.rol === 'ADMIN') {
@@ -90,7 +94,8 @@
 
         if (authStore.user.rol === 'INSTRUCTOR') {
             try {
-                const response = await ActivitiesService.getActivitiesByInstructor(authStore.id);
+                const response =
+                    await ActivitiesService.getActivitiesByInstructor();
 
                 activities.value = response.data;
             } catch (error) {
@@ -114,7 +119,32 @@
                 }
             }
 
-            // TODO: Lista de estudiantes inscritos
+            try {
+                const response = await InstructorsService.getStudentsByInstructor(
+                    authStore.id
+                );
+
+                students.value = response.content;
+            } catch (error) {
+                if (error) {
+                    studentListError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de estudiantes. Por favor intenta de nuevo más tarde.';
+
+                    if (error.type === 'backend') {
+                        message = error.message;
+                    } else if (error.type === 'network') {
+                        message = error.message;
+                    } else if (error.type === 'unknown') {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
+                }
+            }
         }
     });
 </script>

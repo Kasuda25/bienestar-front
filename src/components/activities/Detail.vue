@@ -125,7 +125,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div
+                                v-if="
+                                    authStore.user.rol === 'ADMIN' ||
+                                    authStore.user.rol === 'ESTUDIANTE'
+                                "
+                                class="row mb-3"
+                            >
                                 <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
@@ -546,6 +552,144 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-6">
+                <div class="card my-4">
+                    <div
+                        class="card-header p-0 position-relative mt-n4 mx-3 z-index-2"
+                    >
+                        <div
+                            class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
+                        >
+                            <h6 class="text-white ps-3 my-auto">
+                                Estudiantes inscritos a esta actividad
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pb-3">
+                        <div class="table-responsive p-0 no-scroll">
+                            <table class="table align-activitys-center mb-0">
+                                <div v-if="!students && !studentError">
+                                    <div class="d-flex justify-content-center">
+                                        <div
+                                            class="spinner-border"
+                                            role="status"
+                                        >
+                                            <span class="visually-hidden"
+                                                >Loading...</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <thead
+                                    v-if="
+                                        students && students[0] && !studentError
+                                    "
+                                >
+                                    <tr>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                        >
+                                            Nombre
+                                        </th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
+                                            Código
+                                        </th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
+                                            Horas completadas
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-if="studentError">
+                                        <td colspan="4" class="text-center">
+                                            <h5 class="my-auto">
+                                                Ha ocurrido un error al obtener
+                                                la lista de estudiantes
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        v-if="
+                                            students &&
+                                            !students[0] &&
+                                            !studentError
+                                        "
+                                    >
+                                        <td colspan="4" class="text-center">
+                                            <h4 class="my-auto">
+                                                No hay estudiantes inscritos a
+                                                esta actividad
+                                            </h4>
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        v-for="student in students"
+                                        :key="student.id"
+                                        @click="
+                                            $router.push(
+                                                `/students/${student.id}`
+                                            )
+                                        "
+                                        class="cursor-pointer"
+                                    >
+                                        <td class="px-4">
+                                            <h6 class="mb-0 text-sm">
+                                                {{ student.nombreCompleto }}
+                                            </h6>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-xs font-weight-bold"
+                                            >
+                                                {{ student.codigoEstudiantil }}
+                                            </span>
+                                        </td>
+                                        <td class="align-middle text-sm">
+                                            <div class="d-flex flex-column">
+                                                <span
+                                                    class="text-xs font-weight-bold mb-1"
+                                                >
+                                                    {{
+                                                        student.horasAcumuladas
+                                                    }}
+                                                    / 32 horas
+                                                </span>
+                                                <div
+                                                    class="progress"
+                                                    style="height: 3px"
+                                                >
+                                                    <div
+                                                        class="progress-bar bg-info"
+                                                        role="progressbar"
+                                                        :style="{
+                                                            width:
+                                                                (student.horasAcumuladas /
+                                                                    32) *
+                                                                    100 +
+                                                                '%',
+                                                        }"
+                                                        :aria-valuenow="
+                                                            student.horasAcumuladas
+                                                        "
+                                                        aria-valuemin="0"
+                                                        aria-valuemax="32"
+                                                    ></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -582,10 +726,12 @@
     const isLoading = ref(false);
     const isReadOnly = ref(true);
     const activityError = ref(false);
+    const studentError = ref(false);
     const instructorError = ref(false);
     const locationError = ref(false);
 
     const activity = ref({});
+    const students = ref();
     const instructors = ref([]);
     const locations = ref([]);
 
@@ -626,6 +772,33 @@
             })
             .finally(() => {
                 isLoading.value = false;
+            });
+    };
+
+    const queryStudents = async () => {
+        await InstructorsService.getStudentsByActivity(activityId)
+            .then((response) => {
+                students.value = response.estudiantes;
+            })
+            .catch((error) => {
+                if (error) {
+                    studentError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de estudiantes. Por favor intenta de nuevo más tarde.';
+
+                    if (
+                        error.type === 'backend' ||
+                        error.type === 'network' ||
+                        error.type === 'unknown'
+                    ) {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
+                }
             });
     };
 
@@ -697,6 +870,13 @@
         if (Object.keys(activity.value).length === 0) {
             router.replace('/404');
             return;
+        }
+
+        if (
+            authStore.user.rol === 'ADMIN' ||
+            authStore.user.rol === 'INSTRUCTOR'
+        ) {
+            await queryStudents();
         }
 
         resetErrorStatusAndMessages();
