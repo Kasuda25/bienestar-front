@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div v-else-if="!isStudentLoading && !studentError">
-                            <div class="row mb-3">
+                            <div v-if="authStore.user.rol === 'ADMIN'" class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="nameInput"
                                         >Nombre</label
@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div v-if="authStore.user.rol === 'ADMIN'" class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
@@ -120,6 +120,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <div v-if="authStore.user.rol === 'INSTRUCTOR'" class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
+                                        for="lastNameInput"
+                                        >Nombre</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="lastNameInput"
+                                            type="text"
+                                            :value="student.nombreCompleto"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="uidInput"
@@ -153,7 +182,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div v-if="authStore.user.rol === 'ADMIN'" class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label class="form-label" for="emailInput"
                                         >Correo</label
@@ -195,7 +224,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div v-if="authStore.user.rol === 'ADMIN'" class="row mb-3">
                                 <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
@@ -457,14 +486,14 @@
                                         />
                                     </div>
                                     <div class="invalid-feedback">
-                                        {{
-                                            props.validationErrorMessage
-                                                .hours
-                                        }}
+                                        {{ props.validationErrorMessage.hours }}
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="authStore.user.rol === 'ADMIN'" class="d-flex w-100">
+                            <div
+                                v-if="authStore.user.rol === 'ADMIN'"
+                                class="d-flex w-100"
+                            >
                                 <div
                                     class="d-flex justify-content-end w-100 flex-wrap gap-sm-2 gap-1"
                                 >
@@ -526,18 +555,175 @@
                 </div>
             </div>
         </div>
+        <div v-if="authStore.user.rol === 'INSTRUCTOR'" class="row">
+            <div v-if="student" class="col-sm-12 col-md-12 col-lg-6">
+                <div class="card my-4">
+                    <div
+                        class="card-header p-0 position-relative mt-n4 mx-3 z-index-2"
+                    >
+                        <div
+                            class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
+                        >
+                            <h6 class="text-white ps-3 my-auto">
+                                Registrar asistencia
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="card-body pb-2">
+                        <div v-if="!activities && isActivityLoading">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden"
+                                        >Loading...</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                        <form v-else>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4 my-auto">
+                                    <label
+                                        class="form-label"
+                                        for="activityInput"
+                                        >Actividad</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .activity,
+                                        }"
+                                    >
+                                        <v-select
+                                            v-model="
+                                                localAttendanceData.activity
+                                            "
+                                            :options="activities"
+                                            label="nombre"
+                                            :reduce="(activity) => activity.id"
+                                            placeholder="Buscar actividad"
+                                            :filterable="true"
+                                            :searchable="true"
+                                            :get-option-label="
+                                                (activity) =>
+                                                    `${activity.nombre}`
+                                            "
+                                            class="custom-vue3-select"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .activity
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4 my-auto">
+                                    <label
+                                        class="form-label"
+                                        for="hoursInput"
+                                        >Horas</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .attendanceHours,
+                                        }"
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="hoursInput"
+                                            type="number"
+                                            v-model="localAttendanceData.hours"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .attendanceHours
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4 my-auto">
+                                    <label
+                                        class="form-label"
+                                        for="descriptionInput"
+                                        >Descripción</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .attendanceDescription,
+                                        }"
+                                    >
+                                        <input
+                                            class="form-control"
+                                            id="descriptionInput"
+                                            type="text"
+                                            v-model="localAttendanceData.description"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .attendanceDescription
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="d-flex justify-content-end w-100">
+                                    <button
+                                        class="btn bg-gradient-dark mt-3 w-100 w-sm-auto d-flex align-items-center justify-content-center"
+                                        :disabled="externalLoading"
+                                        @click.prevent="createAttendance"
+                                    >
+                                        <template v-if="externalLoading">
+                                            <div
+                                                class="spinner-border spinner-border-sm me-2"
+                                                role="status"
+                                                aria-hidden="true"
+                                            ></div>
+                                            Cargando...
+                                        </template>
+                                        <template v-else>Enviar</template>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script setup>
     import { ref, onMounted, computed, watch } from 'vue';
     import { useRouter } from 'vue-router';
+    import vSelect from 'vue3-select';
+    import 'vue3-select/dist/vue3-select.css';
     import { useSnackbar } from 'vue3-snackbar';
     import Swal from 'sweetalert2';
 
     import { useAuthStore } from '@/stores/auth';
 
     import StudentService from '@/services/useStudents';
+    import ActivitiesService from '@/services/useActivities';
 
     const router = useRouter();
     const snackbar = useSnackbar();
@@ -546,30 +732,44 @@
 
     const emit = defineEmits([
         'sendStudentData',
+        'sendAttendanceData',
         'update:studentData',
+        'update:attendanceData',
         'update:validationErrorStatus',
         'update:validationErrorMessage',
     ]);
     const props = defineProps({
         studentData: Object,
+        attendanceData: Object,
         validationErrorStatus: Object,
         validationErrorMessage: Object,
         externalLoading: Boolean,
     });
     const studentId = router.currentRoute.value.params.id;
     const isStudentLoading = ref(false);
+    const isActivityLoading = ref(false);
     const isReadOnly = ref(true);
     const studentError = ref(false);
     const showPassword = ref(false);
 
     const student = ref({});
+    const activities = ref();
 
     const localStudentData = ref({ ...props.studentData });
+    const localAttendanceData = ref({ ...props.attendanceData });
 
     watch(
         localStudentData,
         (newVal) => {
             emit('update:studentData', newVal);
+        },
+        { deep: true }
+    );
+
+    watch(
+        localAttendanceData,
+        (newVal) => {
+            emit('update:attendanceData', newVal);
         },
         { deep: true }
     );
@@ -603,8 +803,38 @@
             });
     };
 
+    const queryActivities = async () => {
+        await ActivitiesService.getActivitiesByInstructor()
+            .then((response) => {
+                activities.value = response.data;
+            })
+            .catch((error) => {
+                if (error) {
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de las actividades. Por favor intenta de nuevo más tarde.';
+
+                    if (
+                        error.type === 'backend' ||
+                        error.type === 'network' ||
+                        error.type === 'unknown'
+                    ) {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
+                }
+            })
+            .finally(() => {
+                isActivityLoading.value = false;
+            });
+    };
+
     onMounted(async () => {
         isStudentLoading.value = true;
+        isActivityLoading.value = true;
 
         const id = parseInt(studentId);
         if (isNaN(id)) {
@@ -620,6 +850,8 @@
             router.replace('/404');
             return;
         }
+
+        await queryActivities();
     });
 
     const toggleShowPassword = () => {
@@ -705,5 +937,10 @@
         const cleanedValue = e.target.value.replace(/[^\d]/g, '');
         e.target.value = cleanedValue;
         localStudentData.value.semester = cleanedValue;
+    };
+
+    const createAttendance = () => {
+        localAttendanceData.value.student = student.value.id;
+        emit('sendAttendanceData');
     };
 </script>

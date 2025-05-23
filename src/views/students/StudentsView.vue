@@ -1,6 +1,7 @@
 <template>
     <router-view
         v-model:studentData="studentData"
+        v-model:attendanceData="attendanceData"
         v-model:validationErrorStatus="validationErrorStatus"
         v-model:validationErrorMessage="validationErrorMessage"
         :students="students"
@@ -8,6 +9,7 @@
         :list-error="listError"
         :key="viewKey"
         @sendStudentData="validateStudentData"
+        @sendAttendanceData="validateAttendanceData"
         @deleteStudent="deleteStudent"
     />
 </template>
@@ -19,7 +21,7 @@
 
     import { useAuthStore } from '@/stores/auth';
 
-    import StudentService from '@/services/useStudents.js';
+    import StudentsService from '@/services/useStudents.js';
     import InstructorsService from '@/services/useInstructors.js';
 
     const router = useRouter();
@@ -43,10 +45,16 @@
         hours: null,
         id: null,
     });
+    const attendanceData = ref({
+        student: null,
+        activity: null,
+        hours: null,
+        description: '',
+    });
 
     const queryStudents = async () => {
         try {
-            const response = await StudentService.getStudents();
+            const response = await StudentsService.getStudents();
 
             students.value = response.data;
         } catch (error) {
@@ -73,7 +81,9 @@
 
     const queryStudentsEnrolled = async () => {
         try {
-            const response = await InstructorsService.getStudentsByInstructor(authStore.id);
+            const response = await InstructorsService.getStudentsByInstructor(
+                authStore.id
+            );
 
             students.value = response.content;
         } catch (error) {
@@ -96,7 +106,7 @@
                 });
             }
         }
-    };  
+    };
 
     onMounted(async () => {
         if (authStore.user.rol === 'ADMIN') {
@@ -117,6 +127,10 @@
         program: false,
         semester: false,
         hours: false,
+        studentId: false,
+        activityId: false,
+        attendanceHours: false,
+        attendanceDescription: false,
     });
 
     const validationErrorMessage = ref({
@@ -128,6 +142,10 @@
         program: '',
         semester: '',
         hours: '',
+        studentId: '',
+        activityId: '',
+        attendanceHours: '',
+        attendanceDescription: '',
     });
 
     const validateStudentData = async (operation) => {
@@ -175,12 +193,17 @@
                 validationErrorMessage.value.password = '';
             }
         } else if (
-            (studentData.value.password === '' || !studentData.value.password) && operation === 'create'
+            (studentData.value.password === '' ||
+                !studentData.value.password) &&
+            operation === 'create'
         ) {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña es obligatoria';
-        } else if (studentData.value.password && studentData.value.password.length < 8) {
+        } else if (
+            studentData.value.password &&
+            studentData.value.password.length < 8
+        ) {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña debe tener al menos 8 caracteres';
@@ -231,13 +254,52 @@
         }
     };
 
+    const validateAttendanceData = () => {
+        if (
+            attendanceData.value.activity === null ||
+            !attendanceData.value.activity
+        ) {
+            validationErrorStatus.value.activity = true;
+            validationErrorMessage.value.activity =
+                'La actividad es obligatoria';
+        } else {
+            validationErrorStatus.value.activity = false;
+            validationErrorMessage.value.activity = '';
+        }
+
+        if (attendanceData.value.hours === null || !attendanceData.value.hours) {
+            validationErrorStatus.value.attendanceHours = true;
+            validationErrorMessage.value.attendanceHours =
+                'Las horas son obligatorias';
+        } else {
+            validationErrorStatus.value.attendanceHours = false;
+            validationErrorMessage.value.attendanceHours = '';
+        }
+
+        if (
+            attendanceData.value.description === '' ||
+            !attendanceData.value.description
+        ) {
+            validationErrorStatus.value.attendanceDescription = true;
+            validationErrorMessage.value.attendanceDescription =
+                'La descripción es obligatoria';
+        } else {
+            validationErrorStatus.value.attendanceDescription = false;
+            validationErrorMessage.value.attendanceDescription = '';
+        }
+
+        if (!validationErrorStatus.value.activity) {
+            sendAttendanceData();
+        }
+    };
+
     const sendStudentData = async (operation) => {
         try {
             isLoading.value = true;
             let response;
 
             if (operation === 'create') {
-                response = await StudentService.createStudent({
+                response = await StudentsService.createStudent({
                     nombre: studentData.value.name,
                     apellido: studentData.value.lastName,
                     codigoEstudiantil: studentData.value.uid,
@@ -249,7 +311,7 @@
             }
 
             if (operation === 'update') {
-                response = await StudentService.putStudent(
+                response = await StudentsService.putStudent(
                     studentData.value.id,
                     {
                         nombre: studentData.value.name,
@@ -259,7 +321,7 @@
                         password: studentData.value.password,
                         programaAcademico: studentData.value.program,
                         semestre: studentData.value.semester,
-                        estado: 'ACTIVO'
+                        estado: 'ACTIVO',
                     }
                 );
             }
@@ -302,6 +364,44 @@
         }
     };
 
+    const sendAttendanceData = async () => {
+        try {
+            isLoading.value = true;
+            const response = await StudentsService.registerAttendance({
+                estudianteId: attendanceData.value.student,
+                actividadId: attendanceData.value.activity,
+            });
+
+            if (response) {
+                isLoading.value = false;
+
+                const secondResponse = await StudentsService.registerHours({
+                    asistenciaId: response.asistenciaId,
+                    horas: attendanceData.value.hours,
+                    descripcion: attendanceData.value.description,
+                });
+
+                if (secondResponse) {
+                    snackbar.add({
+                        type: 'success',
+                        text: 'Asistencia registrada exitosamente',
+                    });
+
+                    resetAttendanceValues();
+                    viewKey.value++;
+                }
+            }
+        } catch (error) {
+            if (error) {
+                isLoading.value = false;
+                snackbar.add({
+                    type: 'error',
+                    text: error.message,
+                });
+            }
+        }
+    };
+
     const resetValues = () => {
         studentData.value = {
             name: '',
@@ -314,10 +414,19 @@
         };
     };
 
+    const resetAttendanceValues = () => {
+        attendanceData.value = {
+            student: '',
+            activity: '',
+            hours: '',
+            description: '',
+        };
+    };
+
     const deleteStudent = async (id) => {
         try {
             isLoading.value = true;
-            const response = await StudentService.deleteStudent(id);
+            const response = await StudentsService.deleteStudent(id);
 
             if (response) {
                 await queryStudents();

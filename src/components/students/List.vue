@@ -40,8 +40,15 @@
                     </div>
                     <div class="card-body px-0 pb-3">
                         <div class="d-flex w-100 mb-2 px-4">
-                            <div class="w-25 input-group input-group-outline ms-auto">
-                                <input type="text" class="form-control" placeholder="Buscar por código">
+                            <div
+                                class="w-25 input-group input-group-outline ms-auto"
+                            >
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Buscar por código"
+                                    v-model="searchQuery"
+                                />
                             </div>
                         </div>
                         <div class="table-responsive p-0 no-scroll">
@@ -118,7 +125,7 @@
                                     </div>
                                 </tbody>
                                 <tbody
-                                    v-if="students && students[0] && !listError"
+                                    v-if="students && filteredStudents.length && !listError"
                                 >
                                     <tr
                                         v-for="student in students"
@@ -216,6 +223,18 @@
                                         </td>
                                     </tr>
                                 </tbody>
+                                <tbody
+                                    v-if="
+                                        students && !filteredStudents.length && !listError
+                                    "
+                                >
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            No se encontraron estudiantes con
+                                            ese código
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -226,14 +245,28 @@
 </template>
 
 <script setup>
+    import { ref, computed } from 'vue';
+
     import { useAuthStore } from '@/stores/auth';
 
-    defineProps({
+    const props = defineProps({
         students: Array,
         listError: Boolean,
     });
 
     const authStore = useAuthStore();
+
+    const searchQuery = ref('');
+
+    const filteredStudents = computed(() => {
+        if (!searchQuery.value) return props.students;
+        return props.students.filter((student) =>
+            student.codigoEstudiantil
+                ?.toString()
+                .toLowerCase()
+                .includes(searchQuery.value.toLowerCase())
+        );
+    });
 </script>
 
 <style scoped>
