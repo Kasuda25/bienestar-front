@@ -203,7 +203,7 @@
 
                     router.push({
                         name: 'instructors-detail',
-                        params: { id: response.id },
+                        params: { id: response.data.id },
                     });
                 }
 

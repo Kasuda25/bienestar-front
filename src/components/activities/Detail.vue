@@ -531,7 +531,7 @@
                                     <button
                                         class="btn bg-gradient-dark mt-3 w-100 w-sm-auto d-flex align-items-center justify-content-center"
                                         :disabled="externalLoading"
-                                        @click="handleClick"
+                                        @click="sendEnrollData"
                                     >
                                         <template v-if="externalLoading">
                                             <div
@@ -552,7 +552,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div v-if="authStore.user.rol === 'ADMIN' || authStore.user.rol === 'INSTRUCTOR'" class="row">
             <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="card my-4">
                     <div
@@ -712,6 +712,7 @@
 
     const emit = defineEmits([
         'sendActivityData',
+        'sendEnrollData',
         'update:activityData',
         'update:validationErrorStatus',
         'update:validationErrorMessage',
@@ -778,7 +779,7 @@
     const queryStudents = async () => {
         await InstructorsService.getStudentsByActivity(activityId)
             .then((response) => {
-                students.value = response.estudiantes;
+                students.value = response.content;
             })
             .catch((error) => {
                 if (error) {
@@ -935,6 +936,10 @@
 
     const updateActivity = () => {
         emit('sendActivityData', 'update');
+    };
+
+    const sendEnrollData = () => {
+        emit('sendEnrollData', activity.value.id);
     };
 
     const deleteActivity = () => {

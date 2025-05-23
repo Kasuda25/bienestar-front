@@ -292,25 +292,74 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <div class="col-12 col-md-4 my-auto">
-                                <label class="form-label" for="nameInput"
-                                    ><strong>Día(s)</strong></label
+                            <div class="col-12">
+                                <label class="form-label"
+                                    ><strong>Horario</strong></label
                                 >
-                            </div>
-                            <div class="col-12 col-md-8">
-                                <div class="input-group input-group-outline">
-                                    <input
-                                        class="form-control"
-                                        id="nameInput"
-                                        type="text"
-                                        :value="formatDays(activity.horarios)"
-                                        :style="{
-                                            pointerEvents: 'none',
-                                            backgroundColor: '#fff',
-                                            cursor: 'default',
-                                        }"
-                                        readonly
-                                    />
+                                <div class="card">
+                                    <div class="card-body px-0 pt-0 pb-2">
+                                        <div class="table-responsive p-2">
+                                            <table
+                                                class="table align-items-center mb-0"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7"
+                                                        >
+                                                            Día
+                                                        </th>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                        >
+                                                            Hora de inicio
+                                                        </th>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2"
+                                                        >
+                                                            Hora de fin
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        v-for="(
+                                                            item, index
+                                                        ) in activity.horarios"
+                                                        :key="item.id || index"
+                                                    >
+                                                        <td
+                                                            class="text-sm font-weight-normal"
+                                                        >
+                                                            <span>{{
+                                                                formatDay(
+                                                                    item.horarioBase.dia
+                                                                )
+                                                            }}</span>
+                                                        </td>
+                                                        <td
+                                                            class="text-sm font-weight-normal"
+                                                        >
+                                                            <span>{{
+                                                                formatHour(
+                                                                    item.horaInicio
+                                                                )
+                                                            }}</span>
+                                                        </td>
+                                                        <td
+                                                            class="text-sm font-weight-normal"
+                                                        >
+                                                            <span>{{
+                                                                formatHour(
+                                                                    item.horaFin
+                                                                )
+                                                            }}</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -386,53 +435,6 @@
             student: '',
             activity: '',
         });
-    };
-
-    const diasConTilde = {
-        lunes: 'Lunes',
-        martes: 'Martes',
-        miercoles: 'Miércoles',
-        jueves: 'Jueves',
-        viernes: 'Viernes',
-        sabado: 'Sábado',
-        domingo: 'Domingo',
-    };
-
-    const ordenSemana = [
-        'lunes',
-        'martes',
-        'miercoles',
-        'jueves',
-        'viernes',
-        'sabado',
-        'domingo',
-    ];
-
-    const formatDays = (horarios) => {
-        if (!horarios || !Array.isArray(horarios)) return '';
-
-        const diasUnicos = Array.from(
-            new Set(
-                horarios.map((h) =>
-                    h.horarioBase.dia
-                        .toLowerCase()
-                        .normalize('NFD')
-                        .replace(/[\u0300-\u036f]/g, '')
-                )
-            )
-        );
-
-        diasUnicos.sort(
-            (a, b) => ordenSemana.indexOf(a) - ordenSemana.indexOf(b)
-        );
-
-        const diasFinal = diasUnicos.map((dia) => diasConTilde[dia] || dia);
-
-        const len = diasFinal.length;
-        if (len === 0) return '';
-        if (len === 1) return diasFinal[0];
-        if (len === 2) return diasFinal.join(' y ');
-        return diasFinal.slice(0, -1).join(', ') + ' y ' + diasFinal[len - 1];
     };
 
     const queryStudents = async () => {
@@ -560,7 +562,7 @@
     watch(
         () => localEnrollData.value.student,
         async (newStudentId) => {
-            if (newStudentId) {
+            if (newStudentId && authStore.user.rol === 'ADMIN' || authStore.user.rol === 'INSTRUCTOR') {
                 await queryStudent(newStudentId);
             }
         }
@@ -576,9 +578,30 @@
     );
 
     const createEnroll = () => {
-        console.log(localEnrollData.value.student);
-        // emit('sendEnrollData', 'create');
+        if (authStore.user.rol === 'ESTUDIANTE') {
+            localEnrollData.value.student = authStore.id;
+        }
+
+        emit('sendEnrollData', 'create');
     };
+
+    const formatDay = (dia) => {
+        const diasMap = {
+            LUNES: 'Lunes',
+            MARTES: 'Martes',
+            MIERCOLES: 'Miércoles',
+            JUEVES: 'Jueves',
+            VIERNES: 'Viernes',
+            SABADO: 'Sábado',
+        };
+
+        return (
+            diasMap[dia.toUpperCase()] ||
+            dia.charAt(0).toUpperCase() + dia.slice(1).toLowerCase()
+        );
+    };
+
+    const formatHour = (hora) => hora.slice(0, 5);
 </script>
 
 <style scroped>

@@ -851,7 +851,9 @@
             return;
         }
 
-        await queryActivities();
+        if (authStore.user.rol === 'INSTRUCTOR') {
+            await queryActivities();
+        }
     });
 
     const toggleShowPassword = () => {
@@ -873,6 +875,7 @@
         localStudentData.value.password = student.value.password;
         localStudentData.value.program = student.value.programaAcademico;
         localStudentData.value.semester = student.value.semestre;
+        localStudentData.value.hours = student.value.horasAcumuladas;
         localStudentData.value.id = student.value.id;
     };
 

@@ -9,8 +9,8 @@
                         <div
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
-                            <h6 v-if="authStore.user.rol === 'ADMIN'" class="text-white ps-3 my-auto">
-                                Lista de actividades
+                            <h6 v-if="authStore.user.rol === 'ADMIN' || authStore.user.rol === 'ESTUDIANTE'" class="text-white ps-3 my-auto">
+                                Lista de actividades <span v-if="authStore.user.rol === 'ESTUDIANTE'">disponibles</span>
                             </h6>
                             <h6 v-if="authStore.user.rol === 'INSTRUCTOR'" class="text-white ps-3 my-auto">
                                 Mis actividades

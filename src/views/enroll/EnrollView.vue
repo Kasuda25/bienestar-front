@@ -4,21 +4,25 @@
         v-model:validationErrorStatus="validationErrorStatus"
         v-model:validationErrorMessage="validationErrorMessage"
         :external-loading="isLoading"
+        :key="viewKey"
         @sendEnrollData="validateEnrollData"
     />
 </template>
 
 <script setup>
     import { ref } from 'vue';
-    import { useRouter } from 'vue-router';
     import { useSnackbar } from 'vue3-snackbar';
+
+    import { useAuthStore } from '@/stores/auth';
 
     import InscriptionsService from '@/services/useInscriptions';
 
-    const router = useRouter();
     const snackbar = useSnackbar();
 
+    const authStore = useAuthStore();
+
     const isLoading = ref(false);
+    const viewKey = ref(0);
 
     const enrollData = ref({
         student: null,
@@ -68,14 +72,26 @@
         if (response) {
             isLoading.value = false;
 
-            snackbar.add({
-                type: 'success',
-                text: 'Estudiante inscrito exitosamente',
-            });
+            if (
+                authStore.user.role === 'ADMIN' ||
+                authStore.user.rol === 'INSTRUCTOR'
+            ) {
+                snackbar.add({
+                    type: 'success',
+                    text: 'Estudiante inscrito exitosamente',
+                });
+            }
+
+            if (authStore.user.role === 'ESTUDIANTE') {
+                snackbar.add({
+                    type: 'success',
+                    text: 'Te has inscrito exitosamente',
+                });
+            }
 
             resetValues();
 
-            router.push({ name: 'students' });
+            viewKey.value++;
         }
     };
 

@@ -372,7 +372,7 @@
                 actividadId: attendanceData.value.activity,
             });
 
-            if (response) {
+            if (response.asistenciaId) {
                 isLoading.value = false;
 
                 const secondResponse = await StudentsService.registerHours({

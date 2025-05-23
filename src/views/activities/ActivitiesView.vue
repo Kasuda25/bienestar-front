@@ -8,6 +8,7 @@
         :list-error="listError"
         :key="viewKey"
         @sendActivityData="validateActivityData"
+        @sendEnrollData="sendEnrollData"
         @deleteActivity="deleteActivity"
         @removeScheduleError="handleRemoveScheduleError"
     />
@@ -19,6 +20,7 @@
     import { useSnackbar } from 'vue3-snackbar';
 
     import ActivitiesService from '@/services/useActivities';
+    import InscriptionsService from '@/services/useInscriptions';
 
     import { useAuthStore } from '@/stores/auth';
 
@@ -336,6 +338,10 @@
             }
 
             if (operation === 'update') {
+                for (const item of activityData.value.schedule) {
+                    item.horarioUbicacionId = item.horarioBase.id
+                }
+
                 response = await ActivitiesService.putActivity(
                     activityData.value.id,
                     {
@@ -376,6 +382,46 @@
 
                     viewKey.value++;
                 }
+            }
+        } catch (error) {
+            isLoading.value = false;
+            if (error) {
+                let message =
+                    'Ha ocurrido un error. Por favor intenta de nuevo más tarde.';
+
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
+                snackbar.add({
+                    type: 'error',
+                    text: message,
+                });
+            }
+        }
+    };
+
+    const sendEnrollData = async (activityId) => {
+        try {
+            isLoading.value = true;
+            const response = await InscriptionsService.createInscription({ student: authStore.id, activity: activityId });
+
+            if (response) {
+                await queryActivities();
+                isLoading.value = false;
+                snackbar.add({
+                    type: 'success',
+                    text: 'Estudiante inscrito exitosamente',
+                });
+
+                router.push({
+                    name: 'activities-detail',
+                    params: { id: activityData.value.id },
+                });
             }
         } catch (error) {
             isLoading.value = false;
