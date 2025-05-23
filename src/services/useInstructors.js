@@ -100,7 +100,7 @@ class InstructorsService {
     async getStudentsByActivity(id) {
         try {
             const response = await axios.get(
-                `/instructor/mis-actividades/${id}/estudiantes`
+                `/admin/mis-actividades/${id}/estudiantes`
             );
             if (response.status === 200) {
                 return response.data;

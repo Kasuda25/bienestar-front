@@ -133,10 +133,7 @@
                                                 :key="instructor"
                                                 :value="instructor.id"
                                             >
-                                                {{ instructor.usuario.nombre }}
-                                                {{
-                                                    instructor.usuario.apellido
-                                                }}
+                                                {{ instructor.nombreCompleto }}
                                             </option>
                                         </select>
                                     </div>

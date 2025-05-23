@@ -20,6 +20,7 @@
     import { useAuthStore } from '@/stores/auth';
 
     import StudentService from '@/services/useStudents.js';
+    import InstructorsService from '@/services/useInstructors.js';
 
     const router = useRouter();
     const snackbar = useSnackbar();
@@ -39,6 +40,7 @@
         password: '',
         program: '',
         semester: null,
+        hours: null,
         id: null,
     });
 
@@ -69,7 +71,32 @@
         }
     };
 
-    // TODO: Lista de estudiantes inscritos
+    const queryStudentsEnrolled = async () => {
+        try {
+            const response = await InstructorsService.getStudentsByInstructor(authStore.id);
+
+            students.value = response.content;
+        } catch (error) {
+            if (error.response) {
+                listError.value = true;
+                let message =
+                    'Ha ocurrido un error al obtener la lista de estudiantes. Por favor intenta de nuevo más tarde.';
+
+                if (
+                    error.type === 'backend' ||
+                    error.type === 'network' ||
+                    error.type === 'unknown'
+                ) {
+                    message = error.message;
+                }
+
+                snackbar.add({
+                    type: 'error',
+                    text: message,
+                });
+            }
+        }
+    };  
 
     onMounted(async () => {
         if (authStore.user.rol === 'ADMIN') {
@@ -77,8 +104,7 @@
         }
 
         if (authStore.user.rol === 'INSTRUCTOR') {
-            // TODO: Lista de estudiantes inscritos
-            students.value = [];
+            await queryStudentsEnrolled();
         }
     });
 
@@ -90,6 +116,7 @@
         password: false,
         program: false,
         semester: false,
+        hours: false,
     });
 
     const validationErrorMessage = ref({
@@ -100,6 +127,7 @@
         password: '',
         program: '',
         semester: '',
+        hours: '',
     });
 
     const validateStudentData = async (operation) => {

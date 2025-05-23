@@ -144,6 +144,10 @@
                 pageName.value = 'Ubicaciones';
                 break;
 
+            case 'enroll':
+                pageName.value = 'Inscripciones';
+                break;
+
             case 'profile':
                 pageName.value = 'Perfil';
                 break;
@@ -202,6 +206,10 @@
 
             case 'locations-detail':
                 pageSubname.value = 'Detalle';
+                break;
+
+            case 'enroll-create':
+                pageSubname.value = 'Inscribir';
                 break;
 
             default:

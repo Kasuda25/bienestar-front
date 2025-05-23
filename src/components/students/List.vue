@@ -10,7 +10,10 @@
                             class="d-flex justify-content-between bg-gradient-dark shadow-dark border-radius-lg py-3"
                         >
                             <h6 class="text-white ps-3 my-auto">
-                                Lista de estudiantes <span v-if="authStore.user.rol === 'INSTRUCTOR'">inscritos</span>
+                                Lista de estudiantes
+                                <span v-if="authStore.user.rol === 'INSTRUCTOR'"
+                                    >inscritos</span
+                                >
                             </h6>
                             <div
                                 v-if="authStore.user.rol === 'ADMIN'"
@@ -36,6 +39,11 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pb-3">
+                        <div class="d-flex w-100 mb-2 px-4">
+                            <div class="w-25 input-group input-group-outline ms-auto">
+                                <input type="text" class="form-control" placeholder="Buscar por código">
+                            </div>
+                        </div>
                         <div class="table-responsive p-0 no-scroll">
                             <table class="table align-activitys-center mb-0">
                                 <div v-if="!students && !listError">
@@ -73,6 +81,11 @@
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
                                             Semestre
+                                        </th>
+                                        <th
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        >
+                                            Horas completadas
                                         </th>
                                     </tr>
                                 </thead>
@@ -163,6 +176,44 @@
                                                 </span>
                                             </a>
                                         </td>
+                                        <td class="align-middle">
+                                            <a
+                                                :href="`/students/${student.id}`"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            >
+                                                <div class="d-flex flex-column">
+                                                    <span
+                                                        class="text-xs font-weight-bold mb-1"
+                                                    >
+                                                        {{
+                                                            student.horasAcumuladas
+                                                        }}
+                                                        / 32 horas
+                                                    </span>
+                                                    <div
+                                                        class="progress"
+                                                        style="height: 3px"
+                                                    >
+                                                        <div
+                                                            class="progress-bar bg-info"
+                                                            role="progressbar"
+                                                            :style="{
+                                                                width:
+                                                                    (student.horasAcumuladas /
+                                                                        32) *
+                                                                        100 +
+                                                                    '%',
+                                                            }"
+                                                            :aria-valuenow="
+                                                                student.horasAcumuladas
+                                                            "
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="32"
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -186,7 +237,7 @@
 </script>
 
 <style scoped>
-.no-items {
-    border-top: none;
-}
+    .no-items {
+        border-top: none;
+    }
 </style>

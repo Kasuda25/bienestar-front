@@ -173,6 +173,34 @@
                             </a>
                         </RouterLink>
                     </li>
+                    <li class="nav-item">
+                        <RouterLink
+                            to="/enroll"
+                            custom
+                            v-slot="{ navigate, href, isActive }"
+                        >
+                            <a
+                                :href="href"
+                                :class="[
+                                    'nav-link cursor-pointer',
+                                    isActive
+                                        ? 'active bg-dark text-white'
+                                        : 'text-dark',
+                                ]"
+                                @click.prevent="
+                                    toggleAside();
+                                    navigate();
+                                "
+                            >
+                                <i class="material-symbols-rounded opacity-5"
+                                    >how_to_reg</i
+                                >
+                                <span class="nav-link-text ms-1"
+                                    >Inscripciones</span
+                                >
+                            </a>
+                        </RouterLink>
+                    </li>
                     <li class="nav-item mt-3">
                         <h6
                             class="ps-4 ms-2 text-uppercase text-xs text-dark font-weight-bolder opacity-5"

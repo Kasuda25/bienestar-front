@@ -416,7 +416,55 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-flex w-100">
+                            <div class="row mb-3">
+                                <div class="col-12 col-md-4">
+                                    <label
+                                        class="form-label"
+                                        for="semesterInput"
+                                        >Horas acumuladas</label
+                                    >
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    <div
+                                        class="input-group input-group-outline"
+                                        :class="{
+                                            'is-invalid':
+                                                props.validationErrorStatus
+                                                    .hours,
+                                        }"
+                                    >
+                                        <input
+                                            v-if="isReadOnly"
+                                            class="form-control"
+                                            id="semesterInput"
+                                            type="number"
+                                            :value="student.horasAcumuladas"
+                                            tabindex="-1"
+                                            :style="{
+                                                pointerEvents: 'none',
+                                                backgroundColor: '#fff',
+                                                cursor: 'default',
+                                            }"
+                                            readonly
+                                        />
+                                        <input
+                                            v-else
+                                            class="form-control"
+                                            id="semesterInput"
+                                            type="text"
+                                            v-model="localStudentData.hours"
+                                            @input="filterSemesterInput"
+                                        />
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{
+                                            props.validationErrorMessage
+                                                .hours
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="authStore.user.rol === 'ADMIN'" class="d-flex w-100">
                                 <div
                                     class="d-flex justify-content-end w-100 flex-wrap gap-sm-2 gap-1"
                                 >
@@ -487,10 +535,14 @@
     import { useSnackbar } from 'vue3-snackbar';
     import Swal from 'sweetalert2';
 
+    import { useAuthStore } from '@/stores/auth';
+
     import StudentService from '@/services/useStudents';
 
     const router = useRouter();
     const snackbar = useSnackbar();
+
+    const authStore = useAuthStore();
 
     const emit = defineEmits([
         'sendStudentData',

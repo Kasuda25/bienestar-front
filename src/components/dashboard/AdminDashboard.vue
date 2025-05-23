@@ -391,8 +391,7 @@
                                     <p
                                         class="text-secondary font-weight-bold text-xs mt-1 mb-0"
                                     >
-                                        Por {{ audit.usuario.nombre }}
-                                        {{ audit.usuario.apellido }} -
+                                        Por {{ audit.nombreUsuario }} -
                                         {{ formatDate(audit.fecha) }}
                                     </p>
                                 </div>

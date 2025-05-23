@@ -25,8 +25,8 @@
                         <div v-if="activityError">
                             <div class="d-flex justify-content-center">
                                 <h4 class="my-auto">
-                                    Ha ocurrido un error al obtener la lista de
-                                    actividades
+                                    Ha ocurrido un error al obtener los datos de
+                                    la actividad
                                 </h4>
                             </div>
                         </div>

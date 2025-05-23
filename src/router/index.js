@@ -3,6 +3,7 @@ import activitiesRoutes from './activities.routes.js';
 import instructorsRoutes from './instructors.routes.js';
 import studentsRoutes from './students.routes.js';
 import locationsRoutes from './locations.routes.js';
+import enrollRoutes from './enroll.routes.js';
 
 import AuthService from '@/services/useAuth';
 import LocalStorage from '@/services/useLocalStorage';
@@ -82,6 +83,13 @@ const routes = [
                 component: () => import('@/views/locations/LocationsView.vue'),
                 meta: { requiresAuth: true },
                 children: locationsRoutes,
+            },
+            {
+                path: 'enroll',
+                name: 'enroll',
+                component: () => import('@/views/enroll/EnrollView.vue'),
+                meta: { requiresAuth: true },
+                children: enrollRoutes,
             },
         ],
     },
