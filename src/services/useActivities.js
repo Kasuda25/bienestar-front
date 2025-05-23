@@ -32,9 +32,9 @@ class ActivitiesService {
         }
     }
 
-    async getActivities() {
+    async getActivities(page = 0) {
         try {
-            const response = await axios.get('/actividades/creadas');
+            const response = await axios.get(`/actividades/creadas?page=${page}`);
             if (response.status === 200) {
                 return response.data;
             }

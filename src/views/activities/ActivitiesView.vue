@@ -4,6 +4,7 @@
         v-model:validationErrorStatus="validationErrorStatus"
         v-model:validationErrorMessage="validationErrorMessage"
         :activities="activities"
+        :totalPages="totalPages"
         :external-loading="isLoading"
         :list-error="listError"
         :key="viewKey"
@@ -11,6 +12,7 @@
         @sendEnrollData="sendEnrollData"
         @deleteActivity="deleteActivity"
         @removeScheduleError="handleRemoveScheduleError"
+        @changePage="changePage"
     />
 </template>
 
@@ -33,6 +35,8 @@
     const listError = ref(false);
     const viewKey = ref(0);
 
+    const totalPages = ref(0);
+
     const activities = ref();
     const activityData = ref({
         name: '',
@@ -46,11 +50,17 @@
         id: null,
     });
 
-    const queryActivities = async () => {
+    const changePage = async (page) => {
+        activities.value = null
+        await queryActivities(page);
+    };
+
+    const queryActivities = async (page) => {
         try {
-            const response = await ActivitiesService.getActivities();
+            const response = await ActivitiesService.getActivities(page);
 
             activities.value = response.data;
+            totalPages.value = response.pagination.totalPages;
         } catch (error) {
             if (error) {
                 listError.value = true;
@@ -299,7 +309,7 @@
             validationErrorMessage.value.location = '';
         }
 
-        let schedule
+        let schedule;
 
         if (operation === 'create') {
             schedule = validateSchedule();
@@ -339,7 +349,7 @@
 
             if (operation === 'update') {
                 for (const item of activityData.value.schedule) {
-                    item.horarioUbicacionId = item.horarioBase.id
+                    item.horarioUbicacionId = item.horarioBase.id;
                 }
 
                 response = await ActivitiesService.putActivity(
@@ -408,7 +418,10 @@
     const sendEnrollData = async (activityId) => {
         try {
             isLoading.value = true;
-            const response = await InscriptionsService.createInscription({ student: authStore.id, activity: activityId });
+            const response = await InscriptionsService.createInscription({
+                student: authStore.id,
+                activity: activityId,
+            });
 
             if (response) {
                 await queryActivities();
