@@ -333,7 +333,9 @@
                                                         >
                                                             <span>{{
                                                                 formatDay(
-                                                                    item.horarioBase.dia
+                                                                    item
+                                                                        .horarioBase
+                                                                        .dia
                                                                 )
                                                             }}</span>
                                                         </td>
@@ -437,8 +439,8 @@
         });
     };
 
-    const queryStudents = async () => {
-        await StudentsService.getStudents()
+    const queryStudents = async (page = 0, size = 999) => {
+        await StudentsService.getStudents(page, size)
             .then((response) => {
                 students.value = response.data;
             })
@@ -491,8 +493,35 @@
             });
     };
 
-    const queryActivities = async () => {
-        await ActivitiesService.getActivities()
+    const queryActivities = async (page = 0, size = 999) => {
+        await ActivitiesService.getActivities(page, size)
+            .then((response) => {
+                activities.value = response.data;
+            })
+            .catch((error) => {
+                if (error) {
+                    activityError.value = true;
+                    let message =
+                        'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo más tarde.';
+
+                    if (error.type === 'backend') {
+                        message = error.message;
+                    } else if (error.type === 'network') {
+                        message = error.message;
+                    } else if (error.type === 'unknown') {
+                        message = error.message;
+                    }
+
+                    snackbar.add({
+                        type: 'error',
+                        text: message,
+                    });
+                }
+            });
+    };
+
+    const queryActivitiesByInstructor = async (page = 0, size = 999) => {
+        await ActivitiesService.getActivitiesByInstructor(page, size)
             .then((response) => {
                 activities.value = response.data;
             })
@@ -547,13 +576,19 @@
 
     onMounted(async () => {
         isLoading.value = true;
-        if (
-            authStore.user.rol === 'ADMIN' ||
-            authStore.user.rol === 'INSTRUCTOR'
-        ) {
+        if (authStore.user.rol === 'ADMIN') {
+            await queryActivities();
             await queryStudents();
         }
-        await queryActivities();
+
+        if (authStore.user.rol === 'INSTRUCTOR') {
+            await queryActivitiesByInstructor();
+            await queryStudents();
+        }
+
+        if (authStore.user.rol === 'ESTUDIANTE') {
+            await queryActivities();
+        }
         resetValues();
         resetErrorStatusAndMessages();
         isLoading.value = false;
@@ -562,7 +597,10 @@
     watch(
         () => localEnrollData.value.student,
         async (newStudentId) => {
-            if (newStudentId && authStore.user.rol === 'ADMIN' || authStore.user.rol === 'INSTRUCTOR') {
+            if (
+                (newStudentId && authStore.user.rol === 'ADMIN') ||
+                authStore.user.rol === 'INSTRUCTOR'
+            ) {
                 await queryStudent(newStudentId);
             }
         }

@@ -51,20 +51,20 @@
                                 />
                             </div>
                         </div>
+                        <div v-if="!students && !listError">
+                            <div class="d-flex justify-content-center">
+                                <div
+                                    class="spinner-border"
+                                    role="status"
+                                >
+                                    <span class="visually-hidden"
+                                        >Loading...</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive p-0 no-scroll">
                             <table class="table align-activitys-center mb-0">
-                                <div v-if="!students && !listError">
-                                    <div class="d-flex justify-content-center">
-                                        <div
-                                            class="spinner-border"
-                                            role="status"
-                                        >
-                                            <span class="visually-hidden"
-                                                >Loading...</span
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
                                 <thead
                                     v-if="students && students[0] && !listError"
                                 >
@@ -125,7 +125,11 @@
                                     </div>
                                 </tbody>
                                 <tbody
-                                    v-if="students && filteredStudents.length && !listError"
+                                    v-if="
+                                        students &&
+                                        filteredStudents.length &&
+                                        !listError
+                                    "
                                 >
                                     <tr
                                         v-for="student in students"
@@ -225,7 +229,9 @@
                                 </tbody>
                                 <tbody
                                     v-if="
-                                        students && !filteredStudents.length && !listError
+                                        students &&
+                                        !filteredStudents.length &&
+                                        !listError
                                     "
                                 >
                                     <tr>
@@ -236,6 +242,65 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination mt-3 mb-1">
+                                    <li class="page-item">
+                                        <div
+                                            v-if="currentPage > 0"
+                                            class="page-link"
+                                            aria-label="Previous"
+                                            @click="previousPage"
+                                        >
+                                            <span
+                                                class="material-symbols-rounded"
+                                            >
+                                                keyboard_arrow_left
+                                            </span>
+                                            <span class="sr-only"
+                                                >Previous</span
+                                            >
+                                        </div>
+                                    </li>
+                                    <li
+                                        v-for="page in props.totalPages"
+                                        :key="page"
+                                        class="page-item"
+                                    >
+                                        <div
+                                            v-if="props.totalPages > 1"
+                                            class="page-link"
+                                            @click="
+                                                () => {
+                                                    currentPage = page - 1;
+                                                    customPage();
+                                                }
+                                            "
+                                        >
+                                            {{ page }}
+                                        </div>
+                                    </li>
+                                    <li class="page-item">
+                                        <div
+                                            v-if="
+                                                currentPage <
+                                                props.totalPages - 1
+                                            "
+                                            class="page-link"
+                                            aria-label="Next"
+                                            @click="nextPage"
+                                        >
+                                            <span
+                                                class="material-symbols-rounded"
+                                            >
+                                                keyboard_arrow_right
+                                            </span>
+                                            <span class="sr-only">Next</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -249,12 +314,16 @@
 
     import { useAuthStore } from '@/stores/auth';
 
+    const emit = defineEmits(['changePage']);
     const props = defineProps({
         students: Array,
+        totalPages: Number,
         listError: Boolean,
     });
 
     const authStore = useAuthStore();
+
+    const currentPage = ref(0);
 
     const searchQuery = ref('');
 
@@ -267,10 +336,34 @@
                 .includes(searchQuery.value.toLowerCase())
         );
     });
+
+    const previousPage = () => {
+        if (currentPage.value > 0) {
+            currentPage.value--;
+        }
+
+        emit('changePage', currentPage.value);
+    };
+
+    const customPage = () => {
+        emit('changePage', currentPage.value);
+    };
+
+    const nextPage = () => {
+        if (currentPage.value < props.totalPages) {
+            currentPage.value++;
+        }
+
+        emit('changePage', currentPage.value);
+    };
 </script>
 
 <style scoped>
     .no-items {
         border-top: none;
+    }
+    
+    .page-link {
+        cursor: pointer;
     }
 </style>

@@ -4,11 +4,13 @@
         v-model:validationErrorStatus="validationErrorStatus"
         v-model:validationErrorMessage="validationErrorMessage"
         :instructors="instructors"
+        :totalPages="totalPages"
         :external-loading="isLoading"
         :list-error="listError"
         :key="viewKey"
         @sendInstructorData="validateInstructorData"
         @deleteInstructor="deleteInstructor"
+        @changePage="changePage"
     />
 </template>
 
@@ -25,6 +27,7 @@
     const isLoading = ref(false);
     const listError = ref(false);
     const viewKey = ref(0);
+    const totalPages = ref(0);
 
     const instructors = ref();
     const instructorData = ref({
@@ -36,11 +39,18 @@
         id: null,
     });
 
-    const queryInstructors = async () => {
+    const changePage = async (page) => {
+        instructors.value = null;
+
+        await queryInstructors(page);
+    };
+
+    const queryInstructors = async (page = 0, size = 10) => {
         try {
-            const response = await InstructorsService.getInstructors();
+            const response = await InstructorsService.getInstructors(page, size);
 
             instructors.value = response.data;
+            totalPages.value = response.pagination.totalPages;
         } catch (error) {
             if (error) {
                 listError.value = true;
@@ -129,7 +139,10 @@
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña es obligatoria';
-        } else if (instructorData.value.password.length < 8 && operation === 'create') {
+        } else if (
+            instructorData.value.password.length < 8 &&
+            operation === 'create'
+        ) {
             validationErrorStatus.value.password = true;
             validationErrorMessage.value.password =
                 'La contraseña debe tener al menos 8 caracteres';

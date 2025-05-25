@@ -552,7 +552,13 @@
                 </div>
             </div>
         </div>
-        <div v-if="authStore.user.rol === 'ADMIN' || authStore.user.rol === 'INSTRUCTOR'" class="row">
+        <div
+            v-if="
+                authStore.user.rol === 'ADMIN' ||
+                authStore.user.rol === 'INSTRUCTOR'
+            "
+            class="row"
+        >
             <div class="col-sm-12 col-md-12 col-lg-6">
                 <div class="card my-4">
                     <div
@@ -567,20 +573,20 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pb-3">
+                        <div v-if="!students && !studentError">
+                            <div class="d-flex justify-content-center">
+                                <div
+                                    class="spinner-border"
+                                    role="status"
+                                >
+                                    <span class="visually-hidden"
+                                        >Loading...</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive p-0 no-scroll">
                             <table class="table align-activitys-center mb-0">
-                                <div v-if="!students && !studentError">
-                                    <div class="d-flex justify-content-center">
-                                        <div
-                                            class="spinner-border"
-                                            role="status"
-                                        >
-                                            <span class="visually-hidden"
-                                                >Loading...</span
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
                                 <thead
                                     v-if="
                                         students && students[0] && !studentError
@@ -686,6 +692,65 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="d-flex justify-content-center">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination mt-3 mb-1">
+                                    <li class="page-item">
+                                        <div
+                                            v-if="currentPage > 0"
+                                            class="page-link"
+                                            aria-label="Previous"
+                                            @click="previousPage"
+                                        >
+                                            <span
+                                                class="material-symbols-rounded"
+                                            >
+                                                keyboard_arrow_left
+                                            </span>
+                                            <span class="sr-only"
+                                                >Previous</span
+                                            >
+                                        </div>
+                                    </li>
+                                    <li
+                                        v-for="page in totalPages"
+                                        :key="page"
+                                        class="page-item"
+                                    >
+                                        <div
+                                            v-if="totalPages > 1"
+                                            class="page-link"
+                                            @click="
+                                                () => {
+                                                    currentPage = page - 1;
+                                                    customPage();
+                                                }
+                                            "
+                                        >
+                                            {{ page }}
+                                        </div>
+                                    </li>
+                                    <li class="page-item">
+                                        <div
+                                            v-if="
+                                                currentPage <
+                                                totalPages - 1
+                                            "
+                                            class="page-link"
+                                            aria-label="Next"
+                                            @click="nextPage"
+                                        >
+                                            <span
+                                                class="material-symbols-rounded"
+                                            >
+                                                keyboard_arrow_right
+                                            </span>
+                                            <span class="sr-only">Next</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -730,6 +795,8 @@
     const studentError = ref(false);
     const instructorError = ref(false);
     const locationError = ref(false);
+    const totalPages = ref(0);
+    const currentPage = ref(0);
 
     const activity = ref({});
     const students = ref();
@@ -776,10 +843,11 @@
             });
     };
 
-    const queryStudents = async () => {
-        await InstructorsService.getStudentsByActivity(activityId)
+    const queryStudents = async (page = 0, size = 5) => {
+        await InstructorsService.getStudentsByActivity(activityId, page, size)
             .then((response) => {
-                students.value = response.content;
+                students.value = response.data;
+                totalPages.value = response.pagination.totalPages;
             })
             .catch((error) => {
                 if (error) {
@@ -803,8 +871,8 @@
             });
     };
 
-    const queryInstructors = async () => {
-        await InstructorsService.getInstructors()
+    const queryInstructors = async (page = 0, size = 999) => {
+        await InstructorsService.getInstructors(page, size)
             .then((response) => {
                 instructors.value = response.data;
             })
@@ -830,8 +898,8 @@
             });
     };
 
-    const queryLocations = async () => {
-        await LocationsService.getLocations()
+    const queryLocations = async (page = 0, size = 999) => {
+        await LocationsService.getLocations(page, size)
             .then((response) => {
                 locations.value = response.data;
             })
@@ -962,6 +1030,32 @@
         });
     };
 
+    const previousPage = () => {
+        if (currentPage.value > 0) {
+            currentPage.value--;
+        }
+
+        changePage(currentPage.value);
+    };
+
+    const customPage = () => {
+        changePage(currentPage.value);
+    };
+
+    const nextPage = () => {
+        if (currentPage.value < totalPages.value) {
+            currentPage.value++;
+        }
+
+        changePage(currentPage.value);
+    };
+
+    const changePage = async (page) => {
+        students.value = null;
+
+        await queryStudents(page);
+    };
+
     const formatDay = (dia) => {
         const diasMap = {
             LUNES: 'Lunes',
@@ -1000,3 +1094,9 @@
         localActivityData.value.maxStudents = cleanedValue;
     };
 </script>
+
+<style scoped>
+    .page-link {
+        cursor: pointer;
+    }
+</style>

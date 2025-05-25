@@ -34,7 +34,6 @@
     const isLoading = ref(false);
     const listError = ref(false);
     const viewKey = ref(0);
-
     const totalPages = ref(0);
 
     const activities = ref();
@@ -51,13 +50,22 @@
     });
 
     const changePage = async (page) => {
-        activities.value = null
-        await queryActivities(page);
+        activities.value = null;
+        if (
+            authStore.user.rol === 'ADMIN' ||
+            authStore.user.rol === 'ESTUDIANTE'
+        ) {
+            await queryActivities(page);
+        }
+
+        if (authStore.user.rol === 'INSTRUCTOR') {
+            await queryActivitiesByInstructor(page);
+        }
     };
 
-    const queryActivities = async (page) => {
+    const queryActivities = async (page = 0, size = 10) => {
         try {
-            const response = await ActivitiesService.getActivities(page);
+            const response = await ActivitiesService.getActivities(page, size);
 
             activities.value = response.data;
             totalPages.value = response.pagination.totalPages;
@@ -83,12 +91,15 @@
         }
     };
 
-    const queryActivitiesByInstructor = async (id) => {
+    const queryActivitiesByInstructor = async (page = 0, size = 10) => {
         try {
-            const response =
-                await ActivitiesService.getActivitiesByInstructor(id);
+            const response = await ActivitiesService.getActivitiesByInstructor(
+                page,
+                size
+            );
 
             activities.value = response.data;
+            totalPages.value = response.pagination.totalPages;
         } catch (error) {
             if (error) {
                 listError.value = true;
@@ -120,7 +131,7 @@
         }
 
         if (authStore.user.rol === 'INSTRUCTOR') {
-            await queryActivitiesByInstructor(authStore.user.id);
+            await queryActivitiesByInstructor();
         }
     });
 

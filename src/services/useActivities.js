@@ -32,9 +32,11 @@ class ActivitiesService {
         }
     }
 
-    async getActivities(page = 0) {
+    async getActivities(page = 0, size = 10) {
         try {
-            const response = await axios.get(`/actividades/creadas?page=${page}`);
+            const response = await axios.get(
+                `/actividades/creadas?page=${page}&size=${size}`
+            );
             if (response.status === 200) {
                 return response.data;
             }
@@ -94,9 +96,11 @@ class ActivitiesService {
         }
     }
 
-    async getActivitiesByInstructor() {
+    async getActivitiesByInstructor(page = 0, size = 10) {
         try {
-            const response = await axios.get(`/admin/mis-actividades`);
+            const response = await axios.get(
+                `/admin/mis-actividades?page=${page}&size=${size}`
+            );
             if (response.status === 200) {
                 return response.data;
             }
@@ -125,10 +129,43 @@ class ActivitiesService {
         }
     }
 
-    async getActivitiesByInstructorForAdmin(id) {
+    async getActivitiesByInstructorForAdmin(id, page = 0, size = 10) {
         try {
             const response = await axios.get(
-                `/admin/instructores/${id}/actividades`
+                `/actividades/instructor/${id}?page=${page}&size=${size}`
+            );
+            if (response.status === 200) {
+                return response.data;
+            }
+        } catch (error) {
+            if (error.response) {
+                throw {
+                    type: 'backend',
+                    message:
+                        error.response.data?.message ||
+                        'Error desconocido del servidor',
+                    status: error.response.status,
+                };
+            } else if (error.request) {
+                throw {
+                    type: 'network',
+                    message:
+                        'No se pudo conectar con el servidor. Verifica tu conexión.',
+                };
+            } else {
+                throw {
+                    type: 'unknown',
+                    message:
+                        error.message || 'Ha ocurrido un error inesperado.',
+                };
+            }
+        }
+    }
+
+    async getActivitiesByStudent(page = 0, size = 10) {
+        try {
+            const response = await axios.get(
+                `/estudiantes/mis-actividades?page=${page}&size=${size}`
             );
             if (response.status === 200) {
                 return response.data;

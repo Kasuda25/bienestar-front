@@ -97,9 +97,9 @@ class StudentsService {
         }
     }
 
-    async getStudents() {
+    async getStudents(page = 0, size = 10) {
         try {
-            const response = await axios.get('/estudiantes');
+            const response = await axios.get(`/estudiantes?page=${page}&size=${size}`);
             if (response.status === 200) {
                 return response.data;
             }

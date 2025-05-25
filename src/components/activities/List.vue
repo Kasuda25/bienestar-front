@@ -278,19 +278,24 @@
                                             class="page-item"
                                         >
                                             <div
+                                                v-if="props.totalPages > 1"
                                                 class="page-link"
                                                 @click="
                                                     () => {
                                                         currentPage = page - 1;
-                                                        customPage()
-                                                    }"
+                                                        customPage();
+                                                    }
+                                                "
                                             >
                                                 {{ page }}
                                             </div>
                                         </li>
                                         <li class="page-item">
                                             <div
-                                                v-if="currentPage < props.totalPages - 1"
+                                                v-if="
+                                                    currentPage <
+                                                    props.totalPages - 1
+                                                "
                                                 class="page-link"
                                                 aria-label="Next"
                                                 @click="nextPage"
@@ -321,13 +326,12 @@
 
     import { useAuthStore } from '@/stores/auth';
 
+    const emit = defineEmits(['changePage']);
     const props = defineProps({
         activities: Array,
         totalPages: Number,
         listError: Boolean,
     });
-
-    const emit = defineEmits(['previousPage', 'nextPage']);
 
     const authStore = useAuthStore();
 

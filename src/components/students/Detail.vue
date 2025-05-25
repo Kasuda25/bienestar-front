@@ -803,8 +803,8 @@
             });
     };
 
-    const queryActivities = async () => {
-        await ActivitiesService.getActivitiesByInstructor()
+    const queryActivities = async (page = 0, size = 10) => {
+        await ActivitiesService.getActivitiesByInstructor(page, size)
             .then((response) => {
                 activities.value = response.data;
             })

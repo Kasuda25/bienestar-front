@@ -362,20 +362,17 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pb-3">
+                        <div v-if="!activities && !activitiesError">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden"
+                                        >Loading...</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive p-0 no-scroll">
                             <table class="table align-activitys-center mb-0">
-                                <div v-if="!activities && !activitiesError">
-                                    <div class="d-flex justify-content-center">
-                                        <div
-                                            class="spinner-border"
-                                            role="status"
-                                        >
-                                            <span class="visually-hidden"
-                                                >Loading...</span
-                                            >
-                                        </div>
-                                    </div>
-                                </div>
                                 <thead
                                     v-if="
                                         activities &&
@@ -471,6 +468,65 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="d-flex justify-content-center">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination mt-3 mb-1">
+                                    <li class="page-item">
+                                        <div
+                                            v-if="currentPage > 0"
+                                            class="page-link"
+                                            aria-label="Previous"
+                                            @click="previousPage"
+                                        >
+                                            <span
+                                                class="material-symbols-rounded"
+                                            >
+                                                keyboard_arrow_left
+                                            </span>
+                                            <span class="sr-only"
+                                                >Previous</span
+                                            >
+                                        </div>
+                                    </li>
+                                    <li
+                                        v-for="page in totalPages"
+                                        :key="page"
+                                        class="page-item"
+                                    >
+                                        <div
+                                            v-if="totalPages > 1"
+                                            class="page-link"
+                                            @click="
+                                                () => {
+                                                    currentPage = page - 1;
+                                                    customPage();
+                                                }
+                                            "
+                                        >
+                                            {{ page }}
+                                        </div>
+                                    </li>
+                                    <li class="page-item">
+                                        <div
+                                            v-if="
+                                                currentPage <
+                                                totalPages - 1
+                                            "
+                                            class="page-link"
+                                            aria-label="Next"
+                                            @click="nextPage"
+                                        >
+                                            <span
+                                                class="material-symbols-rounded"
+                                            >
+                                                keyboard_arrow_right
+                                            </span>
+                                            <span class="sr-only">Next</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -509,6 +565,8 @@
     const activitiesError = ref(false);
     const instructorError = ref(false);
     const showPassword = ref(false);
+    const currentPage = ref(0);
+    const totalPages = ref(0);
 
     const instructor = ref({});
     const activities = ref();
@@ -523,10 +581,16 @@
         { deep: true }
     );
 
+    const changePage = async (page) => {
+        activities.value = null;
+
+        await queryActivities(page);
+    };
+
     const queryInstructor = async () => {
         await InstructorsService.getInstructor(instructorId)
             .then((response) => {
-                instructor.value = response.data;
+                instructor.value = response;
             })
             .catch((error) => {
                 if (error) {
@@ -552,12 +616,15 @@
             });
     };
 
-    const queryActivities = async () => {
+    const queryActivities = async (page = 0, size = 5) => {
         await ActivitiesService.getActivitiesByInstructorForAdmin(
-            instructor.value.id
+            instructor.value.id,
+            page,
+            size
         )
             .then((response) => {
                 activities.value = response.data;
+                totalPages.value = response.pagination.totalPages;
             })
             .catch((error) => {
                 if (error) {
@@ -677,4 +744,30 @@
             }
         });
     };
+
+    const previousPage = () => {
+        if (currentPage.value > 0) {
+            currentPage.value--;
+        }
+
+        changePage(currentPage.value);
+    };
+
+    const customPage = () => {
+        changePage(currentPage.value);
+    };
+
+    const nextPage = () => {
+        if (currentPage.value < totalPages.value) {
+            currentPage.value++;
+        }
+
+        changePage(currentPage.value);
+    };
 </script>
+
+<style scoped>
+    .page-link {
+        cursor: pointer;
+    }
+</style>

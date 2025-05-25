@@ -35,9 +35,11 @@ class InstructorsService {
         }
     }
 
-    async getInstructors() {
+    async getInstructors(page = 0, size = 10) {
         try {
-            const response = await axios.get('/admin/instructores-activos');
+            const response = await axios.get(
+                `/admin/instructores-activos?page=${page}&size=${size}`
+            );
             if (response.status === 200) {
                 return response.data;
             }
@@ -97,10 +99,10 @@ class InstructorsService {
         }
     }
 
-    async getStudentsByActivity(id) {
+    async getStudentsByActivity(id, page = 0, size = 10) {
         try {
             const response = await axios.get(
-                `/admin/mis-actividades/${id}/estudiantes`
+                `/admin/mis-actividades/${id}/estudiantes?page=${page}&size=${size}`
             );
             if (response.status === 200) {
                 return response.data;
@@ -130,9 +132,11 @@ class InstructorsService {
         }
     }
 
-    async getStudentsByInstructor(id) {
+    async getStudentsByInstructor(id, page = 0, size = 10) {
         try {
-            const response = await axios.get(`/instructores/${id}/estudiantes`);
+            const response = await axios.get(
+                `/instructores/${id}/estudiantes?page=${page}&size=${size}`
+            );
             if (response.status === 200) {
                 return response.data;
             }

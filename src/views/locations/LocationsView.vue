@@ -4,11 +4,13 @@
         v-model:validationErrorStatus="validationErrorStatus"
         v-model:validationErrorMessage="validationErrorMessage"
         :locations="locations"
+        :totalPages="totalPages"
         :external-loading="isLoading"
         :list-error="listError"
         :key="viewKey"
         @sendLocationData="validateLocationData"
         @deleteLocation="deleteLocation"
+        @changePage="changePage"
     />
 </template>
 
@@ -25,6 +27,7 @@
     const isLoading = ref(false);
     const listError = ref(false);
     const viewKey = ref(0);
+    const totalPages = ref(0);
 
     const locations = ref();
     const locationData = ref({
@@ -36,11 +39,18 @@
         id: null,
     });
 
-    const queryLocations = async () => {
+    const changePage = async (page) => {
+        locations.value = null;
+
+        await queryLocations(page);
+    };
+
+    const queryLocations = async (page = 0, size = 10) => {
         try {
-            const response = await LocationService.getLocations();
+            const response = await LocationService.getLocations(page, size);
 
             locations.value = response.data;
+            totalPages.value = response.pagination.totalPages;
         } catch (error) {
             if (error) {
                 listError.value = true;
@@ -139,7 +149,6 @@
             validationErrorStatus.value.schedule = false;
         }
 
-
         if (
             !validationErrorStatus.value.name &&
             !validationErrorStatus.value.capacity &&
@@ -147,10 +156,7 @@
             !validationErrorStatus.value.endDate &&
             !validationErrorStatus.value.schedule
         ) {
-            setDates(
-                locationData.value.startDate,
-                locationData.value.endDate
-            );
+            setDates(locationData.value.startDate, locationData.value.endDate);
             sendlocationData(operation);
         }
     };

@@ -5,12 +5,14 @@
         v-model:validationErrorStatus="validationErrorStatus"
         v-model:validationErrorMessage="validationErrorMessage"
         :students="students"
+        :totalPages="totalPages"
         :external-loading="isLoading"
         :list-error="listError"
         :key="viewKey"
         @sendStudentData="validateStudentData"
         @sendAttendanceData="validateAttendanceData"
         @deleteStudent="deleteStudent"
+        @changePage="changePage"
     />
 </template>
 
@@ -32,6 +34,7 @@
     const isLoading = ref(false);
     const listError = ref(false);
     const viewKey = ref(0);
+    const totalPages = ref(0);
 
     const students = ref();
     const studentData = ref({
@@ -52,11 +55,18 @@
         description: '',
     });
 
-    const queryStudents = async () => {
+    const changePage = async (page) => {
+        students.value = null;
+
+        await queryStudents(page);
+    };
+
+    const queryStudents = async (page = 0, size = 10) => {
         try {
-            const response = await StudentsService.getStudents();
+            const response = await StudentsService.getStudents(page, size);
 
             students.value = response.data;
+            totalPages.value = response.pagination.totalPages;
         } catch (error) {
             if (error.response) {
                 listError.value = true;
@@ -79,13 +89,15 @@
         }
     };
 
-    const queryStudentsEnrolled = async () => {
+    const queryStudentsEnrolled = async (page = 0, size = 10) => {
         try {
             const response = await InstructorsService.getStudentsByInstructor(
-                authStore.id
+                authStore.id,
+                page,
+                size
             );
 
-            students.value = response.content;
+            students.value = response.data;
         } catch (error) {
             if (error.response) {
                 listError.value = true;
@@ -267,7 +279,10 @@
             validationErrorMessage.value.activity = '';
         }
 
-        if (attendanceData.value.hours === null || !attendanceData.value.hours) {
+        if (
+            attendanceData.value.hours === null ||
+            !attendanceData.value.hours
+        ) {
             validationErrorStatus.value.attendanceHours = true;
             validationErrorMessage.value.attendanceHours =
                 'Las horas son obligatorias';
