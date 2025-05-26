@@ -220,7 +220,6 @@
                                         <v-select
                                             v-model="localActivityData.location"
                                             :options="locations"
-                                            :reduce="(location) => location.id"
                                             label="nombre"
                                             :filterable="true"
                                             :searchable="true"

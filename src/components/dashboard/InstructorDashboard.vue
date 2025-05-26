@@ -176,67 +176,88 @@
                                     :key="student"
                                 >
                                     <td class="align-middle">
-                                        <a
-                                            :href="`/students/${student.id}`"
-                                            class="d-block w-100 h-100 text-decoration-none text-dark"
+                                        <RouterLink
+                                            :to="`/students/${student.id}`"
+                                            v-slot="{ href, navigate }"
+                                            custom
                                         >
-                                            <h6
-                                                class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
+                                            <a
+                                                :href="href"
+                                                class="d-flex w-100 h-100 text-decoration-none text-dark"
+                                                @click="navigate"
                                             >
-                                                {{ student.nombreCompleto }}
-                                            </h6>
-                                        </a>
+                                                <h6
+                                                    class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
+                                                >
+                                                    {{ student.nombreCompleto }}
+                                                </h6>
+                                            </a>
+                                        </RouterLink>
                                     </td>
                                     <td class="align-middle">
-                                        <a
-                                            :href="`/students/${student.id}`"
-                                            class="d-block w-100 h-100 text-decoration-none text-dark"
+                                        <RouterLink
+                                            :to="`/students/${student.id}`"
+                                            v-slot="{ href, navigate }"
+                                            custom
                                         >
-                                            <span
-                                                class="text-xs font-weight-bolder opacity-6"
-                                                >{{
-                                                    student.codigoEstudiantil
-                                                }}</span
+                                            <a
+                                                :href="href"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                @click="navigate"
                                             >
-                                        </a>
-                                    </td>
-                                    <td class="align-middle">
-                                        <a
-                                            :href="`/students/${student.id}`"
-                                            class="d-block w-100 h-100 text-decoration-none text-dark"
-                                        >
-                                            <div class="d-flex flex-column">
                                                 <span
-                                                    class="text-xs font-weight-bold mb-1"
+                                                    class="text-xs font-weight-bolder opacity-6"
+                                                    >{{
+                                                        student.codigoEstudiantil
+                                                    }}</span
                                                 >
-                                                    {{
-                                                        student.horasAcumuladas
-                                                    }}
-                                                    / 32 horas
-                                                </span>
-                                                <div
-                                                    class="progress"
-                                                    style="height: 3px"
-                                                >
-                                                    <div
-                                                        class="progress-bar bg-info"
-                                                        role="progressbar"
-                                                        :style="{
-                                                            width:
-                                                                (student.horasAcumuladas /
-                                                                    32) *
-                                                                    100 +
-                                                                '%',
-                                                        }"
-                                                        :aria-valuenow="
+                                            </a>
+                                        </RouterLink>
+                                    </td>
+                                    <td class="align-middle">
+                                        <RouterLink
+                                            :to="`/students/${student.id}`"
+                                            v-slot="{ href, navigate }"
+                                            custom
+                                        >
+                                            <a
+                                                :href="href"
+                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                @click="navigate"
+                                            >
+                                                <div class="d-flex flex-column">
+                                                    <span
+                                                        class="text-xs font-weight-bold mb-1"
+                                                    >
+                                                        {{
                                                             student.horasAcumuladas
-                                                        "
-                                                        aria-valuemin="0"
-                                                        aria-valuemax="32"
-                                                    ></div>
+                                                        }}
+                                                        / 32 horas
+                                                    </span>
+                                                    <div
+                                                        class="progress"
+                                                        style="height: 3px"
+                                                    >
+                                                        <div
+                                                            class="progress-bar bg-info"
+                                                            role="progressbar"
+                                                            :style="{
+                                                                width:
+                                                                    (student.horasAcumuladas /
+                                                                        32) *
+                                                                        100 +
+                                                                    '%',
+                                                            }"
+                                                            :aria-valuenow="
+                                                                student.horasAcumuladas
+                                                            "
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="32"
+                                                        ></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
+                                            </a>
+                                        </RouterLink>
                                     </td>
                                 </tr>
                             </tbody>

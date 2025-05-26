@@ -329,7 +329,7 @@
                     nombre: studentData.value.name,
                     apellido: studentData.value.lastName,
                     codigoEstudiantil: studentData.value.uid,
-                    email: studentData.value.email,
+                    email: studentData.value.email.toLowerCase(),
                     password: studentData.value.password,
                     programaAcademico: studentData.value.program,
                     semestre: studentData.value.semester,

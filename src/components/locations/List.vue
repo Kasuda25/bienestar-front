@@ -122,48 +122,71 @@
                                         :key="location.id"
                                     >
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/locations/${location.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark ps-3"
+                                            <RouterLink
+                                                :to="`/locations/${location.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
                                             >
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark ps-3"
+                                                    @click="navigate"
                                                 >
-                                                    <h6
-                                                        class="mb-0 text-sm font-weight-bolder opacity-8"
+                                                    <div
+                                                        class="d-flex flex-column justify-content-center"
                                                     >
-                                                        {{ location.nombre }}
-                                                    </h6>
-                                                </div>
-                                            </a>
+                                                        <h6
+                                                            class="mb-0 text-sm font-weight-bolder opacity-8"
+                                                        >
+                                                            {{
+                                                                location.nombre
+                                                            }}
+                                                        </h6>
+                                                    </div>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/locations/${location.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/locations/${location.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{ location.capacidad }}
-                                                </span>
-                                            </a>
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{ location.capacidad }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/locations/${location.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/locations/${location.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{
-                                                        formatDays(
-                                                            location.horarios
-                                                        )
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            formatDays(
+                                                                location.horarios
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                     </tr>
                                 </tbody>

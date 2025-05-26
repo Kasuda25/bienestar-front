@@ -119,73 +119,102 @@
                                         :key="activity"
                                     >
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/activities/${activity.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <h6
-                                                    class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{ activity.nombre }}
-                                                </h6>
-                                            </a>
+                                                    <h6
+                                                        class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
+                                                    >
+                                                        {{ activity.nombre }}
+                                                    </h6>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/activities/${activity.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                    >{{
-                                                        new Date(
-                                                            activity.fechaInicio
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}
-                                                    -
-                                                    {{
-                                                        new Date(
-                                                            activity.fechaFin
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}</span
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                            </a>
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                        >{{
+                                                            new Date(
+                                                                activity.fechaInicio
+                                                            ).toLocaleDateString(
+                                                                'es-ES'
+                                                            )
+                                                        }}
+                                                        -
+                                                        {{
+                                                            new Date(
+                                                                activity.fechaFin
+                                                            ).toLocaleDateString(
+                                                                'es-ES'
+                                                            )
+                                                        }}</span
+                                                    >
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/activities/${activity.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                    >{{
-                                                        activity.ubicacion
-                                                            ?.nombre
-                                                    }}</span
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                            </a>
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                        >{{
+                                                            activity.ubicacion
+                                                                ?.nombre
+                                                        }}</span
+                                                    >
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/activities/${activity.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                    >{{
-                                                        activity.instructor
-                                                            .usuario.nombre
-                                                    }}
-                                                    {{
-                                                        activity.instructor
-                                                            .usuario.apellido
-                                                    }}</span
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                            </a>
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                        >{{
+                                                            activity.instructor
+                                                                .usuario.nombre
+                                                        }}
+                                                        {{
+                                                            activity.instructor
+                                                                .usuario
+                                                                .apellido
+                                                        }}</span
+                                                    >
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -306,56 +335,75 @@
                                         :key="instructor"
                                     >
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/instructors/${instructor.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark d-flex align-items-center ps-3"
+                                            <RouterLink
+                                                :to="`/instructors/${instructor.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <div>
-                                                    <img
-                                                        src=""
-                                                        class="avatar avatar-sm me-3"
-                                                    />
-                                                </div>
-                                                <div
-                                                    class="d-flex flex-column justify-content-center"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark d-flex align-items-center ps-3"
+                                                    @click="navigate"
                                                 >
-                                                    <h6
-                                                        class="mb-0 text-sm font-weight-bolder opacity-8"
+                                                    <div>
+                                                        <img
+                                                            src=""
+                                                            class="avatar avatar-sm me-3"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        class="d-flex flex-column justify-content-center"
+                                                    >
+                                                        <h6
+                                                            class="mb-0 text-sm font-weight-bolder opacity-8"
+                                                        >
+                                                            {{
+                                                                instructor.nombreCompleto
+                                                            }}
+                                                        </h6>
+                                                    </div>
+                                                </a>
+                                            </RouterLink>
+                                        </td>
+                                        <td class="align-middle">
+                                            <RouterLink
+                                                :to="`/instructors/${instructor.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
+                                            >
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
+                                                >
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{ instructor.email }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
+                                        </td>
+                                        <td class="align-middle">
+                                            <RouterLink
+                                                :to="`/instructors/${instructor.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
+                                            >
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
+                                                >
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
                                                     >
                                                         {{
-                                                            instructor.nombreCompleto
+                                                            instructor.especialidad
                                                         }}
-                                                    </h6>
-                                                </div>
-                                            </a>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a
-                                                :href="`/instructors/${instructor.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
-                                            >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                >
-                                                    {{
-                                                        instructor.email
-                                                    }}
-                                                </span>
-                                            </a>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a
-                                                :href="`/instructors/${instructor.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
-                                            >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                >
-                                                    {{
-                                                        instructor.especialidad
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                     </tr>
                                 </tbody>

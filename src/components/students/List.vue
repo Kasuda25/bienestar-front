@@ -134,94 +134,133 @@
                                         :key="student.id"
                                     >
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/students/${student.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark ps-3"
+                                            <RouterLink
+                                                :to="`/students/${student.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
                                             >
-                                                <span
-                                                    class="h6 mb-0 text-sm font-weight-bolder opacity-8"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark ps-3"
+                                                    @click="navigate"
                                                 >
-                                                    {{ student.nombreCompleto }}
-                                                </span>
-                                            </a>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a
-                                                :href="`/students/${student.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
-                                            >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                >
-                                                    {{
-                                                        student.codigoEstudiantil
-                                                    }}
-                                                </span>
-                                            </a>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a
-                                                :href="`/students/${student.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
-                                            >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                >
-                                                    {{
-                                                        student.programaAcademico
-                                                    }}
-                                                </span>
-                                            </a>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a
-                                                :href="`/students/${student.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
-                                            >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                >
-                                                    {{ student.semestre }}
-                                                </span>
-                                            </a>
-                                        </td>
-                                        <td class="align-middle">
-                                            <a
-                                                :href="`/students/${student.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
-                                            >
-                                                <div class="d-flex flex-column">
                                                     <span
-                                                        class="text-xs font-weight-bold mb-1"
+                                                        class="h6 mb-0 text-sm font-weight-bolder opacity-8"
                                                     >
                                                         {{
-                                                            student.horasAcumuladas
+                                                            student.nombreCompleto
                                                         }}
-                                                        / 32 horas
                                                     </span>
-                                                    <div
-                                                        class="progress"
-                                                        style="height: 3px"
+                                                </a>
+                                            </RouterLink>
+                                        </td>
+                                        <td class="align-middle">
+                                            <RouterLink
+                                                :to="`/students/${student.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
+                                            >
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
+                                                >
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
                                                     >
-                                                        <div
-                                                            class="progress-bar bg-info"
-                                                            role="progressbar"
-                                                            :style="{
-                                                                width:
-                                                                    (student.horasAcumuladas /
-                                                                        32) *
-                                                                        100 +
-                                                                    '%',
-                                                            }"
-                                                            :aria-valuenow="
+                                                        {{
+                                                            student.codigoEstudiantil
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
+                                        </td>
+                                        <td class="align-middle">
+                                            <RouterLink
+                                                :to="`/students/${student.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
+                                            >
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
+                                                >
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            student.programaAcademico
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
+                                        </td>
+                                        <td class="align-middle">
+                                            <RouterLink
+                                                :to="`/students/${student.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
+                                            >
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
+                                                >
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{ student.semestre }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
+                                        </td>
+                                        <td class="align-middle">
+                                            <RouterLink
+                                                :to="`/students/${student.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
+                                            >
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
+                                                >
+                                                    <div
+                                                        class="d-flex flex-column"
+                                                    >
+                                                        <span
+                                                            class="text-xs font-weight-bold mb-1"
+                                                        >
+                                                            {{
                                                                 student.horasAcumuladas
-                                                            "
-                                                            aria-valuemin="0"
-                                                            aria-valuemax="32"
-                                                        ></div>
+                                                            }}
+                                                            / 32 horas
+                                                        </span>
+                                                        <div
+                                                            class="progress"
+                                                            style="height: 3px"
+                                                        >
+                                                            <div
+                                                                class="progress-bar bg-info"
+                                                                role="progressbar"
+                                                                :style="{
+                                                                    width:
+                                                                        (student.horasAcumuladas /
+                                                                            32) *
+                                                                            100 +
+                                                                        '%',
+                                                                }"
+                                                                :aria-valuenow="
+                                                                    student.horasAcumuladas
+                                                                "
+                                                                aria-valuemin="0"
+                                                                aria-valuemax="32"
+                                                            ></div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </a>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                     </tr>
                                 </tbody>

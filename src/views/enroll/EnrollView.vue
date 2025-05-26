@@ -65,33 +65,54 @@
     };
 
     const sendEnrollData = async () => {
-        isLoading.value = true;
-        const response = await InscriptionsService.createInscription(
-            enrollData.value
-        );
-        if (response) {
+        try {
+            isLoading.value = true;
+            const response = await InscriptionsService.createInscription(
+                enrollData.value
+            );
+            if (response) {
+                isLoading.value = false;
+
+                if (
+                    authStore.user.role === 'ADMIN' ||
+                    authStore.user.rol === 'INSTRUCTOR'
+                ) {
+                    snackbar.add({
+                        type: 'success',
+                        text: 'Estudiante inscrito exitosamente',
+                    });
+                }
+
+                if (authStore.user.role === 'ESTUDIANTE') {
+                    snackbar.add({
+                        type: 'success',
+                        text: 'Te has inscrito exitosamente',
+                    });
+                }
+
+                resetValues();
+
+                viewKey.value++;
+            }
+        } catch (error) {
             isLoading.value = false;
+            if (error) {
+                let message =
+                    'Ha ocurrido un error. Por favor intenta de nuevo más tarde.';
 
-            if (
-                authStore.user.role === 'ADMIN' ||
-                authStore.user.rol === 'INSTRUCTOR'
-            ) {
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
                 snackbar.add({
-                    type: 'success',
-                    text: 'Estudiante inscrito exitosamente',
+                    type: 'error',
+                    text: message,
                 });
             }
-
-            if (authStore.user.role === 'ESTUDIANTE') {
-                snackbar.add({
-                    type: 'success',
-                    text: 'Te has inscrito exitosamente',
-                });
-            }
-
-            resetValues();
-
-            viewKey.value++;
         }
     };
 

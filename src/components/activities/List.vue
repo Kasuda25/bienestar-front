@@ -72,7 +72,9 @@
                                             Dias
                                         </th>
                                         <th
-                                            v-if="enrolledActivities[0].instructor"
+                                            v-if="
+                                                enrolledActivities[0].instructor
+                                            "
                                             class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                                         >
                                             Instructor
@@ -104,7 +106,8 @@
                                             class="d-flex justify-content-center"
                                         >
                                             <h4 class="my-auto">
-                                                Aún no te has inscrito a alguna actividad
+                                                Aún no te has inscrito a alguna
+                                                actividad
                                             </h4>
                                         </div>
                                     </div>
@@ -121,120 +124,162 @@
                                         :key="activity.id"
                                     >
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/activities/${activity.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <h6
-                                                    class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{ activity.nombre }}
-                                                </h6>
-                                            </a>
+                                                    <h6
+                                                        class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
+                                                    >
+                                                        {{ activity.nombre }}
+                                                    </h6>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/activities/${activity.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{
-                                                        new Date(
-                                                            activity.fechaInicio
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}
-                                                    -
-                                                    {{
-                                                        new Date(
-                                                            activity.fechaFin
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            new Date(
+                                                                activity.fechaInicio
+                                                            ).toLocaleDateString(
+                                                                'es-ES'
+                                                            )
+                                                        }}
+                                                        -
+                                                        {{
+                                                            new Date(
+                                                                activity.fechaFin
+                                                            ).toLocaleDateString(
+                                                                'es-ES'
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/activities/${activity.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{
-                                                        activity.ubicacion
-                                                            ?.nombre
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            activity.ubicacion
+                                                                ?.nombre
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`/activities/${activity.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <span
-                                                    v-if="activity.horarios"
-                                                    class="text-xs font-weight-bolder opacity-6"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{
-                                                        formatDays(
-                                                            activity.horarios,
-                                                            'admin'
-                                                        )
-                                                    }}
-                                                </span>
-                                                <span
-                                                    v-if="
-                                                        activity.horariosAsignados
-                                                    "
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                >
-                                                    {{
-                                                        formatDays(
-                                                            activity.horariosAsignados,
-                                                            'instructor'
-                                                        )
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    <span
+                                                        v-if="activity.horarios"
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            formatDays(
+                                                                activity.horarios,
+                                                                'admin'
+                                                            )
+                                                        }}
+                                                    </span>
+                                                    <span
+                                                        v-if="
+                                                            activity.horariosAsignados
+                                                        "
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            formatDays(
+                                                                activity.horariosAsignados,
+                                                                'instructor'
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td
                                             v-if="activity.instructor"
                                             class="d-flex align-middle"
                                         >
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 ñtext-decoration-none text-dark align-items-center"
+                                            <RouterLink
+                                                :to="`/activities/${activity.id}`"
+                                                v-slot="{ href, navigate }"
+                                                custom
                                             >
-                                                <img
-                                                    src=""
-                                                    class="avatar avatar-sm me-2"
-                                                />
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6 my-auto"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{
-                                                        activity.instructor
-                                                            .usuario.nombre
-                                                    }}
-                                                    {{
-                                                        activity.instructor
-                                                            .usuario.apellido
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    <img
+                                                        src=""
+                                                        class="avatar avatar-sm me-2"
+                                                    />
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6 my-auto"
+                                                    >
+                                                        {{
+                                                            activity.instructor
+                                                                .usuario.nombre
+                                                        }}
+                                                        {{
+                                                            activity.instructor
+                                                                .usuario
+                                                                .apellido
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div v-if="enrolledActivities && enrolledActivities[0] && !enrolledListError">
+                        <div
+                            v-if="
+                                enrolledActivities &&
+                                enrolledActivities[0] &&
+                                !enrolledListError
+                            "
+                        >
                             <div class="d-flex justify-content-center">
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination mt-3 mb-1">
@@ -261,12 +306,17 @@
                                             class="page-item"
                                         >
                                             <div
-                                                v-if="props.enrolledTotalPages > 1"
+                                                v-if="
+                                                    props.enrolledTotalPages > 1
+                                                "
                                                 class="page-link"
                                                 @click="
                                                     () => {
-                                                        enrolledCurrentPage = page - 1;
-                                                        enrolledCustomPage('enrolled');
+                                                        enrolledCurrentPage =
+                                                            page - 1;
+                                                        enrolledCustomPage(
+                                                            'enrolled'
+                                                        );
                                                     }
                                                 "
                                             >
@@ -456,114 +506,150 @@
                                         :key="activity.id"
                                     >
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`activities/${activity.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
                                             >
-                                                <h6
-                                                    class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{ activity.nombre }}
-                                                </h6>
-                                            </a>
+                                                    <h6
+                                                        class="mb-0 ps-3 text-sm font-weight-bolder opacity-8"
+                                                    >
+                                                        {{ activity.nombre }}
+                                                    </h6>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`activities/${activity.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{
-                                                        new Date(
-                                                            activity.fechaInicio
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}
-                                                    -
-                                                    {{
-                                                        new Date(
-                                                            activity.fechaFin
-                                                        ).toLocaleDateString(
-                                                            'es-ES'
-                                                        )
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            new Date(
+                                                                activity.fechaInicio
+                                                            ).toLocaleDateString(
+                                                                'es-ES'
+                                                            )
+                                                        }}
+                                                        -
+                                                        {{
+                                                            new Date(
+                                                                activity.fechaFin
+                                                            ).toLocaleDateString(
+                                                                'es-ES'
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`activities/${activity.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
                                             >
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{
-                                                        activity.ubicacion
-                                                            ?.nombre
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            activity.ubicacion
+                                                                ?.nombre
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td class="align-middle">
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 text-decoration-none text-dark"
+                                            <RouterLink
+                                                :to="`activities/${activity.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
                                             >
-                                                <span
-                                                    v-if="activity.horarios"
-                                                    class="text-xs font-weight-bolder opacity-6"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 text-decoration-none text-dark"
+                                                    @click="navigate"
                                                 >
-                                                    {{
-                                                        formatDays(
-                                                            activity.horarios,
-                                                            'admin'
-                                                        )
-                                                    }}
-                                                </span>
-                                                <span
-                                                    v-if="
-                                                        activity.horariosAsignados
-                                                    "
-                                                    class="text-xs font-weight-bolder opacity-6"
-                                                >
-                                                    {{
-                                                        formatDays(
-                                                            activity.horariosAsignados,
-                                                            'instructor'
-                                                        )
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    <span
+                                                        v-if="activity.horarios"
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            formatDays(
+                                                                activity.horarios,
+                                                                'admin'
+                                                            )
+                                                        }}
+                                                    </span>
+                                                    <span
+                                                        v-if="
+                                                            activity.horariosAsignados
+                                                        "
+                                                        class="text-xs font-weight-bolder opacity-6"
+                                                    >
+                                                        {{
+                                                            formatDays(
+                                                                activity.horariosAsignados,
+                                                                'instructor'
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                         <td
                                             v-if="activity.instructor"
                                             class="d-flex align-middle"
                                         >
-                                            <a
-                                                :href="`/activities/${activity.id}`"
-                                                class="d-block w-100 h-100 ñtext-decoration-none text-dark align-items-center"
+                                            <RouterLink
+                                                :to="`/instructors/${activity.instructor.id}`"
+                                                v-slot="{ navigate, href }"
+                                                custom
                                             >
-                                                <img
-                                                    src=""
-                                                    class="avatar avatar-sm me-2"
-                                                />
-                                                <span
-                                                    class="text-xs font-weight-bolder opacity-6 my-auto"
+                                                <a
+                                                    :href="href"
+                                                    class="d-block w-100 h-100 ñtext-decoration-none text-dark align-items-center"
+                                                    @click="navigate"
                                                 >
-                                                    {{
-                                                        activity.instructor
-                                                            .usuario.nombre
-                                                    }}
-                                                    {{
-                                                        activity.instructor
-                                                            .usuario.apellido
-                                                    }}
-                                                </span>
-                                            </a>
+                                                    <img
+                                                        src=""
+                                                        class="avatar avatar-sm me-2"
+                                                    />
+                                                    <span
+                                                        class="text-xs font-weight-bolder opacity-6 my-auto"
+                                                    >
+                                                        {{
+                                                            activity.instructor
+                                                                .usuario.nombre
+                                                        }}
+                                                        {{
+                                                            activity.instructor
+                                                                .usuario
+                                                                .apellido
+                                                        }}
+                                                    </span>
+                                                </a>
+                                            </RouterLink>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -749,11 +835,21 @@
             enrolledCurrentPage.value--;
         }
 
-        emit('changePage', enrolledCurrentPage.value, enrolledSearchQuery.value, 'enrolled');
+        emit(
+            'changePage',
+            enrolledCurrentPage.value,
+            enrolledSearchQuery.value,
+            'enrolled'
+        );
     };
 
     const enrolledCustomPage = () => {
-        emit('changePage', enrolledCurrentPage.value, enrolledSearchQuery.value, 'enrolled');
+        emit(
+            'changePage',
+            enrolledCurrentPage.value,
+            enrolledSearchQuery.value,
+            'enrolled'
+        );
     };
 
     const enrolledNextPage = () => {
@@ -761,7 +857,12 @@
             enrolledCurrentPage.value++;
         }
 
-        emit('changePage', enrolledCurrentPage.value, enrolledSearchQuery.value, 'enrolled');
+        emit(
+            'changePage',
+            enrolledCurrentPage.value,
+            enrolledSearchQuery.value,
+            'enrolled'
+        );
     };
 
     const onSearch = () => {
