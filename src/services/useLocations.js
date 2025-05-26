@@ -32,10 +32,10 @@ class LocationsService {
         }
     }
 
-    async getLocations(page = 0, size = 10) {
+    async getLocations(page = 0, size = 10, search = '') {
         try {
             const response = await axios.get(
-                `/ubicaciones?page=${page}&size=${size}`
+                `/ubicaciones?page=${page}&size=${size}&search=${search}`
             );
             if (response.status === 200) {
                 return response.data;

@@ -32,10 +32,10 @@ class ActivitiesService {
         }
     }
 
-    async getActivities(page = 0, size = 10) {
+    async getActivities(page = 0, size = 10, search = '') {
         try {
             const response = await axios.get(
-                `/actividades/creadas?page=${page}&size=${size}`
+                `/actividades/creadas?page=${page}&size=${size}&search=${search}`
             );
             if (response.status === 200) {
                 return response.data;
@@ -96,10 +96,10 @@ class ActivitiesService {
         }
     }
 
-    async getActivitiesByInstructor(page = 0, size = 10) {
+    async getActivitiesByInstructor(page = 0, size = 10, search = '') {
         try {
             const response = await axios.get(
-                `/admin/mis-actividades?page=${page}&size=${size}`
+                `/admin/mis-actividades?page=${page}&size=${size}&search=${search}`
             );
             if (response.status === 200) {
                 return response.data;

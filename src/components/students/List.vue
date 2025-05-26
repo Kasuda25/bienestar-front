@@ -39,24 +39,26 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pb-3">
-                        <div class="d-flex w-100 mb-2 px-4">
-                            <div
-                                class="w-25 input-group input-group-outline ms-auto"
+                        <div
+                            class="d-flex justify-content-end align-items-center px-3 mb-3 input-group input-group-outline"
+                        >
+                            <input
+                                type="text"
+                                v-model="searchQuery"
+                                class="form-control me-2"
+                                placeholder="Buscar estudiante..."
+                                style="max-width: 250px"
+                            />
+                            <button
+                                class="btn bg-gradient-dark mb-0"
+                                @click="onSearch"
                             >
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Buscar por código"
-                                    v-model="searchQuery"
-                                />
-                            </div>
+                                Buscar
+                            </button>
                         </div>
                         <div v-if="!students && !listError">
                             <div class="d-flex justify-content-center">
-                                <div
-                                    class="spinner-border"
-                                    role="status"
-                                >
+                                <div class="spinner-border" role="status">
                                     <span class="visually-hidden"
                                         >Loading...</span
                                     >
@@ -125,11 +127,7 @@
                                     </div>
                                 </tbody>
                                 <tbody
-                                    v-if="
-                                        students &&
-                                        filteredStudents.length &&
-                                        !listError
-                                    "
+                                    v-if="students && students[0] && !listError"
                                 >
                                     <tr
                                         v-for="student in students"
@@ -229,9 +227,7 @@
                                 </tbody>
                                 <tbody
                                     v-if="
-                                        students &&
-                                        !filteredStudents.length &&
-                                        !listError
+                                        students && !students[0] && !listError
                                     "
                                 >
                                     <tr>
@@ -310,7 +306,7 @@
 </template>
 
 <script setup>
-    import { ref, computed } from 'vue';
+    import { ref } from 'vue';
 
     import { useAuthStore } from '@/stores/auth';
 
@@ -324,18 +320,6 @@
     const authStore = useAuthStore();
 
     const currentPage = ref(0);
-
-    const searchQuery = ref('');
-
-    const filteredStudents = computed(() => {
-        if (!searchQuery.value) return props.students;
-        return props.students.filter((student) =>
-            student.codigoEstudiantil
-                ?.toString()
-                .toLowerCase()
-                .includes(searchQuery.value.toLowerCase())
-        );
-    });
 
     const previousPage = () => {
         if (currentPage.value > 0) {
@@ -362,8 +346,18 @@
     .no-items {
         border-top: none;
     }
-    
+
     .page-link {
         cursor: pointer;
+    }
+
+    .input-group
+        > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(
+            .valid-feedback
+        ):not(.invalid-tooltip):not(.invalid-feedback) {
+        margin-left: calc(1px * -1);
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        height: 40px;
     }
 </style>

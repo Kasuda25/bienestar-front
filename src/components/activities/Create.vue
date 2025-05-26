@@ -97,45 +97,26 @@
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <div
-                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .instructor,
                                         }"
                                     >
-                                        <select
-                                            class="form-control form-select"
-                                            id="instructorInput"
+                                        <v-select
                                             v-model="
                                                 localActivityData.instructor
                                             "
-                                        >
-                                            <option
-                                                v-if="instructorError"
-                                                value=""
-                                                selected
-                                                disabled
-                                            >
-                                                No se pudo obtener la lista de
-                                                instructores
-                                            </option>
-                                            <option
-                                                v-else
-                                                selected
-                                                hidden
-                                                disabled
-                                            >
-                                                Selecciona
-                                            </option>
-                                            <option
-                                                v-for="instructor in instructors"
-                                                :key="instructor"
-                                                :value="instructor.id"
-                                            >
-                                                {{ instructor.nombreCompleto }}
-                                            </option>
-                                        </select>
+                                            :options="instructors"
+                                            :reduce="
+                                                (instructor) => instructor.id
+                                            "
+                                            label="nombreCompleto"
+                                            :filterable="true"
+                                            :searchable="true"
+                                            :get-option-label="(instructor) => `${instructor.nombreCompleto}`"
+                                            class="custom-vue3-select"
+                                        />
                                     </div>
                                     <div class="invalid-feedback">
                                         {{
@@ -230,43 +211,22 @@
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <div
-                                        class="input-group input-group-outline"
                                         :class="{
                                             'is-invalid':
                                                 props.validationErrorStatus
                                                     .location,
                                         }"
                                     >
-                                        <select
-                                            class="form-control form-select"
-                                            id="locationInput"
+                                        <v-select
                                             v-model="localActivityData.location"
-                                        >
-                                            <option
-                                                v-if="locationError"
-                                                value=""
-                                                selected
-                                                disabled
-                                            >
-                                                No se pudo obtener la lista de
-                                                ubicaciones
-                                            </option>
-                                            <option
-                                                v-else
-                                                selected
-                                                hidden
-                                                disabled
-                                            >
-                                                Selecciona
-                                            </option>
-                                            <option
-                                                v-for="location in locations"
-                                                :key="location"
-                                                :value="location"
-                                            >
-                                                {{ location.nombre }}
-                                            </option>
-                                        </select>
+                                            :options="locations"
+                                            :reduce="(location) => location.id"
+                                            label="nombre"
+                                            :filterable="true"
+                                            :searchable="true"
+                                            :get-option-label="(location) => `${location.nombre}`"
+                                            class="custom-vue3-select"
+                                        />
                                     </div>
                                     <div class="invalid-feedback">
                                         {{
@@ -525,7 +485,10 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="localActivityData.location != null && !isLoading" class="card">
+                <div
+                    v-if="localActivityData.location != null && !isLoading"
+                    class="card"
+                >
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
@@ -611,6 +574,8 @@
 
 <script setup>
     import { ref, onMounted, watch, computed } from 'vue';
+    import vSelect from 'vue3-select';
+    import 'vue3-select/dist/vue3-select.css';
     import { useSnackbar } from 'vue3-snackbar';
 
     import InstructorsService from '@/services/useInstructors';
@@ -875,11 +840,42 @@
 
     .no-edit {
         pointer-events: none;
-        /* bloquea interacciones, excepto el calendario */
     }
 
     .no-edit:focus {
         pointer-events: auto;
-        /* permite abrir el calendario al enfocar */
+    }
+
+    .custom-vue3-select .vs__dropdown-toggle {
+        border: 1px solid #ced4da;
+        border-radius: 0.5rem;
+        min-height: 42px;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        background-color: white;
+        transition:
+            border-color 0.15s ease-in-out,
+            box-shadow 0.15s ease-in-out;
+    }
+
+    .custom-vue3-select .vs__dropdown-toggle:focus,
+    .custom-vue3-select .vs__dropdown-toggle.vs__dropdown-toggle--open {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        border-color: #80bdff;
+    }
+
+    .custom-vue3-select .vs__selected {
+        font-size: 0.875rem;
+    }
+
+    .custom-vue3-select .vs__dropdown-menu {
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .custom-vue3-select .vs__dropdown-option--highlight {
+        background-color: #f0f0f0;
+        color: #212529;
     }
 </style>

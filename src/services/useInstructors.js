@@ -35,10 +35,10 @@ class InstructorsService {
         }
     }
 
-    async getInstructors(page = 0, size = 10) {
+    async getInstructors(page = 0, size = 10, search = '') {
         try {
             const response = await axios.get(
-                `/admin/instructores-activos?page=${page}&size=${size}`
+                `/admin/instructores-activos?page=${page}&size=${size}&search=${search}`
             );
             if (response.status === 200) {
                 return response.data;

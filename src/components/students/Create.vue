@@ -199,7 +199,6 @@
                                 </div>
                                 <div class="col-12 col-md-8">
                                     <div
-                                        class="input-group input-group-outline"
                                         for="instructorInput"
                                         :class="{
                                             'is-invalid':
@@ -207,69 +206,18 @@
                                                     .program,
                                         }"
                                     >
-                                        <select
-                                            class="form-control form-select"
-                                            id="programInput"
+                                        <v-select
                                             v-model="localStudentData.program"
-                                        >
-                                            <option
-                                                selectd
-                                                hidden
-                                                disabled
-                                            ></option>
-                                            <option
-                                                value="Tecnología En Sistemas De Gestión De Calidad"
-                                            >
-                                                Tecnología En Sistemas De
-                                                Gestión De Calidad
-                                            </option>
-                                            <option
-                                                value="Tecnología En Desarrollo De Sistemas De Información Y De Software"
-                                            >
-                                                Tecnología En Desarrollo De
-                                                Sistemas De Información Y De
-                                                Software
-                                            </option>
-                                            <option
-                                                value="Tecnología En Gestión De Servicios Turísticos Y Hoteleros"
-                                            >
-                                                Tecnología En Gestión De
-                                                Servicios Turísticos Y Hoteleros
-                                            </option>
-                                            <option
-                                                value="Licenciatura en Bilingüismo con énfasis en Inglés"
-                                            >
-                                                Licenciatura en Bilingüismo con
-                                                énfasis en Inglés
-                                            </option>
-                                            <option value="Contaduría Pública">
-                                                Contaduría Pública
-                                            </option>
-                                            <option
-                                                value="Administración de Empresas"
-                                            >
-                                                Administración de Empresas
-                                            </option>
-                                            <option value="Derecho">
-                                                Derecho
-                                            </option>
-                                            <option
-                                                value="Ingeniería Industrial"
-                                            >
-                                                Ingeniería Industrial
-                                            </option>
-                                            <option
-                                                value="Ingeniería de Sistemas"
-                                            >
-                                                Ingeniería de Sistemas
-                                            </option>
-                                            <option
-                                                value="Administración de empresas turísticas y hoteleras"
-                                            >
-                                                Administración de empresas
-                                                turísticas y hoteleras
-                                            </option>
-                                        </select>
+                                            :options="programs"
+                                            :reduce="(program) => program.name"
+                                            label="nombreCompleto"
+                                            :filterable="true"
+                                            :searchable="true"
+                                            :get-option-label="
+                                                (program) => `${program.name}`
+                                            "
+                                            class="custom-vue3-select"
+                                        />
                                     </div>
                                     <div class="invalid-feedback">
                                         {{
@@ -345,6 +293,8 @@
 
 <script setup>
     import { ref, watch, computed, onMounted } from 'vue';
+    import vSelect from 'vue3-select';
+    import 'vue3-select/dist/vue3-select.css';
 
     const emit = defineEmits([
         'sendStudentData',
@@ -362,6 +312,20 @@
     const showPassword = ref(false);
 
     const localStudentData = ref({ ...props.studentData });
+
+    const programs = [
+        { name: 'Tecnología En Sistemas De Gestión De Calidad' },
+        {
+            name: 'Tecnología En Desarrollo De Sistemas De Información Y De Software',
+        },
+        { name: 'Licenciatura en Bilingüismo con énfasis en Inglés' },
+        { name: 'Contaduría Pública' },
+        { name: 'Administración de Empresas' },
+        { name: 'Derecho' },
+        { name: 'Ingeniería Industrial' },
+        { name: 'Ingeniería de Sistemas' },
+        { name: 'Administración de empresas turísticas y hoteleras' },
+    ];
 
     watch(
         localStudentData,
@@ -444,5 +408,38 @@
     .form-label {
         font-size: 0.9rem;
         color: black;
+    }
+
+    .custom-vue3-select .vs__dropdown-toggle {
+        border: 1px solid #ced4da;
+        border-radius: 0.5rem;
+        min-height: 42px;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        background-color: white;
+        transition:
+            border-color 0.15s ease-in-out,
+            box-shadow 0.15s ease-in-out;
+    }
+
+    .custom-vue3-select .vs__dropdown-toggle:focus,
+    .custom-vue3-select .vs__dropdown-toggle.vs__dropdown-toggle--open {
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        border-color: #80bdff;
+    }
+
+    .custom-vue3-select .vs__selected {
+        font-size: 0.875rem;
+    }
+
+    .custom-vue3-select .vs__dropdown-menu {
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .custom-vue3-select .vs__dropdown-option--highlight {
+        background-color: #f0f0f0;
+        color: #212529;
     }
 </style>

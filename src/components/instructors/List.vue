@@ -33,12 +33,26 @@
                         </div>
                     </div>
                     <div class="card-body px-0 pb-3">
+                        <div
+                            class="d-flex justify-content-end align-items-center px-3 mb-3 input-group input-group-outline"
+                        >
+                            <input
+                                type="text"
+                                v-model="searchQuery"
+                                class="form-control me-2"
+                                placeholder="Buscar actividad..."
+                                style="max-width: 250px"
+                            />
+                            <button
+                                class="btn bg-gradient-dark mb-0"
+                                @click="onSearch"
+                            >
+                                Buscar
+                            </button>
+                        </div>
                         <div v-if="!instructors && !listError">
                             <div class="d-flex justify-content-center">
-                                <div
-                                    class="spinner-border"
-                                    role="status"
-                                >
+                                <div class="spinner-border" role="status">
                                     <span class="visually-hidden"
                                         >Loading...</span
                                     >
@@ -236,7 +250,7 @@
 <script setup>
     import { ref } from 'vue';
 
-    const emit = defineEmits(['changePage']);
+    const emit = defineEmits(['changePage', 'onSearch']);
     const props = defineProps({
         instructors: Array,
         totalPages: Number,
@@ -244,6 +258,8 @@
     });
 
     const currentPage = ref(0);
+
+    const searchQuery = ref('');
 
     const previousPage = () => {
         if (currentPage.value > 0) {
@@ -264,6 +280,10 @@
 
         emit('changePage', currentPage.value);
     };
+
+    const onSearch = () => {
+        emit('onSearch', searchQuery.value);
+    };
 </script>
 
 <style scoped>
@@ -273,5 +293,15 @@
 
     .page-link {
         cursor: pointer;
+    }
+
+    .input-group
+        > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(
+            .valid-feedback
+        ):not(.invalid-tooltip):not(.invalid-feedback) {
+        margin-left: calc(1px * -1);
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        height: 40px;
     }
 </style>

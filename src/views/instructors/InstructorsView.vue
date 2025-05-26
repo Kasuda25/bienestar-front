@@ -11,6 +11,7 @@
         @sendInstructorData="validateInstructorData"
         @deleteInstructor="deleteInstructor"
         @changePage="changePage"
+        @onSearch="searchElement"
     />
 </template>
 
@@ -39,15 +40,25 @@
         id: null,
     });
 
-    const changePage = async (page) => {
+    const changePage = async (page, search) => {
         instructors.value = null;
 
-        await queryInstructors(page);
+        await queryInstructors(page, 10, search);
     };
 
-    const queryInstructors = async (page = 0, size = 10) => {
+    const searchElement = async (search) => {
+        instructors.value = null;
+
+        await queryInstructors(0, 10, search);
+    };
+
+    const queryInstructors = async (page = 0, size = 10, search = '') => {
         try {
-            const response = await InstructorsService.getInstructors(page, size);
+            const response = await InstructorsService.getInstructors(
+                page,
+                size,
+                search
+            );
 
             instructors.value = response.data;
             totalPages.value = response.pagination.totalPages;

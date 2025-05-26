@@ -4,15 +4,19 @@
         v-model:validationErrorStatus="validationErrorStatus"
         v-model:validationErrorMessage="validationErrorMessage"
         :activities="activities"
-        :totalPages="totalPages"
+        :enrolled-activities="enrolledActivities"
+        :total-pages="totalPages"
+        :enrrolled-total-pages="enrrolledTotalPages"
         :external-loading="isLoading"
         :list-error="listError"
+        :enrolled-list-error="enrolledListError"
         :key="viewKey"
         @sendActivityData="validateActivityData"
         @sendEnrollData="sendEnrollData"
         @deleteActivity="deleteActivity"
         @removeScheduleError="handleRemoveScheduleError"
         @changePage="changePage"
+        @onSearch="searchElement"
     />
 </template>
 
@@ -23,6 +27,7 @@
 
     import ActivitiesService from '@/services/useActivities';
     import InscriptionsService from '@/services/useInscriptions';
+    import StudentsService from '@/services/useStudents';
 
     import { useAuthStore } from '@/stores/auth';
 
@@ -33,10 +38,13 @@
 
     const isLoading = ref(false);
     const listError = ref(false);
+    const enrolledListError = ref(false);
     const viewKey = ref(0);
     const totalPages = ref(0);
+    const enrrolledTotalPages = ref(0);
 
     const activities = ref();
+    const enrolledActivities = ref('');
     const activityData = ref({
         name: '',
         startDate: '',
@@ -49,53 +57,57 @@
         id: null,
     });
 
-    const changePage = async (page) => {
+    const changePage = async (page, search, table) => {
         activities.value = null;
         if (
-            authStore.user.rol === 'ADMIN' ||
-            authStore.user.rol === 'ESTUDIANTE'
+            authStore.user.rol === 'ADMIN'
         ) {
-            await queryActivities(page);
+            await queryActivities(page, 10, search);
         }
 
         if (authStore.user.rol === 'INSTRUCTOR') {
-            await queryActivitiesByInstructor(page);
+            await queryActivitiesByInstructor(page, 10, search);
         }
-    };
 
-    const queryActivities = async (page = 0, size = 10) => {
-        try {
-            const response = await ActivitiesService.getActivities(page, size);
-
-            activities.value = response.data;
-            totalPages.value = response.pagination.totalPages;
-        } catch (error) {
-            if (error) {
-                listError.value = true;
-                let message =
-                    'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo más tarde.';
-
-                if (error.type === 'backend') {
-                    message = error.message;
-                } else if (error.type === 'network') {
-                    message = error.message;
-                } else if (error.type === 'unknown') {
-                    message = error.message;
-                }
-
-                snackbar.add({
-                    type: 'error',
-                    text: message,
-                });
+        if (authStore.user.rol === 'ESTUDIANTE') {
+            if (table === 'enrolled') {
+                await queryActivitiesByStudent(page, 10, search);
+            } else if (table === 'all') {
+                await queryActivities(page, 10, search);
             }
         }
     };
 
-    const queryActivitiesByInstructor = async (page = 0, size = 10) => {
+    const searchElement = async (search, table) => {
+        if (
+            authStore.user.rol === 'ADMIN'
+        ) {
+            activities.value = null;
+            await queryActivities(0, 10, search);
+        }
+
+        if (authStore.user.rol === 'INSTRUCTOR') {
+            activities.value = null;
+            await queryActivitiesByInstructor(0, 10, search);
+        }
+
+        if (authStore.user.rol === 'ESTUDIANTE') {
+            if (table === 'enrolled') {
+                enrolledActivities.value = null;
+                await queryActivitiesByStudent(0, 10, search);
+            } else if (table === 'all') {
+                activities.value = null;
+                await queryActivities(0, 10, search);
+            }
+        }
+    };
+
+    const queryActivities = async (page = 0, size = 10, search = '') => {
         try {
-            const response = await ActivitiesService.getActivitiesByInstructor(
+            const response = await ActivitiesService.getActivities(
                 page,
-                size
+                size,
+                search
             );
 
             activities.value = response.data;
@@ -122,16 +134,92 @@
         }
     };
 
+    const queryActivitiesByInstructor = async (
+        page = 0,
+        size = 10,
+        search = ''
+    ) => {
+        try {
+            const response = await ActivitiesService.getActivitiesByInstructor(
+                page,
+                size,
+                search
+            );
+
+            activities.value = response.data;
+            totalPages.value = response.pagination.totalPages;
+        } catch (error) {
+            if (error) {
+                listError.value = true;
+                let message =
+                    'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo más tarde.';
+
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
+                snackbar.add({
+                    type: 'error',
+                    text: message,
+                });
+            }
+        }
+    };
+
+    const queryActivitiesByStudent = async (
+        page = 0,
+        size = 10,
+        search = ''
+    ) => {
+        try {
+            const response = await StudentsService.getActivitiesByStudent(
+                page,
+                size,
+                search
+            );
+
+            enrolledActivities.value = response.data;
+            enrrolledTotalPages.value = response.pagination.totalPages;
+        } catch (error) {
+            if (error) {
+                listError.value = true;
+                let message =
+                    'Ha ocurrido un error al obtener la lista de actividades. Por favor intenta de nuevo más tarde.';
+
+                if (error.type === 'backend') {
+                    message = error.message;
+                } else if (error.type === 'network') {
+                    message = error.message;
+                } else if (error.type === 'unknown') {
+                    message = error.message;
+                }
+
+                snackbar.add({
+                    type: 'error',
+                    text: message,
+                });
+            }
+        }
+    };
+
     onMounted(async () => {
         if (
-            authStore.user.rol === 'ADMIN' ||
-            authStore.user.rol === 'ESTUDIANTE'
+            authStore.user.rol === 'ADMIN'
         ) {
             await queryActivities();
         }
 
         if (authStore.user.rol === 'INSTRUCTOR') {
             await queryActivitiesByInstructor();
+        }
+
+        if (authStore.user.rol === 'ESTUDIANTE') {
+            await queryActivitiesByStudent();
+            await queryActivities();
         }
     });
 

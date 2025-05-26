@@ -11,6 +11,7 @@
         @sendLocationData="validateLocationData"
         @deleteLocation="deleteLocation"
         @changePage="changePage"
+        @onSearch="searchElement"
     />
 </template>
 
@@ -39,15 +40,25 @@
         id: null,
     });
 
-    const changePage = async (page) => {
+    const changePage = async (page, search) => {
         locations.value = null;
 
-        await queryLocations(page);
+        await queryLocations(page, 10, search);
     };
 
-    const queryLocations = async (page = 0, size = 10) => {
+    const searchElement = async (search) => {
+        locations.value = null;
+
+        await queryLocations(0, 10, search);
+    };
+
+    const queryLocations = async (page = 0, size = 10, search = '') => {
         try {
-            const response = await LocationService.getLocations(page, size);
+            const response = await LocationService.getLocations(
+                page,
+                size,
+                search
+            );
 
             locations.value = response.data;
             totalPages.value = response.pagination.totalPages;
