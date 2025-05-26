@@ -140,59 +140,6 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-12 col-md-4">
-                                    <label
-                                        class="form-label"
-                                        for="passwordInput"
-                                        >Contraseña</label
-                                    >
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div
-                                        class="input-group input-group-outline"
-                                        :class="{
-                                            'is-invalid':
-                                                props.validationErrorStatus
-                                                    .password,
-                                        }"
-                                    >
-                                        <input
-                                            class="form-control"
-                                            id="passwordInput"
-                                            :type="passwordType"
-                                            v-model="localStudentData.password"
-                                        />
-                                        <span
-                                            v-if="!showPassword"
-                                            class="my-auto ms-2 pt-2"
-                                            :style="{ cursor: 'pointer' }"
-                                            @click="toggleShowPassword"
-                                            ><i
-                                                class="material-symbols-rounded opacity-5"
-                                                >visibility</i
-                                            ></span
-                                        >
-                                        <span
-                                            v-if="showPassword"
-                                            class="my-auto ms-2 pt-2"
-                                            :style="{ cursor: 'pointer' }"
-                                            @click="toggleShowPassword"
-                                            ><span
-                                                class="material-symbols-rounded opacity-5"
-                                            >
-                                                visibility_off
-                                            </span></span
-                                        >
-                                    </div>
-                                    <div class="invalid-feedback d-block">
-                                        {{
-                                            props.validationErrorMessage
-                                                .password
-                                        }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-12 col-md-4">
                                     <label class="form-label" for="programInput"
                                         >Programa académico</label
                                     >
@@ -292,7 +239,7 @@
 </template>
 
 <script setup>
-    import { ref, watch, computed, onMounted } from 'vue';
+    import { ref, watch, onMounted } from 'vue';
     import vSelect from 'vue3-select';
     import 'vue3-select/dist/vue3-select.css';
 
@@ -309,7 +256,6 @@
         externalLoading: Boolean,
     });
     const isLoading = ref(false);
-    const showPassword = ref(false);
 
     const localStudentData = ref({ ...props.studentData });
 
@@ -372,17 +318,6 @@
     onMounted(async () => {
         resetValues();
         resetErrorStatusAndMessages();
-    });
-
-    const toggleShowPassword = () => {
-        showPassword.value = !showPassword.value;
-    };
-
-    const passwordType = computed(() => {
-        if (showPassword.value) {
-            return 'text';
-        }
-        return 'password';
     });
 
     const createStudent = () => {

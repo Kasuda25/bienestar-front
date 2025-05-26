@@ -43,7 +43,6 @@
         lastName: '',
         uid: null,
         email: '',
-        password: '',
         program: '',
         semester: null,
         hours: null,
@@ -146,7 +145,6 @@
         lastName: false,
         uid: false,
         email: false,
-        password: false,
         program: false,
         semester: false,
         hours: false,
@@ -161,7 +159,6 @@
         lastName: '',
         uid: '',
         email: '',
-        password: '',
         program: '',
         semester: '',
         hours: '',
@@ -204,35 +201,6 @@
         } else {
             validationErrorStatus.value.email = false;
             validationErrorMessage.value.email = '';
-        }
-
-        if (studentData.value.password && operation === 'update') {
-            if (studentData.value.password.length < 8) {
-                validationErrorStatus.value.password = true;
-                validationErrorMessage.value.password =
-                    'La contraseña debe tener al menos 8 caracteres';
-            } else {
-                validationErrorStatus.value.password = false;
-                validationErrorMessage.value.password = '';
-            }
-        } else if (
-            (studentData.value.password === '' ||
-                !studentData.value.password) &&
-            operation === 'create'
-        ) {
-            validationErrorStatus.value.password = true;
-            validationErrorMessage.value.password =
-                'La contraseña es obligatoria';
-        } else if (
-            studentData.value.password &&
-            studentData.value.password.length < 8
-        ) {
-            validationErrorStatus.value.password = true;
-            validationErrorMessage.value.password =
-                'La contraseña debe tener al menos 8 caracteres';
-        } else {
-            validationErrorStatus.value.password = false;
-            validationErrorMessage.value.password = '';
         }
 
         if (studentData.value.program === null || !studentData.value.program) {
@@ -331,7 +299,6 @@
                     apellido: studentData.value.lastName,
                     codigoEstudiantil: studentData.value.uid,
                     email: studentData.value.email.toLowerCase(),
-                    // password: studentData.value.password,
                     programaAcademico: studentData.value.program,
                     semestre: studentData.value.semester,
                 });
@@ -345,7 +312,6 @@
                         apellido: studentData.value.lastName,
                         codigoEstudiantil: studentData.value.uid,
                         email: studentData.value.email,
-                        password: studentData.value.password,
                         programaAcademico: studentData.value.program,
                         semestre: studentData.value.semester,
                         estado: 'ACTIVO',
