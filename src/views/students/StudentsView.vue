@@ -331,7 +331,7 @@
                     apellido: studentData.value.lastName,
                     codigoEstudiantil: studentData.value.uid,
                     email: studentData.value.email.toLowerCase(),
-                    password: studentData.value.password,
+                    // password: studentData.value.password,
                     programaAcademico: studentData.value.program,
                     semestre: studentData.value.semester,
                 });
@@ -381,11 +381,46 @@
                 }
             }
         } catch (error) {
+            isLoading.value = false;
+
             if (error) {
-                isLoading.value = false;
-                snackbar.add({
-                    type: 'error',
-                    text: error.message,
+                let messages = [];
+
+                if (error.type === 'backend') {
+                    if (
+                        error.message?.errors &&
+                        typeof error.message.errors === 'object'
+                    ) {
+                        for (const key in error.message.errors) {
+                            if (
+                                Object.prototype.hasOwnProperty.call(
+                                    error.message.errors,
+                                    key
+                                )
+                            ) {
+                                messages.push(error.message.errors[key]);
+                            }
+                        }
+                    } else {
+                        messages.push(
+                            error.message.message ||
+                                'Error desconocido del servidor'
+                        );
+                    }
+                } else if (
+                    error.type === 'network' ||
+                    error.type === 'unknown'
+                ) {
+                    messages.push(
+                        error.message || 'Ha ocurrido un error inesperado.'
+                    );
+                }
+
+                messages.forEach((msg) => {
+                    snackbar.add({
+                        type: 'error',
+                        text: msg,
+                    });
                 });
             }
         }
