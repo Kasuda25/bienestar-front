@@ -457,10 +457,9 @@
                         nombre: activityData.value.name,
                         fechaInicio: activityData.value.startDate,
                         fechaFin: activityData.value.endDate,
-                        horarios: activityData.value.schedule,
                         maxEstudiantes: activityData.value.maxStudents,
                         instructorId: activityData.value.instructor,
-                        ubicacionId: activityData.value.location,
+                        ubicacion: activityData.value.location,
                     }
                 );
             }

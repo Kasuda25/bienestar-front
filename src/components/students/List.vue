@@ -46,7 +46,7 @@
                                 type="text"
                                 v-model="searchQuery"
                                 class="form-control me-2"
-                                placeholder="Buscar estudiante..."
+                                placeholder="Buscar actividad..."
                                 style="max-width: 250px"
                             />
                             <button
@@ -310,7 +310,7 @@
 
     import { useAuthStore } from '@/stores/auth';
 
-    const emit = defineEmits(['changePage']);
+    const emit = defineEmits(['changePage', 'onSearch']);
     const props = defineProps({
         students: Array,
         totalPages: Number,
@@ -320,6 +320,8 @@
     const authStore = useAuthStore();
 
     const currentPage = ref(0);
+
+    const searchQuery = ref('');
 
     const previousPage = () => {
         if (currentPage.value > 0) {
@@ -339,6 +341,10 @@
         }
 
         emit('changePage', currentPage.value);
+    };
+
+    const onSearch = () => {
+        emit('onSearch', searchQuery.value);
     };
 </script>
 

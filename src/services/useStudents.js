@@ -97,10 +97,10 @@ class StudentsService {
         }
     }
 
-    async getStudents(page = 0, size = 10) {
+    async getStudents(page = 0, size = 10, search = '') {
         try {
             const response = await axios.get(
-                `/estudiantes?page=${page}&size=${size}`
+                `/estudiantes?page=${page}&size=${size}&search=${search}`
             );
             if (response.status === 200) {
                 return response.data;

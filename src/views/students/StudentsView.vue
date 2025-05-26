@@ -13,6 +13,7 @@
         @sendAttendanceData="validateAttendanceData"
         @deleteStudent="deleteStudent"
         @changePage="changePage"
+        @onSearch="searchElement"
     />
 </template>
 
@@ -55,15 +56,25 @@
         description: '',
     });
 
-    const changePage = async (page) => {
+    const changePage = async (page, search) => {
         students.value = null;
 
-        await queryStudents(page);
+        await queryStudents(page, 10, search);
     };
 
-    const queryStudents = async (page = 0, size = 10) => {
+    const searchElement = async (search) => {
+        students.value = null;
+
+        await queryStudents(0, 10, search);
+    };
+
+    const queryStudents = async (page = 0, size = 10, search = '') => {
         try {
-            const response = await StudentsService.getStudents(page, size);
+            const response = await StudentsService.getStudents(
+                page,
+                size,
+                search
+            );
 
             students.value = response.data;
             totalPages.value = response.pagination.totalPages;
