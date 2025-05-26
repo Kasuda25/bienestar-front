@@ -11,9 +11,9 @@ class ActivitiesService {
             if (error.response) {
                 throw {
                     type: 'backend',
-                    message:
-                        error.response.data?.message ||
-                        'Error desconocido del servidor',
+                    message: error.response.data || {
+                        message: 'Error desconocido del servidor',
+                    },
                     status: error.response.status,
                 };
             } else if (error.request) {
@@ -205,9 +205,9 @@ class ActivitiesService {
             if (error.response) {
                 throw {
                     type: 'backend',
-                    message:
-                        error.response.data?.message ||
-                        'Error desconocido del servidor',
+                    message: error.response.data || {
+                        message: 'Error desconocido del servidor',
+                    },
                     status: error.response.status,
                 };
             } else if (error.request) {

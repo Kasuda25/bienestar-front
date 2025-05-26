@@ -449,7 +449,7 @@
                                 <div class="col-12 col-md-4">
                                     <label
                                         class="form-label"
-                                        for="semesterInput"
+                                        for="hoursInput"
                                         >Horas acumuladas</label
                                     >
                                 </div>
@@ -463,10 +463,9 @@
                                         }"
                                     >
                                         <input
-                                            v-if="isReadOnly"
                                             class="form-control"
-                                            id="semesterInput"
-                                            type="number"
+                                            id="hoursInput"
+                                            type="text"
                                             :value="student.horasAcumuladas"
                                             tabindex="-1"
                                             :style="{
@@ -475,14 +474,6 @@
                                                 cursor: 'default',
                                             }"
                                             readonly
-                                        />
-                                        <input
-                                            v-else
-                                            class="form-control"
-                                            id="semesterInput"
-                                            type="text"
-                                            v-model="localStudentData.hours"
-                                            @input="filterSemesterInput"
                                         />
                                     </div>
                                     <div class="invalid-feedback">

@@ -59,9 +59,7 @@
 
     const changePage = async (page, search, table) => {
         activities.value = null;
-        if (
-            authStore.user.rol === 'ADMIN'
-        ) {
+        if (authStore.user.rol === 'ADMIN') {
             await queryActivities(page, 10, search);
         }
 
@@ -79,9 +77,7 @@
     };
 
     const searchElement = async (search, table) => {
-        if (
-            authStore.user.rol === 'ADMIN'
-        ) {
+        if (authStore.user.rol === 'ADMIN') {
             activities.value = null;
             await queryActivities(0, 10, search);
         }
@@ -207,9 +203,7 @@
     };
 
     onMounted(async () => {
-        if (
-            authStore.user.rol === 'ADMIN'
-        ) {
+        if (authStore.user.rol === 'ADMIN') {
             await queryActivities();
         }
 
@@ -493,21 +487,45 @@
             }
         } catch (error) {
             isLoading.value = false;
+
             if (error) {
-                let message =
-                    'Ha ocurrido un error. Por favor intenta de nuevo más tarde.';
+                let messages = [];
 
                 if (error.type === 'backend') {
-                    message = error.message;
-                } else if (error.type === 'network') {
-                    message = error.message;
-                } else if (error.type === 'unknown') {
-                    message = error.message;
+                    if (
+                        error.message?.errors &&
+                        typeof error.message.errors === 'object'
+                    ) {
+                        for (const key in error.message.errors) {
+                            if (
+                                Object.prototype.hasOwnProperty.call(
+                                    error.message.errors,
+                                    key
+                                )
+                            ) {
+                                messages.push(error.message.errors[key]);
+                            }
+                        }
+                    } else {
+                        messages.push(
+                            error.message.message ||
+                                'Error desconocido del servidor'
+                        );
+                    }
+                } else if (
+                    error.type === 'network' ||
+                    error.type === 'unknown'
+                ) {
+                    messages.push(
+                        error.message || 'Ha ocurrido un error inesperado.'
+                    );
                 }
 
-                snackbar.add({
-                    type: 'error',
-                    text: message,
+                messages.forEach((msg) => {
+                    snackbar.add({
+                        type: 'error',
+                        text: msg,
+                    });
                 });
             }
         }

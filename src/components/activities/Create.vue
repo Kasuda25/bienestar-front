@@ -658,8 +658,8 @@
         });
     };
 
-    const queryInstructors = async () => {
-        await InstructorsService.getInstructors()
+    const queryInstructors = async (page = 0, size = 999, search = '') => {
+        await InstructorsService.getInstructors(page, size, search)
             .then((response) => {
                 instructors.value = response.data;
             })
@@ -685,8 +685,8 @@
             });
     };
 
-    const queryLocations = async () => {
-        await LocationsService.getLocations()
+    const queryLocations = async (page = 0, size = 999, search = '') => {
+        await LocationsService.getLocations(page, size, search)
             .then((response) => {
                 locations.value = response.data;
             })
